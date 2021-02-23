@@ -3,7 +3,8 @@ import Login from './login/Login.vue'
 import LoginByCode from './login/LoginByCode.vue'
 import Register from './login/Register.vue'
 import UserCenter from './user/UserCenter.vue'
-import Home from './home.vue'
+import Home from './Home.vue'
+import ChangePwd from './login/ChangePwd.vue'
 
 
 const routerHistory = createWebHistory()
@@ -23,7 +24,10 @@ const router = createRouter({
             path:'/register',
             component: Register,
         },
-
+        {
+            path:'/change_pwd',
+            component: ChangePwd,
+        },
         {
             path:'/',
             component: () => import(/* webpackChunkName: "about" */ '../index.vue'),
