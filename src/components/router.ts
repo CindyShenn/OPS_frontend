@@ -5,6 +5,7 @@ import Register from './login/Register.vue'
 import UserCenter from './user/UserCenter.vue'
 import Home from './Home.vue'
 import ChangePwd from './login/ChangePwd.vue'
+import Project from './project/Project.vue'
 
 
 const routerHistory = createWebHistory()
@@ -39,6 +40,10 @@ const router = createRouter({
                 {
                     path:'/home',
                     component: Home,
+                },
+                {
+                    path:'/project',
+                    component: Project,
                 },
             ],
         }

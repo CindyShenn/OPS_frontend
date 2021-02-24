@@ -16,12 +16,20 @@
     justify-content: center;
 }
 
+.wrap{
+    flex-wrap: wrap
+}
+
 .justify-between {
     justify-content: space-between;
 }
 
 .justify-around {
     justify-content: space-around;
+}
+
+.justify-start {
+    justify-content: start;
 }
 
 .justify-left {
@@ -32,8 +40,13 @@
     justify-content: center;
 }
 
+
 .justify-flex-end{
     justify-content: flex-end;
+}
+
+.align-start {
+    align-items:flex-start;
 }
 
 .align-end {

@@ -73,6 +73,7 @@ export default {
   height: 150px;
   background: #FFFFFF;
   border-radius: 10px;
+  box-shadow: 0px 0px 15px 0px #504d5f;
 }
 
 .text-box {
