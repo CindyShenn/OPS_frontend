@@ -6,6 +6,8 @@ import UserCenter from './user/UserCenter.vue'
 import Home from './Home.vue'
 import ChangePwd from './login/ChangePwd.vue'
 import Project from './project/Project.vue'
+import TeacherClass from './class/TeacherClass.vue'
+import StudentStatus from './class/StudentStatus.vue'
 
 
 const routerHistory = createWebHistory()
@@ -44,6 +46,14 @@ const router = createRouter({
                 {
                     path:'/project',
                     component: Project,
+                },
+                {
+                    path:'/teacher_class',
+                    component: TeacherClass,
+                },
+                {
+                    path:'/student_status',
+                    component: StudentStatus,
                 },
             ],
         }
