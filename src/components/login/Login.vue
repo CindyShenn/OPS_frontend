@@ -1,6 +1,6 @@
 <template>
   <div id = "login">
-    <div id="main" class="flex align-center justify-center">
+    <div id="body" class="flex align-center justify-center">
       <div id="login-card" class="flex flex-column">
         <span style="margin-top: 39px;font-size: 16px;color: #9DA0B4;text-align: center">欢迎使用</span>
         <span style="margin-top: 10px;font-size: 32px;text-align: center">请登录您的账号</span>
@@ -26,6 +26,13 @@
 <script>
 export default {
 name: "Login",
+  data(){
+  return{
+    user:'',
+    pwd:'',
+  };
+  }
+
 }
 
 </script>
@@ -35,7 +42,7 @@ name: "Login",
   width: 100%;
   height: 100%;
 }
-#main {
+#body {
   height: 100%;
   width: 100%;
   background: #3589BF;
@@ -45,6 +52,5 @@ name: "Login",
   height: 500px;
   background: #FFFFFF;
   box-shadow: 0px 0px 15px 0px #504d5f;
-  border-radius: 10px;
 }
 </style>

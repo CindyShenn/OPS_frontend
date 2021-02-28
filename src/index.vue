@@ -18,6 +18,6 @@ export default {
 
 <style scoped>
   #index{
-    height: calc(100% - 60px);
+    height: 100vh;
   }
 </style>
