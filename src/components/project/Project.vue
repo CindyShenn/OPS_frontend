@@ -5,8 +5,8 @@
         <div id="current-project-card" hidden="hidden">
           <div id="current-project-content" class="flex flex-column align-start"
                style="margin:30px 30px;">
-            <span style="font-size: 30px;font-weight:600">工作空间</span>
-            <span style="margin-top: 15px;font-size: 20px">项目：{{ projects[currentIndex].project_name }}</span>
+            <span style="font-size: 30px;font-weight:600">项目详情</span>
+            <span style="margin-top: 15px;font-size: 20px">项目名：{{ projects[currentIndex].project_name }}</span>
             <span style="margin-top: 15px;font-size: 20px">环境：</span>
             <span style="text-align: left;margin-top: 5px;font-size: 20px">{{
                 projects[currentIndex].project_env
@@ -16,7 +16,7 @@
             <span style="margin-top: 15px;font-size: 20px">关闭时间：{{ projects[currentIndex].close_time }}</span>
             <div class="flex justify-between" style="width: 100%;margin-top: 25px">
               <el-button type="primary">进入</el-button>
-              <el-button type="danger">关闭</el-button>
+              <el-button type="danger" @click="closeCurrent()">关闭</el-button>
             </div>
           </div>
         </div>
@@ -150,6 +150,10 @@ export default {
       let vDiv = document.getElementById("current-project-card");
       vDiv.style.display = 'block';
       this.currentIndex = index
+    },
+    closeCurrent(){
+      let vDiv = document.getElementById("current-project-card");
+      vDiv.style.display = 'none';
     }
   }
 }
