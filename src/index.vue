@@ -1,7 +1,9 @@
 <template>
 <div id="index">
-  <Header></Header>
-  <router-view></router-view>
+  <el-container>
+    <el-header style="background-color: #002d54"><Header></Header></el-header>
+      <el-main><router-view></router-view></el-main>
+  </el-container>
 </div>
 </template>
 
@@ -18,6 +20,39 @@ export default {
 
 <style scoped>
   #index{
-    height: 100vh;
+    background-color: #f9f9f9;
+    height: 100%;
+  }
+  #index-header {
+    height: 60px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+
+  #index-container {
+    background-color: #f9f9f9;
+    top: 60px;
+    height: calc(100% - 60px);
+    width: 100%;
+    overflow-y: auto;
+    position: fixed;
+  }
+  .el-header {
+    background-color: #b3c0d1;
+  }
+
+  .el-aside {
+    background-color: #d3dce6;
+  }
+  .el-main {
+    background-color: #e9eef3;
+  }
+  .el-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    left: 0px;
+    bottom: 0px;
   }
 </style>

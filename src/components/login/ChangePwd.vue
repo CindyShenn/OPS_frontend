@@ -1,25 +1,30 @@
 <template>
   <div id="change-pwd">
-    <div id="main" class="flex align-center justify-center">
-      <div id="login-card" class="flex flex-column">
-        <span style="margin-top: 30px;font-size: 32px;text-align: center">修改密码</span>
+    <div id="body" class="flex align-center justify-center">
+      <div id="ch-pwd-card" class="flex flex-column">
+        <span style="margin-top: 40px;margin-bottom: 9px;font-size: 32px;text-align: center">修改密码</span>
         <div style="margin:40px 46px 0px 46px">
-          <div style="margin-top: 15px;margin-bottom: 7px" class="flex justify-between">
-            <span style="font-size: 14px;">验证码</span>
+          <el-form :model="changePwdForm" :rules="rules" label-position="left" ref="ruleForm" label-width="auto">
+            <el-form-item label="邮箱" prop="email">
+              <el-input v-model="changePwdForm.email" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="验证码" prop="verificationCode">
+              <div class="flex justify-between">
+                <el-input placeholder="请输入验证码" v-model="changePwdForm.verificationCode"/>
+                <el-button style="margin-left: 30px" type="primary">获取验证码</el-button>
+              </div>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+              <el-input v-model="changePwdForm.password" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="password1">
+              <el-input v-model="changePwdForm.password1" clearable></el-input>
+            </el-form-item>
+          </el-form>
+          <el-button type="primary" style="width: 100%;margin-top: 10px;height: 50px" @click="login">确认修改</el-button>
+          <div class="flex justify-between align-center" style="margin-top: 25px;margin-bottom:46px;font-size: 14px">
+            <div><span>已经有账号？</span><span style="color: #3F9EFF">马上登陆</span></div>
           </div>
-          <div class="flex justify-between">
-            <el-input placeholder="请输入验证码" v-model="pwd" show-password @keyup.enter="login"/>
-            <el-button style="margin-left: 30px" type="primary">获取验证码</el-button>
-          </div>
-          <div style="margin-top: 36px;margin-bottom: 7px" class="flex justify-between">
-            <span style="font-size: 14px;">密码</span>
-          </div>
-          <el-input placeholder="请输入密码" v-model="pwd" show-password @keyup.enter="login"/>
-          <div style="margin-top: 36px;margin-bottom: 7px" class="flex justify-between">
-            <span style="font-size: 14px;">确认密码</span>
-          </div>
-          <el-input placeholder="请再次输入密码" v-model="pwd" show-password @keyup.enter="login"/>
-          <el-button type="primary" style="width: 100%;margin-top: 40px;margin-bottom:30px;height: 50px" @click="login">确认修改</el-button>
         </div>
       </div>
     </div>
@@ -28,7 +33,44 @@
 
 <script>
 export default {
-  name: "ChangePwd"
+  name: "ChangePwd",
+  data(){
+    let validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'));
+      } else if (value !== this.changePwdForm.password) {
+        callback(new Error('两次输入密码不一致!'));
+      } else {
+        callback();
+      }
+    };
+    return{
+      changePwdForm: {
+        email: '',
+        password: '',
+        password1: '',
+        verificationCode:'',
+      },
+      rules: {
+        email:[
+          {required:true,message:'请输入邮箱',trigger:'blur'},
+          { pattern: '^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$', message: '请输入正确格式的邮箱', trigger: 'blur' },
+        ],
+        password: [
+          {required:true,message:'请输入密码',trigger:'blur'},
+          { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'blur' }
+        ],
+        password1: [
+          {required:true,message:'请重新输入密码',trigger:'blur'},
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        verificationCode:[
+          {required:true,message:'请输入验证码',trigger:'blur'},
+          { min: 6,max:6, message: '请输入 6 位验证码', trigger: 'blur' }
+        ]
+      }
+    }
+  }
 }
 </script>
 
@@ -38,17 +80,16 @@ export default {
   height: 100%;
 }
 
-#main {
+#body {
   height: 100%;
   width: 100%;
   background: #3589BF;
 }
 
-#login-card {
+#ch-pwd-card {
   width: 480px;
-  height: 540px;
+  height: 500px;
   background: #FFFFFF;
   box-shadow: 0px 0px 15px 0px #504d5f;
-  border-radius: 10px;
 }
 </style>
