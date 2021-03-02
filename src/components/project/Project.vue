@@ -1,7 +1,8 @@
 <template>
   <div id="project">
     <div id="main" class="flex flex-column" style="align-items: center">
-      <div id="current-project" hidden="hidden" class="flex justify-center" style="margin-top: 60px">
+      <span style="margin: 30px 40px 0px;font-size: 28px;text-align: left;font-weight: 400;width: 80%">我的项目</span>
+      <div id="current-project" hidden="hidden" class="flex justify-center" style="margin-top: 30px">
         <div id="current-project-card" hidden="hidden">
           <div id="current-project-content" class="flex flex-column align-start"
                style="margin:30px 30px;">

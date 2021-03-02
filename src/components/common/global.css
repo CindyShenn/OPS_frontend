@@ -29,7 +29,7 @@
 }
 
 .justify-start {
-    justify-content: start;
+    justify-content:flex-start;
 }
 
 .justify-left {
