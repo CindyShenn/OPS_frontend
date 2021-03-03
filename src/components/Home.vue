@@ -65,7 +65,6 @@ export default {
 #main {
   height: 100%;
   width: 100%;
-  background: #3589BF;
 }
 
 .choose-box {
@@ -77,7 +76,7 @@ export default {
 }
 
 .text-box {
-  color: #3589BF;
+  color: #002d54;
   margin-top: 10px;
   font-size: 20px;
   font-weight:600;

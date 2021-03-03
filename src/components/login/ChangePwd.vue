@@ -2,7 +2,8 @@
   <div id="change-pwd">
     <div id="body" class="flex align-center justify-center">
       <div id="ch-pwd-card" class="flex flex-column">
-        <span style="margin-top: 40px;margin-bottom: 9px;font-size: 32px;text-align: center">修改密码</span>
+        <el-button type="text" style="font-size: 20px;margin-left: 20px" icon="el-icon-d-arrow-left" class="flex justify-start" @click="redirect('login')">返回</el-button>
+        <span style="margin-top: 10px;margin-bottom: 9px;font-size: 32px;text-align: center">修改密码</span>
         <div style="margin:40px 46px 0px 46px">
           <el-form :model="changePwdForm" :rules="rules" label-position="left" ref="ruleForm" label-width="auto">
             <el-form-item label="邮箱" prop="email">
@@ -22,8 +23,8 @@
             </el-form-item>
           </el-form>
           <el-button type="primary" style="width: 100%;margin-top: 10px;height: 50px" @click="login">确认修改</el-button>
-          <div class="flex justify-between align-center" style="margin-top: 25px;margin-bottom:46px;font-size: 14px">
-            <div><span>已经有账号？</span><span style="color: #3F9EFF">马上登陆</span></div>
+          <div class="flex justify-between align-center" style="margin-top: 10px;margin-bottom:46px;font-size: 14px">
+            <div><span>已经有账号？</span><el-button type="text" style="font-size: 14px; color: #3F9EFF" @click="redirect('login')">马上登录</el-button></div>
           </div>
         </div>
       </div>
@@ -70,7 +71,12 @@ export default {
         ]
       }
     }
-  }
+  },
+  methods:{
+    redirect(url){
+      this.$router.push({ path:url})
+    }
+  },
 }
 </script>
 
@@ -83,13 +89,14 @@ export default {
 #body {
   height: 100%;
   width: 100%;
-  background: #3589BF;
+  background: #f9f9f9;
 }
 
 #ch-pwd-card {
   width: 480px;
-  height: 500px;
+  height: 520px;
   background: #FFFFFF;
   box-shadow: 0px 0px 15px 0px #504d5f;
+  padding: 20px;
 }
 </style>

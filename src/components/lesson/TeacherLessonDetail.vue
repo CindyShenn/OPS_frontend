@@ -4,7 +4,7 @@
       <el-tabs :tab-position="tabPosition" stretch style="height: auto;font-size: 30px">
         <el-tab-pane>
           <template #label>
-            <span style="font-size: 20px"> 课程信息</span>
+            <span style="font-size: 15px"> 课程信息</span>
           </template>
           <div style="padding: 0px 120px;">
             <div class="flex flex-column justify-start"  style="background-color: #FFFFFF;padding: 30px">
@@ -64,7 +64,7 @@
         </el-tab-pane>
         <el-tab-pane>
           <template #label>
-            <span style="font-size: 20px">学生管理</span>
+            <span style="font-size: 15px">学生管理</span>
           </template>
           <div>
             <div class="flex justify-between" style="width: 100%">
@@ -123,6 +123,71 @@
             </el-table>
           </div>
         </el-tab-pane>
+        <el-tab-pane>
+          <template #label>
+            <span style="font-size: 15px">课程评论</span>
+          </template>
+          <div style="background-color: #FFFFFF;padding: 20px">
+            <div style="font-size: 28px;text-align: left;font-weight: 400;width: 100%">课程评论</div>
+            <div v-for="(item, index) in comments" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 40px">
+              <div class="each-lesson ">
+                <div class="flex flex-row line">
+                  <div class="each-lesson-img">
+                    <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
+                      <template #placeholder>
+                        <div class="image-slot">
+                          加载中<span class="dot">...</span>
+                        </div>
+                      </template>
+                    </el-image>
+                  </div>
+                  <div class="each-lesson-info flex flex-column">
+                    <div class="user-info flex flex-row align-center" style="height: 20%">
+                      <div style="text-align: left;font-size: 20px;font-weight: 600;">{{item.nick_name}}</div>
+                      <div style="text-align: left;font-size: 15px;margin-left: 15px">(用户id:{{item.user_id}})</div>
+                    </div>
+                    <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%">
+                      {{ item.comment }}
+                    </div>
+                    <div class="lesson-detail flex flex-row align-end justify-between" style="height: 20%;font-size: 8px">
+                      <div class="lesson-detail-content">评论时间：{{item.created_at}}</div>
+                      <div class="lesson-detail-content">更新时间：{{item.updated_at}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div id="reply" class="flex flex-column">
+                  <div v-for="(item, index) in comments" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 10px">
+                    <div class="line each-reply">
+                      <div class="flex flex-row">
+                        <div class="each-reply-img">
+                          <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
+                            <template #placeholder>
+                              <div class="image-slot">
+                                加载中<span class="dot">...</span>
+                              </div>
+                            </template>
+                          </el-image>
+                        </div>
+                        <div class="each-reply-item flex flex-column">
+                          <div class="user-info flex flex-row align-center" style="height: 30%">
+                            <div style="text-align: left;font-size: 15px;font-weight: 600;">{{item.nick_name}}</div>
+                            <div style="text-align: left;font-size: 12px;margin-left: 15px">(用户id:{{item.user_id}})</div>
+                          </div>
+                          <div class="reply-comment" style="text-align: left;color: #504d5f;font-size: 8px;height: 40%;width: auto;word-wrap:break-word">
+                            {{reply-comment}}
+                          </div>
+                          <div class="reply-time" style="height: 30%;font-size: 8px;width: auto;text-align: left">
+                            {{reply-time}}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -135,6 +200,7 @@ export default {
   data() {
     return {
       url: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
+      src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       tabPosition: 'left',
       name: 'c++ 基础课程',
       id: '12344',
@@ -149,7 +215,30 @@ export default {
         gender:'男',
         major:'计算机科学',
         organization:'华南师范大学'
-      }, ]
+      }, ],
+      comments:[
+        {
+          nick_name:'cindy',
+          user_id:'00002',
+          comment:'这个课非常好，老师讲得很棒',
+          created_at:'2020.9.1',
+          updated_at:'2020.9.1',
+        },
+        {
+          nick_name:'cindy',
+          user_id:'00002',
+          comment:'这个课非常好，老师讲得很棒',
+          created_at:'2020.9.1',
+          updated_at:'2020.9.1',
+        },
+        {
+          nick_name:'cindy',
+          user_id:'00002',
+          comment:'这个课非常好，老师讲得很棒',
+          created_at:'2020.9.1',
+          updated_at:'2020.9.1',
+        },
+      ]
     };
   }
 }
@@ -169,7 +258,7 @@ export default {
 
 .each-item {
   margin-top: 40px;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .each-item-name {
@@ -189,4 +278,51 @@ export default {
   margin-left: 90px
 }
 
+.el-tab-pane{
+  padding:30px
+}
+.line {
+  border-bottom: 1px solid #dcdfe6;
+}
+
+.each-lesson {
+  height: auto;
+  width: 80%;
+  background: #FFFFFF;
+  padding: 25px;
+}
+.each-lesson-img {
+  height: 120px;
+  width: 120px;
+  background: #002d54;
+}
+.each-lesson-info {
+  height: 150px;
+  width:calc(100% - 180px);
+  margin-left: 30px;
+}
+
+.lesson-detail-content{
+  width: 50%;
+  text-align: left;
+}
+
+#reply {
+  height: auto;
+  width: 500px;
+  margin-left: 150px;
+}
+.each-reply {
+  height: auto;
+  padding: 5px;
+  width: 100%;
+}
+.each-reply-img{
+  height: 65px;
+  width: 65px;
+}
+.each-reply-item{
+  margin-left: 30px;
+  width: auto;
+}
 </style>

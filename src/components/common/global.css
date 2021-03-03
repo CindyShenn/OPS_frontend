@@ -84,3 +84,10 @@
     width: 100%;
     background: #f9f9f9;
 }
+
+.mytitle{
+    font-size: 28px;
+    text-align: left;
+    font-weight: 400;
+    width: 100%
+}

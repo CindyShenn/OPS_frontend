@@ -2,6 +2,7 @@
   <div id="register">
     <div id="body" class="flex align-center justify-center">
       <div id="register-card" class="flex flex-column">
+        <el-button type="text" style="font-size: 20px;margin-left: 20px" icon="el-icon-d-arrow-left" class="flex justify-start" @click="redirect('login')">返回</el-button>
         <span style="margin-top: 40px;margin-bottom: 9px;font-size: 32px;text-align: center">用户注册</span>
         <div style="margin:40px 46px 0px 46px">
           <el-form :model="registerForm" :rules="rules" label-position="left" ref="ruleForm" label-width="auto">
@@ -35,7 +36,7 @@
             <el-form-item label="确认密码" prop="password1">
               <el-input v-model="registerForm.password1" clearable></el-input>
             </el-form-item>
-            <el-form-item label="性别" >
+            <el-form-item label="性别" class="flex justify-start" >
               <el-radio-group v-model="radio_sex">
                 <el-radio :label="1">男</el-radio>
                 <el-radio :label="2">女</el-radio>
@@ -44,7 +45,7 @@
           </el-form>
           <el-button type="primary" style="width: 100%;margin-top: 10px;height: 50px" @click="login">立即注册</el-button>
           <div class="flex justify-between align-center" style="margin-top: 25px;margin-bottom:46px;font-size: 14px">
-            <div><span>已经有账号？</span><span style="color: #3F9EFF">马上登陆</span></div>
+            <div><span>已经有账号？</span><el-button type="text" style="font-size: 14px; color: #3F9EFF" @click="redirect('login')">马上登录</el-button></div>
           </div>
         </div>
       </div>
@@ -115,7 +116,12 @@ export default {
         ]
       }
     };
-  }
+  },
+  methods:{
+    redirect(url){
+      this.$router.push({ path:url})
+    }
+  },
 }
 </script>
 
@@ -125,7 +131,7 @@ export default {
 
 #body {
   width: 100%;
-  background: #3589BF;
+  background: #f9f9f9;
 }
 
 #register-card {
@@ -133,5 +139,7 @@ export default {
   margin: 40px 0px;
   background: #FFFFFF;
   box-shadow: 0px 0px 15px 0px #504d5f;
+  padding: 20px;
 }
+
 </style>

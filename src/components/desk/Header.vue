@@ -21,18 +21,7 @@
         <el-menu-item index="4">个人</el-menu-item>
       </el-menu>
       <div id="user">
-        <el-col :span="8">
-          <el-dropdown trigger="click">
-      <span class="el-dropdown-link">
-        <el-avatar icon="el-icon-user-solid"></el-avatar>
-      </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item icon="el-icon-plus">退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </el-col>
+        <el-avatar icon="el-icon-user-solid" @click="redirect('user_center')"></el-avatar>
       </div>
     </div>
   </div>
@@ -47,10 +36,14 @@ name: "Header.vue",
       activeIndex: '8',
     }
   },
+
   mounted() {
   },
-methods(){
-}
+  methods:{
+    redirect(url){
+      this.$router.push({ path:url})
+    }
+  },
 }
 </script>
 

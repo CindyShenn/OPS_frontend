@@ -10,6 +10,8 @@ import TeacherClass from './class/TeacherClass.vue'
 import StudentStatus from './class/StudentStatus.vue'
 import TeacherLesson from './lesson/TeacherLesson.vue'
 import TeacherLessonDetail from './lesson/TeacherLessonDetail.vue'
+import StudentLesson from './lesson/StudentLesson.vue'
+import LessonDetail from './lesson/LessonDetail.vue'
 
 
 const routerHistory = createWebHistory()
@@ -65,6 +67,14 @@ const router = createRouter({
                     path:'/teacher_lesson_detail',
                     component: TeacherLessonDetail,
                 },
+                {
+                    path:'/student_lesson',
+                    component:StudentLesson,
+                },
+                {
+                    path:'/lesson_detail',
+                    component:LessonDetail,
+                }
             ],
         }
     ]
