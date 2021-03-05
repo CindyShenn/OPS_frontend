@@ -3,7 +3,7 @@
     <div id="body" class="flex justify-center align-center">
       <div class="container">
         <div id="section" class="flex flex-column align-center justify-center">
-          <span class="mytitle">课程详情</span>
+          <span class="my-title">课程详情</span>
           <div id="content">
             <div class="flex flex-row" style="padding: 20px">
               <div class="lesson-img">
@@ -28,7 +28,7 @@
               </div>
             </div>
           </div>
-          <span class="mytitle" style="margin-top: 30px">课程评论&nbsp;（{{total}}&nbsp;条）</span>
+          <span class="my-title" style="margin-top: 30px">课程评论&nbsp;（{{total}}&nbsp;条）</span>
           <div id="comment">
             <div v-for="(item, index) in comments" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 40px">
               <div class="each-lesson ">
@@ -221,8 +221,6 @@ name: "LessonDetail",
   width: auto;
 }
 
-.line {
-  border-bottom: 1px solid #dcdfe6;
-}
+
 
 </style>

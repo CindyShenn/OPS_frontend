@@ -118,7 +118,7 @@ name: "StudentLesson",
 
 <style scoped>
 #student-lesson {
-  height: 100%;
+  height: auto;
 }
 
 #body {

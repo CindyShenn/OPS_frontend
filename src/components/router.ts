@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from './login/Login.vue'
 import LoginByCode from './login/LoginByCode.vue'
 import Register from './login/Register.vue'
-import UserCenter from './user/UserCenter.vue'
+import UserInfo from './user/UserInfo.vue'
 import Home from './Home.vue'
 import ChangePwd from './login/ChangePwd.vue'
 import Project from './project/Project.vue'
@@ -12,6 +12,8 @@ import TeacherLesson from './lesson/TeacherLesson.vue'
 import TeacherLessonDetail from './lesson/TeacherLessonDetail.vue'
 import StudentLesson from './lesson/StudentLesson.vue'
 import LessonDetail from './lesson/LessonDetail.vue'
+import Test from './test.vue'
+import UserCenter from './user/UserCenter.vue'
 
 
 const routerHistory = createWebHistory()
@@ -40,8 +42,8 @@ const router = createRouter({
             component: () => import(/* webpackChunkName: "about" */ '../index.vue'),
             children:[
                 {
-                    path:'/user_center',
-                    component: UserCenter,
+                    path:'/user_info',
+                    component: UserInfo,
                 },
                 {
                     path:'/home',
@@ -74,6 +76,14 @@ const router = createRouter({
                 {
                     path:'/lesson_detail',
                     component:LessonDetail,
+                },
+                {
+                    path:'/test',
+                    component:Test,
+                },
+                {
+                    path:'/user_center',
+                    component:UserCenter,
                 }
             ],
         }
