@@ -5,14 +5,14 @@
         <el-button type="text" style="font-size: 20px;margin-left: 20px" icon="el-icon-d-arrow-left" class="flex justify-start" @click="redirect('login')">返回</el-button>
         <span style="margin-top: 10px;font-size: 32px;text-align: center">请登录您的账号</span>
         <div style="margin:40px 46px 0px 46px">
-          <span style="font-size: 14px;margin-bottom: 7px" class="flex">用户名</span>
-          <el-input placeholder="请输入邮箱"  v-model="user" clearable/>
+          <span style="font-size: 14px;margin-bottom: 7px" class="flex">邮箱</span>
+          <el-input placeholder="请输入邮箱"  v-model="email" clearable/>
           <div style="margin-top: 36px;margin-bottom: 7px" class="flex justify-between">
             <span style="font-size: 14px;">验证码</span>
           </div>
           <div class="flex justify-between">
             <el-input placeholder="请输入验证码" v-model="pwd" show-password @keyup.enter="login"/>
-            <el-button style="margin-left: 30px" type="primary">获取验证码</el-button>
+            <el-button style="margin-left: 30px" type="primary" @click="getCode">获取验证码</el-button>
           </div>
           <el-button type="primary" style="width: 100%;margin-top: 40px;height: 50px" @click="login">立即登录</el-button>
           <div class="flex justify-between align-center" style="margin-top: 25px;font-size: 14px">
@@ -28,11 +28,28 @@
 <script>
 export default {
   name: "LoginByCode",
+  data(){
+    return{
+      email:"",
+    }
+  },
   methods:{
     redirect(url){
       this.$router.push({ path:url})
+    },
+    getCode(){
+      let that=this
+      this.axios({
+        method: "post",
+        url: "/web/user/verificationCode",
+        data: {
+          email: that.email,
+        },
+      }).then((res) => {
+        console.log(res);
+      });
+    },
     }
-  },
 }
 </script>
 

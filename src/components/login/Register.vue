@@ -43,7 +43,7 @@
               </el-radio-group>
             </el-form-item>
           </el-form>
-          <el-button type="primary" style="width: 100%;margin-top: 10px;height: 50px" @click="login">立即注册</el-button>
+          <el-button type="primary" style="width: 100%;margin-top: 10px;height: 50px" @click="register">立即注册</el-button>
           <div class="flex justify-between align-center" style="margin-top: 25px;margin-bottom:46px;font-size: 14px">
             <div><span>已经有账号？</span><el-button type="text" style="font-size: 14px; color: #3F9EFF" @click="redirect('login')">马上登录</el-button></div>
           </div>
@@ -54,6 +54,9 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue'
+import { ElMessage } from 'element-plus'
+
 export default {
   name: "Register",
   data() {
@@ -114,12 +117,41 @@ export default {
           {required:true,message:'请输入验证码',trigger:'blur'},
           { min: 6,max:6, message: '请输入 6 位验证码', trigger: 'blur' }
         ]
-      }
+      },
     };
   },
   methods:{
     redirect(url){
       this.$router.push({ path:url})
+    },
+    register(){
+      let self = this
+      console.log(self.registerForm)
+      this.axios({
+        method: "post",
+        url: "/web/user/signup/stu",
+        data: {
+          email:self.registerForm.email,
+          nickName: self.registerForm.nickName,
+          realName: self.registerForm.realName,
+          major: self.registerForm.major,
+          num:self.registerForm.num,
+          gender:String(self.registerForm.radio_sex),
+          password:self.registerForm.password,
+          organization:self.registerForm.organization,
+          verificationCode:self.registerForm.verificationCode,
+        },
+      }).then((res) => {
+        this.info=res;
+        console.log(res);
+        if (res.status==200){
+          ElMessage.success({
+            message: '注册成功！ 请登录。',
+            type: 'success'
+          });
+          self.redirect('login');
+        }
+      });
     }
   },
 }

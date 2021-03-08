@@ -7,7 +7,7 @@
           <div style="margin:20px 40px 0px 40px">
             <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">邮箱*</span>
             <el-input
-                placeholder="12345678@qq.com"
+                v-model="email"
                 :disabled="true">
             </el-input>
             <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">昵称*</span>
@@ -22,8 +22,8 @@
             <el-input placeholder="请输入学号" v-model="num"/>
             <span style="font-size: 14px;margin-bottom: 15px" class="flex user-input">性别</span>
             <el-radio-group v-model="radio_sex" class="flex align-left">
-              <el-radio :label="1">男</el-radio>
-              <el-radio :label="2">女</el-radio>
+              <el-radio :label=0>男</el-radio>
+              <el-radio :label=1>女</el-radio>
             </el-radio-group>
             <el-button type="primary" style="width: 100%;margin-top: 30px;margin-bottom: 30px;height: 50px"
                        @click="login">确认修改
@@ -40,15 +40,36 @@ export default {
   name: "UserInfo",
   data() {
     return {
-      radio: 1,
-      radio_sex: 1,
-      nickName: '想不到昵称',
-      organization: '华南师范大学',
-      realName: '王小明',
-      major: '计算机科学与技术',
-      num: '20192321021',
+      user_id:'',
+      radio_sex: '',
+      nickName: '',
+      organization: '',
+      realName: '',
+      major: '',
+      num: '',
+      email:''
     };
+  },
+  mounted() {
+    this.axios({
+      method: "get",
+      url: "/web/user/"+"12",
+      data: {},
+    }).then((res) => {
+      //this.info=res;
+      let data = res.data.data;
+      this.nickName = data.nick_name;
+      this.organization = data.organization;
+      this.realName = data.real_name;
+      this.major = data.major;
+      this.num = data.num;
+      this.email = data.email;
+      this.radio_sex = Number(data.gender);
+      console.log(res);
+      console.log(data.gender)
+    });
   }
+
 }
 </script>
 

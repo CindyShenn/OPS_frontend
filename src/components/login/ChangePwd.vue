@@ -12,7 +12,7 @@
             <el-form-item label="验证码" prop="verificationCode">
               <div class="flex justify-between">
                 <el-input placeholder="请输入验证码" v-model="changePwdForm.verificationCode"/>
-                <el-button style="margin-left: 30px" type="primary">获取验证码</el-button>
+                <el-button style="margin-left: 30px" type="primary" @click="getCode">获取验证码</el-button>
               </div>
             </el-form-item>
             <el-form-item label="密码" prop="password">
@@ -22,7 +22,7 @@
               <el-input v-model="changePwdForm.password1" clearable></el-input>
             </el-form-item>
           </el-form>
-          <el-button type="primary" style="width: 100%;margin-top: 10px;height: 50px" @click="login">确认修改</el-button>
+          <el-button type="primary" style="width: 100%;margin-top: 10px;height: 50px" @click="changePwd">确认修改</el-button>
           <div class="flex justify-between align-center" style="margin-top: 10px;margin-bottom:46px;font-size: 14px">
             <div><span>已经有账号？</span><el-button type="text" style="font-size: 14px; color: #3F9EFF" @click="redirect('login')">马上登录</el-button></div>
           </div>
@@ -75,6 +75,33 @@ export default {
   methods:{
     redirect(url){
       this.$router.push({ path:url})
+    },
+    getCode(){
+      let that=this
+      this.axios({
+        method: "post",
+        url: "/web/user/verificationCode",
+        data: {
+          email: that.email,
+        },
+      }).then((res) => {
+        console.log(res);
+      });
+    },
+    changePwd(){
+      let that=this
+      this.axios({
+        method: "post",
+        url: "/web/user/password",
+        data: {
+          email: that.email,
+          password: that.password,
+          verificationCode: that.verificationCode,
+        },
+      }).then((res) => {
+        this.info=res;
+        console.log(res);
+      });
     }
   },
 }

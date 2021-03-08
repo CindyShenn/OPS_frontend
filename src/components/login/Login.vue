@@ -35,6 +35,20 @@ name: "Login",
   methods:{
     redirect(url){
       this.$router.push({ path:url})
+    },
+    login(){
+      let that=this
+      this.axios({
+        method: "post",
+        url: "/web/login",
+        data: {
+          username:that.user,
+          password:that.pwd,
+        },
+      }).then((res) => {
+        this.info=res;
+        console.log(res);
+      });
     }
   },
 
