@@ -14,6 +14,7 @@ import StudentLesson from './lesson/StudentLesson.vue'
 import LessonDetail from './lesson/LessonDetail.vue'
 import Test from './test.vue'
 import UserCenter from './user/UserCenter.vue'
+import store from "./store";
 
 
 const routerHistory = createWebHistory()
@@ -88,6 +89,32 @@ const router = createRouter({
             ],
         }
     ]
+})
+
+router.beforeEach((to, from, next) => {
+    console.log(`router: ${from.path} => ${to.path}`)
+
+    let token = localStorage.getItem('token')
+
+    console.log(token)
+
+    // 未登录
+    if (token === "" || token === undefined || token === null) {
+        // 路由不是去 /login 则强制路由到登陆界面
+        if (to.path !== '/login') {
+            next('/login')
+            return
+        }
+        next()
+        return
+    }
+    if (to.path === '/login') {
+        next('/')
+        return
+    }
+
+    next()
+    return
 })
 
 export default router

@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { ElMessage } from 'element-plus'
 export default {
 name: "Login",
   data(){
@@ -48,6 +49,19 @@ name: "Login",
       }).then((res) => {
         this.info=res;
         console.log(res);
+        if(res.status==200){
+          let token = res.data.data.token
+          console.log(token);
+          this.$store.commit('$_setStorage',token);
+          ElMessage.success({
+            message: '登录成功！',
+            type: 'success'
+          });
+          this.redirect('home')
+        }
+        else{
+          ElMessage.error('登录失败，请重新输入用户名密码');
+        }
       });
     }
   },
