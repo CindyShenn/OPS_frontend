@@ -1,27 +1,40 @@
 import {createStore} from 'vuex'
 
 
-const key ='token'
+const key = 'token'
+const role = 'role'
 const store = createStore({
     state: {
-            token:localStorage.getItem('token') ? localStorage.getItem('token'):''
+        token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
+        role: localStorage.getItem('role') ? localStorage.getItem('role') : ''
     },
-    getters:{
-        getSortage:function (state) {
-            if(!state.token){
-                state.token =JSON.parse(localStorage.getItem(key))
+    getters: {
+        getStorage: function (state) {
+            if (!state.token) {
+                let tk = localStorage.getItem(key);
+                if (tk != null) {
+                    state.token = JSON.parse(tk)
+                } else state.token = null
             }
             return state.token
         }
     },
-    mutations:{
-        $_setStorage(state,value){
-            state.token =value;
-            localStorage.setItem(key,JSON.stringify(value))
+    mutations: {
+        $_setStorage(state, value) {
+            state.token = value;
+            localStorage.setItem(key, JSON.stringify(value))
         },
-        $_removeStorage(state){
-            state.token =null;
+        $_setStorageRole(state, value) {
+            state.role = value;
+            localStorage.setItem(role, JSON.stringify(value))
+        },
+        $_removeStorage(state) {
+            state.token = null;
             localStorage.removeItem(key)
+        },
+        $_removeStorageRole(state) {
+            state.token = null;
+            localStorage.removeItem(role)
         }
     },
 })

@@ -12,7 +12,7 @@
             <el-form-item label="验证码" prop="verificationCode">
               <div class="flex justify-between">
                 <el-input placeholder="请输入验证码" v-model="registerForm.verificationCode"/>
-                <el-button style="margin-left: 30px" type="primary">获取验证码</el-button>
+                <el-button style="margin-left: 30px" type="primary" @click="code">获取验证码</el-button>
               </div>
             </el-form-item>
             <el-form-item label="昵称" prop="nickName">
@@ -152,7 +152,21 @@ export default {
           self.redirect('login');
         }
       });
-    }
+    },
+    code(){
+      let self = this
+      this.axios({
+        method: "post",
+        url: "/web/user/verificationCode",
+        data: {
+          email:self.registerForm.email
+        },
+      }).then((res) => {
+            this.info=res;
+            console.log(res);
+          }
+      );
+    },
   },
 }
 </script>

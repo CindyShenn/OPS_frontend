@@ -8,7 +8,7 @@
             <el-button plain icon="el-icon-plus" @click="dialogFormVisible = true">创建课程</el-button>
             <el-dialog title="创建班级" v-model="dialogFormVisible" append-to-body="true" lock-scroll="true" modal="true">
               <el-form :model="form">
-                <el-form-item label="班级名称" :label-width="formLabelWidth">
+                <el-form-item label="课程名称" :label-width="formLabelWidth">
                   <el-input v-model="form.name" autocomplete="off" placeholder="请输入班级名称"></el-input>
                 </el-form-item>
                 <el-form-item label="班级描述" :label-width="formLabelWidth">
@@ -18,6 +18,20 @@
                 </el-form-item>
                 <el-form-item label="加入密码" :label-width="formLabelWidth">
                   <el-input v-model="form.password" autocomplete="off" placeholder="请输入班级加入密码"></el-input>
+                </el-form-item>
+                <el-form-item label="课程封面" :label-width="formLabelWidth">
+                  <el-upload
+                      class="avatar-uploader el-upload"
+                      :action="uploadUrl"
+                      name="pic"
+                      :headers="headers"
+                      :data="uploadData"
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess"
+                      :before-upload="beforeAvatarUpload">
+                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
                 </el-form-item>
               </el-form>
               <template #footer>
@@ -72,6 +86,7 @@
 </template>
 
 <script>
+
 export default {
   name: "TeacherLesson",
   data(){
@@ -118,8 +133,46 @@ export default {
       },
       dialogFormVisible: false,
       formLabelWidth: '80px',
+      imageUrl: '',
+      uploadData: {
+        width:'256'
+      },
     }
-  }
+  },
+  methods:{
+    handleAvatarSuccess(res) {
+      this.imageUrl = res.data.url;
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+  },
+  computed: {
+    // 设置请求头
+    headers() {
+      return {
+        // 设置Content-Type类型为multipart/form-data
+        'ContentType': 'multipart/form-data',
+        // 设置token
+        'token':localStorage.getItem('token'),
+      }
+    },
+    // 设置上传地址
+    uploadUrl() {
+      // baseURL是axios的基本路径
+      return this.axios.defaults.baseURL + '/web/upload/pic'
+    }
+  },
+
 }
 </script>
 
@@ -158,4 +211,28 @@ export default {
   text-align: left;
 }
 
+.el-upload{
+  border: 1px dashed #8c939d;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>

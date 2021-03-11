@@ -51,8 +51,10 @@ name: "Login",
         console.log(res);
         if(res.status==200){
           let token = res.data.data.token
+          let role = res.data.data.role
           console.log(token);
           this.$store.commit('$_setStorage',token);
+          this.$store.commit('$_setStorageRole',role)
           ElMessage.success({
             message: '登录成功！',
             type: 'success'
