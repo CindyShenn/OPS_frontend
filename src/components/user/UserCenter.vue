@@ -125,6 +125,21 @@ export default {
       ],
     }
   },
+  mounted() {
+    this.axios({
+      method: "get",
+      url: "/web/user/"+this.$route.params.id,
+      data: {},
+    }).then((res) => {
+      let data = res.data.data;
+      this.nick_name = data.nick_name;
+      this.id = data.num;
+      this.src = data.avatar_url;
+      this.create_time = data.created_at;
+      console.log(res);
+      console.log(data.gender)
+    });
+  },
   methods:{
     redirect(url){
       this.$router.push({ path:url})

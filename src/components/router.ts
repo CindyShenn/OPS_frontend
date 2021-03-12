@@ -83,7 +83,7 @@ const router = createRouter({
                     component:Test,
                 },
                 {
-                    path:'/user_center',
+                    path:'/user_center/:id',
                     component:UserCenter,
                 }
             ],

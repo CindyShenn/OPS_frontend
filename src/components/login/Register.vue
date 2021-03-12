@@ -69,6 +69,50 @@ export default {
         callback();
       }
     };
+    let validateNickname = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入昵称'));
+      } else {
+        let self = this
+        this.axios({
+          method: "get",
+          url: "/web/user/nickname",
+          data: {
+            nickname:self.registerForm.nickName
+          },
+        }).then((res) => {
+              console.log(res);
+              let usable = res.data.data
+          console.log(usable)
+          if (usable == false){
+            callback(new Error('该昵称已被其他用户注册'))
+          }
+            }
+        );
+      }
+    };
+    let validateEmail = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入邮箱'));
+      } else {
+        let self = this
+        this.axios({
+          method: "get",
+          url: "/web/user/email",
+          data: {
+            email:self.registerForm.email
+          },
+        }).then((res) => {
+              console.log(res);
+              let usable = res.data.data
+              console.log(usable)
+              if (usable == false){
+                callback(new Error('该邮箱已被注册，请更换邮箱或直接登录'))
+              }
+            }
+        );
+      }
+    };
     return {
       radio: 1,
       radio_sex: 1,
@@ -87,10 +131,12 @@ export default {
         email:[
           {required:true,message:'请输入邮箱',trigger:'blur'},
           { pattern: '^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$', message: '请输入正确格式的邮箱', trigger: 'blur' },
+          { validator: validateEmail, trigger: 'blur' }
         ],
         nickName: [
           {required:true,message:'请输入昵称',trigger:'blur'},
-          { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'blur' }
+          { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'blur' },
+          { validator: validateNickname, trigger: 'blur' }
         ],
         organization:[
           {required:false,message:'请输入单位',trigger:'blur'},
@@ -162,7 +208,6 @@ export default {
           email:self.registerForm.email
         },
       }).then((res) => {
-            this.info=res;
             console.log(res);
           }
       );
