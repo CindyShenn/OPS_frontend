@@ -15,6 +15,7 @@ import LessonDetail from './lesson/LessonDetail.vue'
 import Test from './test.vue'
 import UserCenter from './user/UserCenter.vue'
 import store from "./store";
+import LessonResource from './lesson/LessonResource.vue'
 
 
 const routerHistory = createWebHistory()
@@ -85,6 +86,10 @@ const router = createRouter({
                 {
                     path:'/user_center/:id',
                     component:UserCenter,
+                },
+                {
+                    path:'/lesson_resource',
+                    component:LessonResource,
                 }
             ],
         }

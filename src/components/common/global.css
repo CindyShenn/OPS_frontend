@@ -94,3 +94,10 @@
 .line {
     border-bottom: 1px solid #dcdfe6;
 }
+
+.limit-length {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

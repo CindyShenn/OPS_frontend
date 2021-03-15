@@ -28,9 +28,27 @@
               </div>
             </div>
           </div>
+            <div id="resource-and-enter" class="flex flex-row justify-between">
+              <div id="lesson-resource">
+                <div class="my-title" style="cursor:pointer" onclick="location.href='/project'">课程公告</div>
+                <div id="resource-contents">
+                  <div v-for="(item,index) in resources" class="flex flex-column align-center justify-start" style="width: 100%;margin-top: 5px;">
+                    <div class="each-resource limit-length" style="text-align: left;width: 100%;cursor:pointer" onclick="location.href='/project'">
+                      {{item.content}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="enter-lesson" class="flex flex-column">
+                <div class="my-title">进入课程</div>
+                <div class="flex justify-center align-center" style="height: 100%;width: 100%">
+                  <el-button type="primary">进入课程</el-button>
+                </div>
+              </div>
+            </div>
           <span class="my-title" style="margin-top: 30px">课程评论&nbsp;（{{total}}&nbsp;条）</span>
           <div id="comment">
-            <div v-for="(item, index) in comments" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 40px">
+            <div v-for="(item, index) in comments" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 10px">
               <div class="each-lesson ">
                 <div class="flex flex-row line">
                   <div class="each-lesson-img">
@@ -77,7 +95,7 @@
                           <div class="reply-comment" style="text-align: left;color: #504d5f;font-size: 8px;height: 40%;width: auto;word-wrap:break-word">
                             {{reply-comment}}
                           </div>
-                          <div class="reply-time" style="height: 30%;font-size: 8px;width: auto;text-align: left">
+                          <div class="reply-time" style="height: 30%;font-size: 6px;width: auto;text-align: left">
                             {{reply-time}}
                           </div>
                         </div>
@@ -128,7 +146,21 @@ name: "LessonDetail",
         created_at:'2020.9.1',
         updated_at:'2020.9.1',
       },
-    ]
+    ],
+    resources:[
+      {
+        content:"这是一个课程公告这是一个课程公告这是一个课程公告这是一个课程公告这是一个课程公告这是一个课程公告"
+      },
+      {
+        content:"这是一个课程公告这是一个课程公告这是一个课程公告"
+      },
+      {
+        content:"这是一个课程公告这是一个课程公告这是一个课程公告"
+      },
+      {
+        content:"这是一个课程公告这是一个课程公告这是一个课程公告"
+      },
+    ],
   }
   }
 }
@@ -187,12 +219,12 @@ name: "LessonDetail",
   padding: 25px;
 }
 .each-lesson-img {
-  height: 120px;
-  width: 120px;
+  height: 80px;
+  width: 80px;
   background: #002d54;
 }
 .each-lesson-info {
-  height: 150px;
+  height: 100px;
   width:calc(100% - 180px);
   margin-left: 30px;
 }
@@ -213,12 +245,34 @@ name: "LessonDetail",
   width: 100%;
 }
 .each-reply-img{
-  height: 65px;
-  width: 65px;
+  height: 40px;
+  width: 40px;
 }
 .each-reply-item{
   margin-left: 30px;
   width: auto;
+  height: auto;
+}
+
+#resource-and-enter{
+  width: 100%;
+  height: auto;
+  margin-top: 30px;
+}
+
+#lesson-resource {
+  width: 50%;
+  height: auto;
+  background: #FFFFFF;
+  padding: 25px;
+  margin-right: 10px;
+}
+
+#enter-lesson{
+  width: 50%;
+  height: auto;
+  background: #FFFFFF;
+  padding: 25px;
 }
 
 
