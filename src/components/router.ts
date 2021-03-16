@@ -90,11 +90,11 @@ const router = createRouter({
                     component:UserCenter,
                 },
                 {
-                    path:'/lesson_resource',
+                    path:'/lesson_resource/:id',
                     component:LessonResource,
                 },
                 {
-                    path:'/student_enter_lesson',
+                    path:'/student_enter_lesson/:id',
                     component:StudentEnterLesson,
                 },
                 {

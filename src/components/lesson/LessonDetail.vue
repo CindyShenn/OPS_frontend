@@ -42,7 +42,7 @@
               <div id="enter-lesson" class="flex flex-column">
                 <div class="my-title">进入课程</div>
                 <div class="flex justify-center align-center" style="height: 100%;width: 100%">
-                  <el-button type="primary">进入课程</el-button>
+                  <el-button type="primary" @click="redirectEnterLesson(course_id)">进入课程</el-button>
                 </div>
               </div>
             </div>
@@ -170,6 +170,7 @@ name: "LessonDetail",
     records:[],
     dialogFormVisible: false,
     commentTextTemp:'',
+    course_id,
     comments:[
       {
         nick_name:'cindy',
@@ -211,6 +212,7 @@ name: "LessonDetail",
   }
   },
   mounted() {
+    this.course_id = this.$route.params.id
     this.axios({
       method: "get",
       url: "/web/course/"+this.$route.params.id,
