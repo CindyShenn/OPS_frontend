@@ -5,29 +5,34 @@
         <div id="section" class="flex flex-column align-center justify-center">
           <span class="my-title">我的主页</span>
           <div id="user-info">
-            <div class="flex flex-row" style="margin: 20px">
-              <div class="user-img">
-                <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
-                  <template #placeholder>
-                    <div class="image-slot">
-                      加载中<span class="dot">...</span>
+            <div class="flex justify-between" style="margin: 20px">
+              <div class="flex">
+                <div class="user-img">
+                  <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
+                    <template #placeholder>
+                      <div class="image-slot">
+                        加载中<span class="dot">...</span>
+                      </div>
+                    </template>
+                  </el-image>
+                </div>
+                <div class="user-info-content flex flex-column" style="text-align: left">
+                  <div class="flex flex-row">
+                    <div class="nick_name flex align-end">
+                      {{ nick_name }}
                     </div>
-                  </template>
-                </el-image>
+                    <div style="margin-left: 20px;" class="flex align-center">
+                      <el-button type="text" icon="el-icon-edit-outline" style="font-size: 15px;padding: 0px" @click="redirect('user_info')">编辑个人信息
+                      </el-button>
+                    </div>
+                  </div>
+                  <div class="id">
+                    用户id：{{ id }}&emsp;于&nbsp;{{ create_time }}&nbsp;加入
+                  </div>
+                </div>
               </div>
-              <div class="user-info-content flex flex-column" style="text-align: left">
-                <div class="flex flex-row">
-                  <div class="nick_name flex align-end">
-                    {{ nick_name }}
-                  </div>
-                  <div style="margin-left: 20px;" class="flex align-center">
-                    <el-button type="text" icon="el-icon-edit-outline" style="font-size: 15px;padding: 0px" @click="redirect('user_info')">编辑个人信息
-                    </el-button>
-                  </div>
-                </div>
-                <div class="id">
-                  用户id：{{ id }}&emsp;于&nbsp;{{ create_time }}&nbsp;加入
-                </div>
+              <div class="logout" style="align-self: flex-end">
+                <el-button type="danger" @click="logout()">退出登录</el-button>
               </div>
             </div>
           </div>
@@ -37,7 +42,7 @@
                 <el-tab-pane label="我的课程" name="first">
                   <div id="lesson-list"  style="width: 100%">
                     <div v-for="(item, index) in lessons" class="flex flex-column align-center justify-center line" style="width: 100%;margin: 0px">
-                      <div class="each-lesson flex flex-row" onclick="location.href='/project'" style="cursor:pointer">
+                      <div class="each-lesson flex flex-row" v-on:click="redirectLesson(item.course_id)" style="cursor:pointer">
                         <div class="each-lesson-img">
                           <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
                             <template #placeholder>
@@ -49,15 +54,15 @@
                         </div>
                         <div class="each-lesson-info flex flex-column">
                           <div class="lesson-title flex flex-row align-center" style="height: 30%">
-                            <div style="text-align: left;font-size: 30px;font-weight: 600;">{{item.title}}</div>
-                            <div style="text-align: left;font-size: 20px;margin-left: 15px">(课程id:{{item.id}})</div>
+                            <div style="text-align: left;font-size: 30px;font-weight: 600;">{{item.course_name}}</div>
+                            <div style="text-align: left;font-size: 20px;margin-left: 15px">(&nbsp;课程id:{{item.course_id}}&nbsp;)</div>
                           </div>
                           <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%">
-                            Demo description
+                            {{ course_des }}
                           </div>
                           <div class="lesson-detail flex flex-row align-end justify-between" style="height: 30%">
                             <div class="lesson-detail-content">开课时间：{{item.created_at}}</div>
-                            <div class="lesson-detail-content">是否结课：{{item.is_close}}</div>
+                            <div class="lesson-detail-content">是否结课：{{isClosed(item.is_close)}}</div>
                             <div class="lesson-detail-content">更新时间：{{item.updated_at}}</div>
                           </div>
                         </div>
@@ -85,35 +90,11 @@ export default {
   data() {
     return {
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-      nick_name: 'bug生成器',
+      nick_name: '测试用户',
       id: '00123',
       create_time: '2020.9.2',
       activeName: 'first',
       lessons:[
-        {
-          title: "Title",
-          id:"123456",
-          created_at:"2020.9.1",
-          updated_at:"2020.9.1",
-          pic_url:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-          is_close:"否"
-        },
-        {
-          title: "Title",
-          id:"123456",
-          created_at:"2020.9.1",
-          updated_at:"2020.9.1",
-          pic_url:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-          is_close:"否"
-        },
-        {
-          title: "Title",
-          id:"123456",
-          created_at:"2020.9.1",
-          updated_at:"2020.9.1",
-          pic_url:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-          is_close:"否"
-        },
         {
           title: "Title",
           id:"123456",
@@ -128,21 +109,42 @@ export default {
   mounted() {
     this.axios({
       method: "get",
-      url: "/web/user/"+this.$route.params.id,
+      url: "/web/user",
       data: {},
     }).then((res) => {
       let data = res.data.data;
       this.nick_name = data.nick_name;
       this.id = data.num;
-      this.src = data.avatar_url;
+      if(data.avatar_url != ''){
+        this.src = data.avatar_url;
+      }
       this.create_time = data.created_at;
       console.log(res);
       console.log(data.gender)
+    });
+    this.axios({
+      method: "get",
+      url: "/web/course/study",
+      data: {},
+    }).then((res) => {
+      console.log(res)
+      this.lessons=res.data.data.records
+      console.log(res.data.data.records)
     });
   },
   methods:{
     redirect(url){
       this.$router.push({ path:url})
+    },
+    redirectLesson(id){
+      this.$router.push({ path:`/lesson_detail/${id}`})
+    },
+    logout(){
+      this.$store.commit('$_removeStorage');
+      this.$router.push({ path:'login'})
+    },
+    isClosed(value){
+      return value=='2' ? '是' : '否'
     }
   },
 }

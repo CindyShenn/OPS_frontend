@@ -22,11 +22,11 @@ const store = createStore({
     mutations: {
         $_setStorage(state, value) {
             state.token = value;
-            localStorage.setItem(key, JSON.stringify(value))
+            localStorage.setItem(key, value)
         },
         $_setStorageRole(state, value) {
             state.role = value;
-            localStorage.setItem(role, JSON.stringify(value))
+            localStorage.setItem(role, value)
         },
         $_removeStorage(state) {
             state.token = null;

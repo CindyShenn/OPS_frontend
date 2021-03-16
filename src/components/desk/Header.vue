@@ -15,10 +15,7 @@
           text-color="#fff"
           style="height: 60px">
         <el-menu-item v-show="0" index="0"></el-menu-item>
-        <el-menu-item index="1">项目</el-menu-item>
-        <el-menu-item index="2">题目</el-menu-item>
-        <el-menu-item index="3">班级</el-menu-item>
-        <el-menu-item index="4">个人</el-menu-item>
+        <el-menu-item index="1">主页</el-menu-item>
       </el-menu>
       <div id="user">
         <el-avatar icon="el-icon-user-solid" @click="redirect('user_center')"></el-avatar>

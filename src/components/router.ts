@@ -14,8 +14,8 @@ import StudentLesson from './lesson/StudentLesson.vue'
 import LessonDetail from './lesson/LessonDetail.vue'
 import Test from './test.vue'
 import UserCenter from './user/UserCenter.vue'
-import store from "./store";
 import LessonResource from './lesson/LessonResource.vue'
+import StudentEnterLesson from './lesson/StudentEnterLesson.vue'
 
 
 const routerHistory = createWebHistory()
@@ -76,7 +76,7 @@ const router = createRouter({
                     component:StudentLesson,
                 },
                 {
-                    path:'/lesson_detail',
+                    path:'/lesson_detail/:id',
                     component:LessonDetail,
                 },
                 {
@@ -84,12 +84,17 @@ const router = createRouter({
                     component:Test,
                 },
                 {
-                    path:'/user_center/:id',
+                    name:'UserCenter',
+                    path:'/user_center',
                     component:UserCenter,
                 },
                 {
                     path:'/lesson_resource',
                     component:LessonResource,
+                },
+                {
+                    path:'/student_enter_lesson',
+                    component:StudentEnterLesson,
                 }
             ],
         }
@@ -114,7 +119,7 @@ router.beforeEach((to, from, next) => {
         return
     }
     if (to.path === '/login') {
-        next('/')
+        next('/user_center')
         return
     }
 

@@ -15,12 +15,12 @@ app.use(router)
 app.use(store)
 
 
-axios.defaults.baseURL = 'http://118.178.253.239:3000/mock/22';//后端开发环境地址
+axios.defaults.baseURL = 'http://118.178.253.239:8080';//后端开发环境地址
 //添加请求拦截器
 axios.interceptors.request.use(
     config =>{
         if(store.state.token){
-            config.headers.common['token'] =store.state.token
+            config.headers.common['Authorization'] = 'Bearer '+ store.state.token
         }
         return config;
     },

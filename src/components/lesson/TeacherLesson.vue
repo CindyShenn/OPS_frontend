@@ -6,7 +6,7 @@
           <span style="font-size: 28px;text-align: left;font-weight: 400;width: 100%">我的课程</span>
           <div class="flex justify-between" style="margin-top: 30px;width: 85%">
             <el-button plain icon="el-icon-plus" @click="dialogFormVisible = true">创建课程</el-button>
-            <el-dialog title="创建班级" v-model="dialogFormVisible" append-to-body="true" lock-scroll="true" modal="true">
+            <el-dialog title="创建课程" v-model="dialogFormVisible" append-to-body="true" lock-scroll="true" modal="true">
               <el-form :model="form">
                 <el-form-item label="课程名称" :label-width="formLabelWidth">
                   <el-input v-model="form.name" autocomplete="off" placeholder="请输入班级名称"></el-input>

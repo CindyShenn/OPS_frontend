@@ -48,6 +48,26 @@
             </div>
           <span class="my-title" style="margin-top: 30px">课程评论&nbsp;（{{total}}&nbsp;条）</span>
           <div id="comment">
+            <div id="add-comment">
+              <div style="padding: 20px">
+                <div style="text-align: left">我也评论一下</div>
+                <el-input
+                    type="textarea"
+                    placeholder="请输入内容"
+                    v-model="commentText"
+                    maxlength="150"
+                    show-word-limit
+                    autosize
+                    rows="10"
+                    style="margin-top: 10px"
+                >
+                </el-input>
+                <div class="flex justify-flex-end">
+                  <el-button type="primary" style="margin-top: 10px" @click="makeComment">提交</el-button>
+                </div>
+
+              </div>
+            </div>
             <div v-for="(item, index) in comments" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 10px">
               <div class="each-lesson ">
                 <div class="flex flex-row line">
@@ -113,6 +133,8 @@
 </template>
 
 <script>
+import {ElMessage} from "element-plus";
+
 export default {
 name: "LessonDetail",
   data(){
@@ -124,6 +146,7 @@ name: "LessonDetail",
     description:'c++是一门基础的编程语言，从这门课程里，你将学习到c++的基础知识，并通过实践巩固理论。',
     src:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
     total:3,
+    records:[],
     comments:[
       {
         nick_name:'cindy',
@@ -147,6 +170,7 @@ name: "LessonDetail",
         updated_at:'2020.9.1',
       },
     ],
+    commentText:'',
     resources:[
       {
         content:"这是一个课程公告这是一个课程公告这是一个课程公告这是一个课程公告这是一个课程公告这是一个课程公告"
@@ -161,6 +185,81 @@ name: "LessonDetail",
         content:"这是一个课程公告这是一个课程公告这是一个课程公告"
       },
     ],
+  }
+  },
+  mounted() {
+    this.axios({
+      method: "get",
+      url: "/web/course/"+this.$route.params.id,
+      data: {},
+    }).then((res) => {
+      console.log(res)
+      this.title = res.data.data.course_name;
+      this.teacher_name = res.data.data.teacher_name;
+      this.created_at = res.data.data.created_at;
+      this.is_closed = res.data.data.is_closed == '2' ? '是' : '否';
+      this.description = res.data.data.course_des;
+      if(res.data.data.pic_url != null){
+        this.src = res.data.data.pic_url
+      }
+    });
+    this.axios({
+      method: "get",
+      url: "/web/comment/course",
+      data: {
+        pageCurrent:1,
+        pageSize:20,
+        courseId:this.$route.params.id
+      },
+    }).then((res) => {
+      console.log(res)
+      this.records = res.data.data.records
+      console.log(this.records)
+    });
+    this.axios({
+      method: "get",
+      url: "/web/course/recourse",
+      data: {
+        pageCurrent:1,
+        pageSize:20,
+        courseId:this.$route.params.id
+      },
+    }).then((res) => {
+      console.log(res)
+      this.records = res.data.data.records
+      console.log(this.records)
+    });
+  },
+  methods:{
+  makeComment(){
+    let that = this
+    this.axios({
+      method: "post",
+      url: "/web/comment/course",
+      data: {
+        courseId: that.$route.params.id,
+        commentText: that.commentText,
+        replyId:0,
+      },
+    }).then((res) => {
+      console.log(res);
+      if (res.status == 200) {
+        if (res.data.code == 0) {
+          ElMessage.success({
+            message: '评论成功！',
+            type: 'success'
+          });
+          this.redirect('user_center')
+        } else {
+          let message = res.data.message;
+          console.log(message)
+          ElMessage.error(message);
+        }
+      } else {
+        ElMessage.error('服务器错误');
+      }
+      that.commentText = ''
+    });
   }
   }
 }
@@ -184,6 +283,10 @@ name: "LessonDetail",
   height: auto;
   background-color: #FFFFFF;
   margin-top: 20px;
+}
+#add-comment{
+  width: 100%;
+  height: auto;
 }
 .lesson-img {
   height: 200px;
