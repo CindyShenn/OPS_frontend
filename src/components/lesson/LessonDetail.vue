@@ -68,11 +68,11 @@
 
               </div>
             </div>
-            <div v-for="(item, index) in comments" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 10px">
+            <div v-for="(item, index) in records" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 10px">
               <div class="each-lesson ">
                 <div class="flex flex-row line">
                   <div class="each-lesson-img">
-                    <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
+                    <el-image :src="item.comment.user_avatar_url" style="width: 100%; height: 100%" fit="cover">
                       <template #placeholder>
                         <div class="image-slot">
                           加载中<span class="dot">...</span>
@@ -82,24 +82,45 @@
                   </div>
                   <div class="each-lesson-info flex flex-column">
                     <div class="user-info flex flex-row align-center" style="height: 20%">
-                      <div style="text-align: left;font-size: 20px;font-weight: 600;">{{item.nick_name}}</div>
-                      <div style="text-align: left;font-size: 15px;margin-left: 15px">(用户id:{{item.user_id}})</div>
+                      <div style="text-align: left;font-size: 20px;font-weight: 600;">{{item.comment.username}}</div>
+                      <div style="text-align: left;font-size: 15px;margin-left: 15px">(用户id:{{item.comment.user_id}})</div>
                     </div>
                     <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%">
-                      {{ item.comment }}
+                      {{ item.comment.comment_text }}
                     </div>
                     <div class="lesson-detail flex flex-row align-end justify-between" style="height: 20%;font-size: 8px">
-                      <div class="lesson-detail-content">评论时间：{{item.created_at}}</div>
-                      <div class="lesson-detail-content">更新时间：{{item.updated_at}}</div>
+                      <div class="lesson-detail-content">评论时间：{{item.comment.created_at}}</div>
+                      <div class="lesson-detail-content">更新时间：{{item.comment.updated_at}}</div>
+                      <div><el-button type="text" style="padding: 0px;min-height:0px" @click="dialogFormVisible = true">回复</el-button>
+                        <el-dialog title="回复此评论" v-model="dialogFormVisible">
+                          <el-input
+                              type="textarea"
+                              placeholder="请输入内容"
+                              v-model="commentTextTemp"
+                              maxlength="150"
+                              show-word-limit
+                              autosize
+                              rows="10"
+                              style="margin-top: 10px"
+                          >
+                          </el-input>
+                          <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+    </span>
+                          </template>
+                        </el-dialog>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div id="reply" class="flex flex-column">
-                  <div v-for="(item, index) in comments" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 10px">
+                  <div v-for="(item1, index) in item.reply_comments" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 10px">
                     <div class="line each-reply">
                       <div class="flex flex-row">
                         <div class="each-reply-img">
-                          <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
+                          <el-image :src="item1.user_avatar_url" style="width: 100%; height: 100%" fit="cover">
                             <template #placeholder>
                               <div class="image-slot">
                                 加载中<span class="dot">...</span>
@@ -109,14 +130,14 @@
                         </div>
                         <div class="each-reply-item flex flex-column">
                           <div class="user-info flex flex-row align-center" style="height: 30%">
-                            <div style="text-align: left;font-size: 15px;font-weight: 600;">{{item.nick_name}}</div>
-                            <div style="text-align: left;font-size: 12px;margin-left: 15px">(用户id:{{item.user_id}})</div>
+                            <div style="text-align: left;font-size: 15px;font-weight: 600;">{{item1.username}}</div>
+                            <div style="text-align: left;font-size: 12px;margin-left: 15px">(用户id:{{item1.user_id}})</div>
                           </div>
                           <div class="reply-comment" style="text-align: left;color: #504d5f;font-size: 8px;height: 40%;width: auto;word-wrap:break-word">
-                            {{reply-comment}}
+                            {{item1.comment_text}}
                           </div>
                           <div class="reply-time" style="height: 30%;font-size: 6px;width: auto;text-align: left">
-                            {{reply-time}}
+                            {{item1.created_at}}
                           </div>
                         </div>
                       </div>
@@ -147,6 +168,8 @@ name: "LessonDetail",
     src:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
     total:3,
     records:[],
+    dialogFormVisible: false,
+    commentTextTemp:'',
     comments:[
       {
         nick_name:'cindy',
@@ -191,7 +214,7 @@ name: "LessonDetail",
     this.axios({
       method: "get",
       url: "/web/course/"+this.$route.params.id,
-      data: {},
+      params: {},
     }).then((res) => {
       console.log(res)
       this.title = res.data.data.course_name;
@@ -206,20 +229,22 @@ name: "LessonDetail",
     this.axios({
       method: "get",
       url: "/web/comment/course",
-      data: {
+      params: {
         pageCurrent:1,
         pageSize:20,
         courseId:this.$route.params.id
       },
     }).then((res) => {
       console.log(res)
-      this.records = res.data.data.records
+      this.records = res.data.data.records;
+      this.total = res.data.data.page_info.total;
+      console.log(this.total)
       console.log(this.records)
     });
     this.axios({
       method: "get",
-      url: "/web/course/recourse",
-      data: {
+      url: "/web/course/resource",
+      params: {
         pageCurrent:1,
         pageSize:20,
         courseId:this.$route.params.id
@@ -231,6 +256,9 @@ name: "LessonDetail",
     });
   },
   methods:{
+    redirectEnterLesson(id){
+      this.$router.push({ path:`/student_enter_lesson/${id}`})
+    },
   makeComment(){
     let that = this
     this.axios({
@@ -249,7 +277,6 @@ name: "LessonDetail",
             message: '评论成功！',
             type: 'success'
           });
-          this.redirect('user_center')
         } else {
           let message = res.data.message;
           console.log(message)
@@ -333,7 +360,7 @@ name: "LessonDetail",
 }
 
 .lesson-detail-content{
-  width: 50%;
+  width: 40%;
   text-align: left;
 }
 

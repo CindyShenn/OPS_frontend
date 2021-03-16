@@ -16,6 +16,7 @@ import Test from './test.vue'
 import UserCenter from './user/UserCenter.vue'
 import LessonResource from './lesson/LessonResource.vue'
 import StudentEnterLesson from './lesson/StudentEnterLesson.vue'
+import ProjectDetail from './project/ProjectDetail.vue'
 
 
 const routerHistory = createWebHistory()
@@ -95,6 +96,10 @@ const router = createRouter({
                 {
                     path:'/student_enter_lesson',
                     component:StudentEnterLesson,
+                },
+                {
+                    path:'/project_detail/:id',
+                    component:ProjectDetail,
                 }
             ],
         }

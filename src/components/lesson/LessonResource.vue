@@ -110,4 +110,5 @@ name: "LessonResource",
 #single-resource{
   padding: 25px;
 }
+
 </style>

@@ -40,7 +40,7 @@
                           <div class="resource-content" style="text-align: left;margin-top: 20px">
                             {{item.content}}
                           </div>
-                          <div v-if="item.attachmentUrl" style="text-align: left;margin-top: 20px">资源链接：{{item.attachmentUrl}}</div>
+                          <div v-if="item.attachmentUrl" style="text-align: left;margin-top: 20px">资源链接：<el-link href="https://element.eleme.io" target="_blank">{{item.attachmentUrl}}</el-link></div>
                           <div class="resource-date info" style="margin-top: 20px">
                             公告时间： {{item.date}}
                           </div>
@@ -49,7 +49,25 @@
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="课程实验" name="second">
-
+                  <div id="lesson-projects">
+                    <div v-for="(item, index) in projects" style="width: 100%;" class="line">
+                      <div id="single-project" class="flex flex-column align-start">
+                        <div class="flex flex-column align-start justify-between"
+                             style="margin-top: 15px;margin-left: 15px;height: 100%;width: 90%">
+                          <span style="font-size: 25px;font-weight:600">{{ item.project_name }}</span>
+                          <span style="font-size: 15px;text-align: left">{{ item.project_description }}</span>
+                          <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
+                            <div class="project-detail flex align-center justify-center ">
+                              <div>
+                                创建时间：{{item.created_at}} &emsp;截止日期：{{item.dead_line}}
+                              </div>
+                            </div>
+                            <el-button type="primary" style="margin-bottom: 10px" @click="redirectProject(item.lab_id)">进入实验</el-button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </el-tab-pane>
               </el-tabs>
             </div>
@@ -78,8 +96,56 @@ name: "StudentEnterLesson",
         date:'2021.3.20',
         attachmentUrl:'123'
       }
-    ]
+    ],
+    projects: [
+      {
+        project_name: "demo project 1",
+        project_env: "Debian GNU/Linux 10 (buster) \n gcc(8.3.0),openjdk(1.8.0_252)",
+        project_link: "10.232.123.2:8001",
+        project_pwd: "rjo234fsOli90j",
+        created_at: "2021-8-8 11:08:32",
+        dead_line:"2021-8-8 11:08:32",
+        project_description: "description for project 1",
+      },
+      {
+        project_name: "demo project 2",
+        project_env: "Debian GNU/Linux 10 (buster) \n gcc(8.3.0),openjdk(1.8.0_252)",
+        project_link: "10.232.123.2:8001",
+        project_pwd: "rjo234fsOli90j",
+        close_time: "2021-8-8 11:08:32",
+        project_description: "description for project 2",
+      },
+      {
+        project_name: "demo project 3",
+        project_env: "Debian GNU/Linux 10 (buster) \n gcc(8.3.0),openjdk(1.8.0_252)",
+        project_link: "10.232.123.2:8001",
+        project_pwd: "rjo234fsOli90j",
+        close_time: "2021-8-8 11:08:32",
+        project_description: "description for project 3",
+      },
+      {
+        project_name: "demo project 3",
+        project_env: "Debian GNU/Linux 10 (buster) \n gcc(8.3.0),openjdk(1.8.0_252)",
+        project_link: "10.232.123.2:8001",
+        project_pwd: "rjo234fsOli90j",
+        close_time: "2021-8-8 11:08:32",
+        project_description: "description for project 3",
+      },
+      {
+        project_name: "demo project 3",
+        project_env: "Debian GNU/Linux 10 (buster) \n gcc(8.3.0),openjdk(1.8.0_252)",
+        project_link: "10.232.123.2:8001",
+        project_pwd: "rjo234fsOli90j",
+        close_time: "2021-8-8 11:08:32",
+        project_description: "description for project 3",
+      },
+    ],
   }
+  },
+  methods:{
+    redirectProject(id){
+      this.$router.push({ path:`/project_detail/${id}`})
+    },
   }
 }
 </script>
@@ -139,5 +205,17 @@ name: "StudentEnterLesson",
 }
 .single-resource{
   padding: 20px;
+}
+
+#single-project {
+  height: 150px;
+  background: #FFFFFF;
+}
+#lesson-projects{
+  padding: 0px 20px 20px 20px;
+}
+.project-detail{
+  color: #606266;
+  font-size: 15px;
 }
 </style>
