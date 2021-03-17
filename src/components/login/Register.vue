@@ -222,7 +222,7 @@ export default {
 
 #body {
   width: 100%;
-  background: #f9f9f9;
+  background: #002d54;
 }
 
 #register-card {

@@ -15,10 +15,26 @@
           text-color="#fff"
           style="height: 60px">
         <el-menu-item v-show="0" index="0"></el-menu-item>
-        <el-menu-item index="1">主页</el-menu-item>
+
       </el-menu>
       <div id="user">
-        <el-avatar icon="el-icon-user-solid" @click="redirect('user_center')"></el-avatar>
+
+
+        <el-dropdown @command="userHandler">
+  <span class="el-dropdown-link flex align-center">
+                        <el-avatar src="../../assets/my.png"></el-avatar>
+                        <i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item icon="el-icon-user-solid" command="userManage">我的主页</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-plus" command="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+
+
+
       </div>
     </div>
   </div>
@@ -39,7 +55,17 @@ name: "Header.vue",
   methods:{
     redirect(url){
       this.$router.push({ path:url})
-    }
+    },
+    userHandler: function(arg) {
+      switch(arg) {
+        case "logout" :
+          userUtils.logout(this)
+          break;
+        case "userManage":
+          this.$router.push('/')
+          break
+      }
+    },
   },
 }
 </script>

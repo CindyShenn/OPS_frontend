@@ -71,8 +71,24 @@
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="我的实验" name="second">
-                  <div style="margin-bottom: 20px">
-                    <el-button type="primary" @click="redirect('project')">查看我的实验</el-button>
+                  <div id="lesson-projects">
+                    <div v-for="(item, index) in project_records" style="width: 100%;" class="line">
+                      <div id="single-project" class="flex flex-column align-start">
+                        <div class="flex flex-column align-start justify-between"
+                             style="margin-top: 15px;margin-left: 15px;height: 100%;width: 90%">
+                          <span style="font-size: 25px;font-weight:600">{{ item.title }}</span>
+                          <span style="font-size: 15px;text-align: left">{{ item.content }}</span>
+                          <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
+                            <div class="project-detail flex align-center justify-center ">
+                              <div>
+                                创建时间：{{item.created_at}} &emsp;截止日期：{{item.updated_at}} &emsp;是否完成：{{item.is_finished}}
+                              </div>
+                            </div>
+                            <el-button type="primary" style="margin-bottom: 10px" @click="redirectProject(item.lab_id)">进入实验</el-button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </el-tab-pane>
               </el-tabs>
@@ -94,23 +110,15 @@ export default {
       id: '00123',
       create_time: '2020.9.2',
       activeName: 'first',
-      lessons:[
-        {
-          title: "Title",
-          id:"123456",
-          created_at:"2020.9.1",
-          updated_at:"2020.9.1",
-          pic_url:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-          is_close:"否"
-        },
-      ],
+      lessons:[],
+      project_records:[],
     }
   },
   mounted() {
     this.axios({
       method: "get",
       url: "/web/user",
-      data: {},
+      params: {},
     }).then((res) => {
       let data = res.data.data;
       this.nick_name = data.nick_name;
@@ -131,8 +139,24 @@ export default {
       this.lessons=res.data.data.records
       console.log(res.data.data.records)
     });
+    this.axios({
+      method: "get",
+      url: "/web/lab/student",
+      params: {
+        pageCurrent:1,
+        pageSize:20,
+      },
+    }).then((res) => {
+      console.log(res)
+      this.project_records = res.data.data.records;
+      console.log(this.total)
+      console.log(this.records)
+    });
   },
   methods:{
+    redirectProject(id){
+      this.$router.push({ path:`/project_detail/${id}`})
+    },
     redirect(url){
       this.$router.push({ path:url})
     },
@@ -144,6 +168,9 @@ export default {
       this.$router.push({ path:'login'})
     },
     isClosed(value){
+      return value=='2' ? '是' : '否'
+    },
+    isFinished(value){
       return value=='2' ? '是' : '否'
     }
   },
@@ -217,5 +244,18 @@ export default {
 #single-project {
   height: 150px;
   background: #FFFFFF;
+}
+
+
+#single-project {
+  height: 150px;
+  background: #FFFFFF;
+}
+#lesson-projects{
+  padding: 0px 20px 20px 20px;
+}
+.project-detail{
+  color: #606266;
+  font-size: 15px;
 }
 </style>

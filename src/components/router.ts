@@ -17,6 +17,7 @@ import UserCenter from './user/UserCenter.vue'
 import LessonResource from './lesson/LessonResource.vue'
 import StudentEnterLesson from './lesson/StudentEnterLesson.vue'
 import ProjectDetail from './project/ProjectDetail.vue'
+import CurrentIDE from './project/CurrentIDE.vue'
 
 
 const routerHistory = createWebHistory()
@@ -69,7 +70,7 @@ const router = createRouter({
                     component: TeacherLesson,
                 },
                 {
-                    path:'/teacher_lesson_detail',
+                    path:'/teacher_lesson_detail/:id',
                     component: TeacherLessonDetail,
                 },
                 {
@@ -100,6 +101,11 @@ const router = createRouter({
                 {
                     path:'/project_detail/:id',
                     component:ProjectDetail,
+                },
+                {
+                    path:'/current_ide',
+                    name:'CurrentIDE',
+                    component:CurrentIDE,
                 }
             ],
         }
@@ -116,14 +122,14 @@ router.beforeEach((to, from, next) => {
     // 未登录
     if (token === "" || token === undefined || token === null) {
         // 路由不是去 /login 则强制路由到登陆界面
-        if (to.path !== '/login') {
+        if ((to.path !== '/login')&& (to.path !== '/change_pwd') && (to.path !== '/register')) {
             next('/login')
             return
         }
         next()
         return
     }
-    if (to.path === '/login') {
+    if (to.path === '/') {
         next('/user_center')
         return
     }

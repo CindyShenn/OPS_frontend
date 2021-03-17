@@ -48,9 +48,6 @@
             <el-button type="primary" style="width: 100%;margin-top: 30px;height: 50px"
                        @click="modify()">确认修改
             </el-button>
-            <el-button type="danger" style="width: 100%;margin-bottom: 30px;height: 50px"
-                       @click="modify()">确认修改
-            </el-button>
           </div>
         </div>
       </div>

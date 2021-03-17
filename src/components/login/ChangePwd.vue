@@ -116,7 +116,7 @@ export default {
 #body {
   height: 100%;
   width: 100%;
-  background: #f9f9f9;
+  background: #002d54
 }
 
 #ch-pwd-card {

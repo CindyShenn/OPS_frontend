@@ -2,10 +2,7 @@
   <div id="login">
     <div id="body" class="flex align-center justify-center">
       <div id="login-card" class="flex flex-column">
-        <el-button type="text" style="font-size: 20px;margin-left: 20px" icon="el-icon-d-arrow-left"
-                   class="flex justify-start" @click="redirect('home')">返回首页
-        </el-button>
-        <span style="margin-top: 10px;font-size: 32px;text-align: center">请登录您的账号</span>
+        <span style="margin-top: 25px;font-size: 32px;text-align: center">请登录您的账号</span>
         <div style="margin:40px 46px 0px 46px">
           <span style="font-size: 14px;margin-bottom: 7px" class="flex">用户名</span>
           <el-input placeholder="请输入用户名" v-model="user" clearable/>
@@ -97,12 +94,12 @@ export default {
 #body {
   height: 100%;
   width: 100%;
-  background: #f9f9f9;
+  background: #002d54;
 }
 
 #login-card {
   width: 480px;
-  height: 480px;
+  height: 450px;
   padding: 20px;
   background: #FFFFFF;
   box-shadow: 0px 0px 15px 0px #504d5f;

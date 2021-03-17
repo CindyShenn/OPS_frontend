@@ -32,9 +32,9 @@
               <div id="lesson-resource">
                 <div class="my-title" style="cursor:pointer" onclick="location.href='/project'">课程公告</div>
                 <div id="resource-contents">
-                  <div v-for="(item,index) in resources" class="flex flex-column align-center justify-start" style="width: 100%;margin-top: 5px;">
+                  <div v-for="(item,index) in resource_records" class="flex flex-column align-center justify-start" style="width: 100%;margin-top: 5px;">
                     <div class="each-resource limit-length" style="text-align: left;width: 100%;cursor:pointer" onclick="location.href='/project'">
-                      {{item.content}}
+                      {{item.title}}
                     </div>
                   </div>
                 </div>
@@ -91,7 +91,7 @@
                     <div class="lesson-detail flex flex-row align-end justify-between" style="height: 20%;font-size: 8px">
                       <div class="lesson-detail-content">评论时间：{{item.comment.created_at}}</div>
                       <div class="lesson-detail-content">更新时间：{{item.comment.updated_at}}</div>
-                      <div><el-button type="text" style="padding: 0px;min-height:0px" @click="dialogFormVisible = true">回复</el-button>
+                      <div><el-button type="text" style="padding: 0px;min-height:0px" @click="replyDialog(item.comment.course_comment_id)">回复</el-button>
                         <el-dialog title="回复此评论" v-model="dialogFormVisible">
                           <el-input
                               type="textarea"
@@ -107,7 +107,7 @@
                           <template #footer>
     <span class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      <el-button type="primary" @click="makeReply()">确 定</el-button>
     </span>
                           </template>
                         </el-dialog>
@@ -166,49 +166,14 @@ name: "LessonDetail",
     is_closed:'是',
     description:'c++是一门基础的编程语言，从这门课程里，你将学习到c++的基础知识，并通过实践巩固理论。',
     src:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-    total:3,
+    total:0,
     records:[],
+    resource_records:[],
     dialogFormVisible: false,
     commentTextTemp:'',
-    course_id,
-    comments:[
-      {
-        nick_name:'cindy',
-        user_id:'00002',
-        comment:'这个课非常好，老师讲得很棒',
-        created_at:'2020.9.1',
-        updated_at:'2020.9.1',
-      },
-      {
-        nick_name:'cindy',
-        user_id:'00002',
-        comment:'这个课非常好，老师讲得很棒',
-        created_at:'2020.9.1',
-        updated_at:'2020.9.1',
-      },
-      {
-        nick_name:'cindy',
-        user_id:'00002',
-        comment:'这个课非常好，老师讲得很棒',
-        created_at:'2020.9.1',
-        updated_at:'2020.9.1',
-      },
-    ],
+    course_id:'',
     commentText:'',
-    resources:[
-      {
-        content:"这是一个课程公告这是一个课程公告这是一个课程公告这是一个课程公告这是一个课程公告这是一个课程公告"
-      },
-      {
-        content:"这是一个课程公告这是一个课程公告这是一个课程公告"
-      },
-      {
-        content:"这是一个课程公告这是一个课程公告这是一个课程公告"
-      },
-      {
-        content:"这是一个课程公告这是一个课程公告这是一个课程公告"
-      },
-    ],
+    currentReply:'',
   }
   },
   mounted() {
@@ -253,13 +218,17 @@ name: "LessonDetail",
       },
     }).then((res) => {
       console.log(res)
-      this.records = res.data.data.records
+      this.resource_records = res.data.data.records
       console.log(this.records)
     });
   },
   methods:{
     redirectEnterLesson(id){
       this.$router.push({ path:`/student_enter_lesson/${id}`})
+    },
+    replyDialog(id){
+      this.dialogFormVisible = true;
+      this.currentReply = id;
     },
   makeComment(){
     let that = this
@@ -289,7 +258,37 @@ name: "LessonDetail",
       }
       that.commentText = ''
     });
-  }
+  },
+    makeReply(){
+      let that = this
+      that.dialogFormVisible = false;
+      this.axios({
+        method: "post",
+        url: "/web/comment/course",
+        data: {
+          courseId: that.$route.params.id,
+          commentText: that.commentTextTemp,
+          replyId:that.currentReply,
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '回复成功！',
+              type: 'success'
+            });
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+        that.commentText = ''
+      });
+    }
   }
 }
 </script>

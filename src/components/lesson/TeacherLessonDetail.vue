@@ -13,7 +13,7 @@
                 <div class="each-item-content" style="margin-left: 50px;cursor:pointer" onclick="location.href='/project'">
                   <el-image
                       style="width: 200px; height: 200px;margin-left: 110px"
-                      :src="url"
+                      :src="src"
                       :fit="cover"></el-image>
                 </div>
               </div>
@@ -84,7 +84,7 @@
           </div>
           <div style="margin-top: 30px">
             <el-table
-                :data="tableData"
+                :data="student_record"
                 style="width: 100%">
               <el-table-column
                   prop="user_id"
@@ -101,10 +101,6 @@
               <el-table-column
                   prop="real_name"
                   label="真实姓名">
-              </el-table-column>
-              <el-table-column
-                  prop="gender"
-                  label="性别">
               </el-table-column>
               <el-table-column
                   prop="major"
@@ -206,6 +202,8 @@ export default {
       id: '12344',
       password: 'abser213123sdf',
       is_close: '是',
+      created_at:'',
+      teacher_name:'',
       description: '这是c++的基础课程，在本次课程里我们将学习c++的语法和基本应用',
       tableData: [{
         user_id:'0001',
@@ -216,6 +214,7 @@ export default {
         major:'计算机科学',
         organization:'华南师范大学'
       }, ],
+      student_record:[],
       comments:[
         {
           nick_name:'cindy',
@@ -240,7 +239,52 @@ export default {
         },
       ]
     };
-  }
+  },
+  mounted() {
+    this.course_id = this.$route.params.id
+    this.axios({
+      method: "get",
+      url: "/web/course/"+this.$route.params.id,
+      params: {},
+    }).then((res) => {
+      console.log(res)
+      this.name = res.data.data.course_name;
+      this.teacher_name = res.data.data.teacher_name;
+      this.created_at = res.data.data.created_at;
+      this.is_closed = res.data.data.is_closed == '2' ? '是' : '否';
+      this.description = res.data.data.course_des;
+      if(res.data.data.pic_url != null){
+        this.src = res.data.data.pic_url
+      }
+    });
+    this.axios({
+      method: "get",
+      url: "/web/comment/course",
+      params: {
+        pageCurrent:1,
+        pageSize:20,
+        courseId:this.$route.params.id
+      },
+    }).then((res) => {
+      console.log(res)
+      this.records = res.data.data.records;
+      this.total = res.data.data.page_info.total;
+      console.log(this.total)
+      console.log(this.records)
+    });
+    this.axios({
+      method: "get",
+      url: "web/course/student/"+this.$route.params.id,
+      params: {
+      },
+    }).then((res) => {
+      console.log(res)
+      this.student_record = res.data.data.records;
+      this.total = res.data.data.page_info.total;
+      console.log(this.total)
+      console.log(this.records)
+    });
+  },
 }
 </script>
 

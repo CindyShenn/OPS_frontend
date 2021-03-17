@@ -31,18 +31,36 @@
             <div id="user-operation-content">
               <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
                 <el-tab-pane label="课程签到" name="first">
-
+                  <div id="check-in">
+                    <div id="check-in-button">
+                      <el-button type="primary" @click="dialogFormVisible = true">签到</el-button>
+                      <el-dialog title="请输入签到密码" v-model="dialogFormVisible">
+                          <el-input v-model="pwd" autocomplete="off" placeholder="请输入签到密码"></el-input>
+                        <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="check()">确 定</el-button>
+    </span>
+                        </template>
+                      </el-dialog>
+                    </div>
+                    <div id="check-in-record">
+                    </div>
+                  </div>
                 </el-tab-pane>
                 <el-tab-pane label="课程公告" name="first">
-                  <div v-for="(item, index) in resources" class="flex flex-column align-center justify-center line" style="width: 100%;margin: 0px">
+                  <div v-for="(item, index) in resource_records" class="flex flex-column align-center justify-center line" style="width: 100%;margin: 0px">
                       <div class="resource">
                         <div class="single-resource flex flex-column">
+                          <div class="resource-title" style="text-align: left;margin-top: 20px">
+                            {{item.title}}
+                          </div>
                           <div class="resource-content" style="text-align: left;margin-top: 20px">
                             {{item.content}}
                           </div>
                           <div v-if="item.attachmentUrl" style="text-align: left;margin-top: 20px">资源链接：<el-link href="https://element.eleme.io" target="_blank">{{item.attachmentUrl}}</el-link></div>
                           <div class="resource-date info" style="margin-top: 20px">
-                            公告时间： {{item.date}}
+                            公告时间： {{item.created_at}}
                           </div>
                       </div>
                     </div>
@@ -50,16 +68,16 @@
                 </el-tab-pane>
                 <el-tab-pane label="课程实验" name="second">
                   <div id="lesson-projects">
-                    <div v-for="(item, index) in projects" style="width: 100%;" class="line">
+                    <div v-for="(item, index) in project_records" style="width: 100%;" class="line">
                       <div id="single-project" class="flex flex-column align-start">
                         <div class="flex flex-column align-start justify-between"
                              style="margin-top: 15px;margin-left: 15px;height: 100%;width: 90%">
-                          <span style="font-size: 25px;font-weight:600">{{ item.project_name }}</span>
-                          <span style="font-size: 15px;text-align: left">{{ item.project_description }}</span>
+                          <span style="font-size: 25px;font-weight:600">{{ item.title }}</span>
+                          <span style="font-size: 15px;text-align: left">{{ item.content }}</span>
                           <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
                             <div class="project-detail flex align-center justify-center ">
                               <div>
-                                创建时间：{{item.created_at}} &emsp;截止日期：{{item.dead_line}}
+                                创建时间：{{item.created_at}} &emsp;截止日期：{{item.updated_at}}
                               </div>
                             </div>
                             <el-button type="primary" style="margin-bottom: 10px" @click="redirectProject(item.lab_id)">进入实验</el-button>
@@ -79,6 +97,8 @@
 </template>
 
 <script>
+import {ElMessage} from "element-plus";
+
 export default {
 name: "StudentEnterLesson",
   data(){
@@ -90,6 +110,7 @@ name: "StudentEnterLesson",
     description:'c++是一门基础的编程语言，从这门课程里，你将学习到c++的基础知识，并通过实践巩固理论。',
     src:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
     activeName: 'first',
+    formLabelWidth: '80px',
     resources:[
       {
         content:'这是一个公告',
@@ -97,55 +118,91 @@ name: "StudentEnterLesson",
         attachmentUrl:'123'
       }
     ],
-    projects: [
-      {
-        project_name: "demo project 1",
-        project_env: "Debian GNU/Linux 10 (buster) \n gcc(8.3.0),openjdk(1.8.0_252)",
-        project_link: "10.232.123.2:8001",
-        project_pwd: "rjo234fsOli90j",
-        created_at: "2021-8-8 11:08:32",
-        dead_line:"2021-8-8 11:08:32",
-        project_description: "description for project 1",
-      },
-      {
-        project_name: "demo project 2",
-        project_env: "Debian GNU/Linux 10 (buster) \n gcc(8.3.0),openjdk(1.8.0_252)",
-        project_link: "10.232.123.2:8001",
-        project_pwd: "rjo234fsOli90j",
-        close_time: "2021-8-8 11:08:32",
-        project_description: "description for project 2",
-      },
-      {
-        project_name: "demo project 3",
-        project_env: "Debian GNU/Linux 10 (buster) \n gcc(8.3.0),openjdk(1.8.0_252)",
-        project_link: "10.232.123.2:8001",
-        project_pwd: "rjo234fsOli90j",
-        close_time: "2021-8-8 11:08:32",
-        project_description: "description for project 3",
-      },
-      {
-        project_name: "demo project 3",
-        project_env: "Debian GNU/Linux 10 (buster) \n gcc(8.3.0),openjdk(1.8.0_252)",
-        project_link: "10.232.123.2:8001",
-        project_pwd: "rjo234fsOli90j",
-        close_time: "2021-8-8 11:08:32",
-        project_description: "description for project 3",
-      },
-      {
-        project_name: "demo project 3",
-        project_env: "Debian GNU/Linux 10 (buster) \n gcc(8.3.0),openjdk(1.8.0_252)",
-        project_link: "10.232.123.2:8001",
-        project_pwd: "rjo234fsOli90j",
-        close_time: "2021-8-8 11:08:32",
-        project_description: "description for project 3",
-      },
-    ],
+    records:[],
+    resource_records:[],
+    project_records:[],
+    dialogFormVisible: false,
+    pwd:'',
   }
   },
   methods:{
     redirectProject(id){
       this.$router.push({ path:`/project_detail/${id}`})
     },
+    check(){
+      let that = this
+      that.dialogFormVisible = false;
+      this.axios({
+        method: "post",
+        url: "web/checkin/check",
+        data: {
+          secretKey: that.pwd,
+          courseId: that.$route.params.id,
+        },
+      }).then((res) => {
+        this.info = res;
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+                message: '签到成功！',
+              type: 'success'
+            });
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
+    }
+  },
+  mounted() {
+    this.course_id = this.$route.params.id
+    this.axios({
+      method: "get",
+      url: "/web/course/"+this.$route.params.id,
+      params: {},
+    }).then((res) => {
+      console.log(res)
+      this.title = res.data.data.course_name;
+      this.teacher_name = res.data.data.teacher_name;
+      this.created_at = res.data.data.created_at;
+      this.is_closed = res.data.data.is_closed == '2' ? '是' : '否';
+      this.description = res.data.data.course_des;
+      if(res.data.data.pic_url != null){
+        this.src = res.data.data.pic_url
+      }
+    });
+
+    this.axios({
+      method: "get",
+      url: "/web/course/resource",
+      params: {
+        pageCurrent:1,
+        pageSize:20,
+        courseId:this.course_id
+      },
+    }).then((res) => {
+      console.log(res)
+      this.resource_records = res.data.data.records
+      console.log(this.records)
+    });
+    this.axios({
+      method: "get",
+      url: "/web/lab",
+      params: {
+        pageCurrent:1,
+        pageSize:20,
+        courseId:this.course_id
+      },
+    }).then((res) => {
+      console.log(res)
+      this.project_records = res.data.data.records
+      console.log(this.records)
+    });
   }
 }
 </script>
@@ -179,6 +236,13 @@ name: "StudentEnterLesson",
   font-size: 30px;
   font-weight: 600;
 }
+
+.resource-title{
+  text-align: left;
+  font-size: 20px;
+  font-weight: 600;
+}
+
 .info{
   height: 20%;
   text-align: left;
@@ -217,5 +281,9 @@ name: "StudentEnterLesson",
 .project-detail{
   color: #606266;
   font-size: 15px;
+}
+#check-in{
+  width: 100%;
+  padding: 25px;
 }
 </style>
