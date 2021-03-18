@@ -13,4 +13,9 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.ts', '.vue', '.json']
     },
+    devServer: {
+        host: '0.0.0.0',
+        port: 8085,
     }
+
+}
