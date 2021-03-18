@@ -72,7 +72,7 @@
               <div class="each-lesson ">
                 <div class="flex flex-row line">
                   <div class="each-lesson-img">
-                    <el-image :src="item.comment.user_avatar_url" style="width: 100%; height: 100%" fit="cover">
+                    <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
                       <template #placeholder>
                         <div class="image-slot">
                           加载中<span class="dot">...</span>
@@ -82,13 +82,12 @@
                   </div>
                   <div class="each-lesson-info flex flex-column">
                     <div class="user-info flex flex-row align-center" style="height: 20%">
-                      <div style="text-align: left;font-size: 20px;font-weight: 600;">{{item.comment.username}}</div>
-                      <div style="text-align: left;font-size: 15px;margin-left: 15px">(用户id:{{item.comment.user_id}})</div>
+                      <div style="text-align: left;font-size: 20px;font-weight: 600;color: #606266;">{{item.comment.username}}</div>
                     </div>
-                    <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%">
+                    <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%;margin-top: 10px">
                       {{ item.comment.comment_text }}
                     </div>
-                    <div class="lesson-detail flex flex-row align-end justify-between" style="height: 20%;font-size: 8px">
+                    <div class="lesson-detail flex flex-row align-end justify-between" style="height: 20%;font-size: 8px;color: #606266;">
                       <div class="lesson-detail-content">评论时间：{{item.comment.created_at}}</div>
                       <div class="lesson-detail-content">更新时间：{{item.comment.updated_at}}</div>
                       <div><el-button type="text" style="padding: 0px;min-height:0px" @click="replyDialog(item.comment.course_comment_id)">回复</el-button>
@@ -120,7 +119,7 @@
                     <div class="line each-reply">
                       <div class="flex flex-row">
                         <div class="each-reply-img">
-                          <el-image :src="item1.user_avatar_url" style="width: 100%; height: 100%" fit="cover">
+                          <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
                             <template #placeholder>
                               <div class="image-slot">
                                 加载中<span class="dot">...</span>
@@ -130,13 +129,13 @@
                         </div>
                         <div class="each-reply-item flex flex-column">
                           <div class="user-info flex flex-row align-center" style="height: 30%">
-                            <div style="text-align: left;font-size: 15px;font-weight: 600;">{{item1.username}}</div>
-                            <div style="text-align: left;font-size: 12px;margin-left: 15px">(用户id:{{item1.user_id}})</div>
+                            <div style="text-align: left;font-size: 15px;font-weight: 600;color: #606266;">{{item1.username}}</div>
+                            <div style="text-align: left;font-size: 12px;margin-left: 15px;color: #606266;">(用户id:{{item1.user_id}})</div>
                           </div>
-                          <div class="reply-comment" style="text-align: left;color: #504d5f;font-size: 8px;height: 40%;width: auto;word-wrap:break-word">
+                          <div class="reply-comment" style="text-align: left;color: #504d5f;font-size: 8px;height: 40%;width: auto;margin-top:5px;color: #606266;word-wrap:break-word">
                             {{item1.comment_text}}
                           </div>
-                          <div class="reply-time" style="height: 30%;font-size: 6px;width: auto;text-align: left">
+                          <div class="reply-time" style="height: 30%;font-size: 6px;width: auto;text-align: left;color: #606266;">
                             {{item1.created_at}}
                           </div>
                         </div>
@@ -168,7 +167,9 @@ name: "LessonDetail",
     src:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
     total:0,
     records:[],
-    resource_records:[],
+    resource_records:[
+        {title:'欢迎加入本课程！'}
+    ],
     dialogFormVisible: false,
     commentTextTemp:'',
     course_id:'',

@@ -91,7 +91,7 @@ const router = createRouter({
                     component:UserCenter,
                 },
                 {
-                    path:'/lesson_resource/:id',
+                    path:'/lesson_resource',
                     component:LessonResource,
                 },
                 {

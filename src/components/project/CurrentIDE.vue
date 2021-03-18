@@ -1,52 +1,89 @@
 <template>
   <div id="current-ide">
-    <div id="body" class="flex justify-center align-center">
-      <div class="container-ide">
-        <div id="section-ide" class="flex flex-column align-center justify-center" style="width: 100%">
-          <div style="width: 100%;height: 95%">
-            <iframe id="ide"
-                    title="IDE"
-                    style="width: 95%;height: 100%"
-                    v-bind:src="url">
-            </iframe>
-          </div>
-        </div>
-      </div>
-    </div>
+    <iframe id="ide"
+             title="IDE"
+             style="width: 100%;height: 100%"
+             v-bind:src="url">
+  </iframe>
   </div>
 </template>
 
 <script>
+import {ElMessage} from "element-plus";
+
 export default {
 name: "CurrentIDE",
-  mounted() {
-    window.onbeforeunload = function (e) {
-      return ''
-    }
-  },
-
-  beforeRouteLeave (to, from, next) {
-    if (this.progressVisible) {
-      this.$confirm('系统可能不会保存您所做的更改。', '离开此页面？', {
-        confirmButtonText: '离开',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        next()
-      })
-    } else {
-      next()
-    }
-  },
-
-  beforeDestory () {
-    window.onbeforeunload = null
-  },
   data(){
   return{
     url:'',
+    startTime:'',
+    endTime:'',
   }
+  },
+  mounted() {
+  this.url = this.$route.query.url;
+    this.startTime = new Date().getTime();
+    console.log(this.startTime)
+  console.log(this.url)
+    let that = this
+    window.onbeforeunload = function (e) {
+      e = e || window.event;
+      // 兼容IE8和Firefox 4之前的版本
+      if (e) {
+        this.endTime = new Date().getTime();
+        console.log(this.startTime)
+        console.log(this.endTime)
+        let timeD = (this.endTime - this.startTime)/1000
+        console.log(timeD)
+        console.log('close1')
+        e.returnValue = '关闭提示';
+        let that = this
+        this.axios({
+          method: "delete",
+          url: "/web/ide",
+          data: {
+            labId: that.lab_id,
+            duration: timeD,
+          },
+        }).then((res) => {
+          console.log(res);
+          if (res.status == 200) {
+            if (res.data.code == 0) {
+              console.log(res)
+            } else {
+              let message = res.data.message;
+              console.log(message)
+              ElMessage.error(message);
+            }
+          } else {
+            ElMessage.error('服务器错误');
+          }
+        });
+      }
+      console.log('close')
+      // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+      e.returnValue = '关闭提示';
+
+      return '关闭提示';
+    };
+
+    var oFrm = document.getElementById('ide');
+    oFrm.onload = oFrm.onreadystatechange = function() {
+      if (this.readyState && this.readyState != 'complete') return;
+      else {
+        this.startTime = new Date().getTime();
+        console.log(this.startTime)
+        console.log('IDE加载完成')
+      }
+    }
+  },
+
+  methods:{
+  closeWin(){
+
+    }
   }
+
 }
 </script>
 

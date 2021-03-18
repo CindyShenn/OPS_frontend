@@ -51,7 +51,7 @@
               </div>
             </div>
           </div>
-          <span class="my-title" style="margin-top: 30px">课程评论&nbsp;（{{total}}&nbsp;条）</span>
+          <span class="my-title" style="margin-top: 30px">实验评论&nbsp;（{{total}}&nbsp;条）</span>
           <div id="comment">
             <div id="add-comment">
               <div style="padding: 20px">
@@ -87,13 +87,12 @@
                   </div>
                   <div class="each-lesson-info flex flex-column">
                     <div class="user-info flex flex-row align-center" style="height: 20%">
-                      <div style="text-align: left;font-size: 20px;font-weight: 600;">{{item.comment.username}}</div>
-                      <div style="text-align: left;font-size: 15px;margin-left: 15px">(用户id:{{item.comment.user_id}})</div>
+                      <div style="text-align: left;font-size: 20px;font-weight: 600;;color: #606266;">{{item.comment.username}}</div>
                     </div>
-                    <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%">
+                    <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%;margin-top: 10px">
                       {{ item.comment.comment_text }}
                     </div>
-                    <div class="lesson-detail flex flex-row align-end justify-between" style="height: 20%;font-size: 8px">
+                    <div class="lesson-detail flex flex-row align-end justify-between" style="height: 20%;font-size: 8px;color: #606266;">
                       <div class="lesson-detail-content">评论时间：{{item.comment.created_at}}</div>
                       <div class="lesson-detail-content">更新时间：{{item.comment.updated_at}}</div>
                       <div><el-button type="text" style="padding: 0px;min-height:0px" @click="dialogFormVisible = true">回复</el-button>
@@ -226,11 +225,19 @@ name: "ProjectDetail",
         if (res.data.code == 0) {
           let url = "http://"+res.data.data.url
           console.log(url)
-          this.$router.push({
-            name:"CurrentIDE",
-            //这里的params是一个对象，id是属性名，item.id是值(可以从当前组件或者Vue实例上直接取)
-            params:{url:url}
-          })
+          // this.$router.push({
+          //   name:"CurrentIDE",
+          //   //这里的params是一个对象，id是属性名，item.id是值(可以从当前组件或者Vue实例上直接取)
+          //   params:{url:url}
+          // })
+          let { href } = this.$router.resolve({
+            path: '/current_ide',
+            query: {
+              url:url,
+              labId: that.lab_id,
+            }
+          });
+          window.open(href);
         } else {
           let message = res.data.message;
           console.log(message)

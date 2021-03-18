@@ -64,6 +64,16 @@
         </el-tab-pane>
         <el-tab-pane>
           <template #label>
+            <span style="font-size: 15px">课程签到</span>
+          </template>
+        </el-tab-pane>
+        <el-tab-pane>
+          <template #label>
+            <span style="font-size: 15px">课程实验</span>
+          </template>
+        </el-tab-pane>
+        <el-tab-pane>
+          <template #label>
             <span style="font-size: 15px">学生管理</span>
           </template>
           <div>

@@ -33,6 +33,7 @@
             <div id="resource-content" style="text-align: left;margin-top: 20px">
               {{content}}
             </div>
+            <div v-if="url" style="text-align: left;margin-top: 20px">资源链接：<el-link href="https://element.eleme.io" target="_blank">{{url}}</el-link></div>
             <div id="resource-date" class="info" style="margin-top: 20px">
               公告时间： {{date}}
             </div>
@@ -57,7 +58,8 @@ name: "LessonResource",
       src:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       total:3,
       content: '欢迎大家加入本次课程',
-      date:2020.1
+      date:2020.1,
+      url:'www.baidu.com'
     }
   }
 }

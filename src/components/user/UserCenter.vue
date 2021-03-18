@@ -55,7 +55,6 @@
                         <div class="each-lesson-info flex flex-column">
                           <div class="lesson-title flex flex-row align-center" style="height: 30%">
                             <div style="text-align: left;font-size: 30px;font-weight: 600;">{{item.course_name}}</div>
-                            <div style="text-align: left;font-size: 20px;margin-left: 15px">(&nbsp;课程id:{{item.course_id}}&nbsp;)</div>
                           </div>
                           <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%">
                             {{ course_des }}
@@ -63,7 +62,6 @@
                           <div class="lesson-detail flex flex-row align-end justify-between" style="height: 30%">
                             <div class="lesson-detail-content">开课时间：{{item.created_at}}</div>
                             <div class="lesson-detail-content">是否结课：{{isClosed(item.is_close)}}</div>
-                            <div class="lesson-detail-content">更新时间：{{item.updated_at}}</div>
                           </div>
                         </div>
                       </div>
