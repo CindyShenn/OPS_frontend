@@ -124,6 +124,7 @@ export default {
       if(data.avatar_url != ''){
         this.src = data.avatar_url;
       }
+      this.$store.commit('$_setStorageHead', this.src);
       this.create_time = data.created_at;
       console.log(res);
       console.log(data.gender)

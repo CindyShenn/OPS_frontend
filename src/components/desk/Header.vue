@@ -56,10 +56,14 @@ name: "Header.vue",
     redirect(url){
       this.$router.push({ path:url})
     },
+    logout(){
+      this.$store.commit('$_removeStorage');
+      this.$router.push({ path:'login'})
+    },
     userHandler: function(arg) {
       switch(arg) {
         case "logout" :
-          userUtils.logout(this)
+          this.logout()
           break;
         case "userManage":
           this.$router.push('/')

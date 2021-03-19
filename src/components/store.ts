@@ -3,10 +3,12 @@ import {createStore} from 'vuex'
 
 const key = 'token'
 const role = 'role'
+const head = 'head'
 const store = createStore({
     state: {
         token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
-        role: localStorage.getItem('role') ? localStorage.getItem('role') : ''
+        role: localStorage.getItem('role') ? localStorage.getItem('role') : '',
+        head: localStorage.getItem('head') ? localStorage.getItem('head') : ''
     },
     getters: {
         getStorage: function (state) {
@@ -28,6 +30,10 @@ const store = createStore({
             state.role = value;
             localStorage.setItem(role, value)
         },
+        $_setStorageHead(state, value) {
+            state.head = value;
+            localStorage.setItem(head, value)
+        },
         $_removeStorage(state) {
             state.token = null;
             localStorage.removeItem(key)
@@ -35,6 +41,10 @@ const store = createStore({
         $_removeStorageRole(state) {
             state.token = null;
             localStorage.removeItem(role)
+        },
+        $_removeStorageHead(state) {
+            state.head = null;
+            localStorage.removeItem(head)
         }
     },
 })

@@ -237,7 +237,7 @@ name: "ProjectDetail",
               labId: that.lab_id,
             }
           });
-          window.open(href);
+          window.open(href,'_blank');
         } else {
           let message = res.data.message;
           console.log(message)
