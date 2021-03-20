@@ -110,7 +110,7 @@ export default {
         url: "/web/user",
         data: {
           userid:that.user_id,
-          avatar:that.avatar_url,
+          avatar_url:that.avatar_url,
         },
       }).then((res) => {
         console.log(res)
@@ -120,6 +120,7 @@ export default {
               message: '头像修改成功！',
               type: 'success'
             });
+            this.$store.commit('$_setStorageHead', this.avatar_url);
           } else {
             let message = res.data.message;
             console.log(message)

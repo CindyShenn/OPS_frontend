@@ -22,7 +22,7 @@
 
         <el-dropdown @command="userHandler">
   <span class="el-dropdown-link flex align-center">
-                        <el-avatar src="../../assets/my.png"></el-avatar>
+                        <el-avatar :src="$store.state.head"></el-avatar>
                         <i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
           <template #dropdown>
