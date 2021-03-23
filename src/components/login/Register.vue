@@ -15,9 +15,6 @@
                 <el-button style="margin-left: 30px" type="primary" @click="code">获取验证码</el-button>
               </div>
             </el-form-item>
-            <el-form-item label="昵称" prop="nickName">
-              <el-input v-model="registerForm.nickName" clearable></el-input>
-            </el-form-item>
             <el-form-item label="真实姓名" prop="realName">
               <el-input v-model="registerForm.realName" clearable></el-input>
             </el-form-item>
@@ -178,7 +175,6 @@ export default {
         url: "/web/user/signup/stu",
         data: {
           email:self.registerForm.email,
-          nickName: self.registerForm.nickName,
           realName: self.registerForm.realName,
           major: self.registerForm.major,
           num:self.registerForm.num,

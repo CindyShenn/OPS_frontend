@@ -28,8 +28,8 @@
             </div>
           </div>
           <div id="user-operation">
-            <div id="user-operation-content">
-              <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+            <div id="user-operation-content" style="padding: 10px 20px">
+              <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="课程签到" name="first">
                   <div id="check-in">
                     <div id="check-in-button">
@@ -125,6 +125,7 @@ name: "StudentEnterLesson",
     pwd:'',
   }
   },
+
   methods:{
     redirectProject(id){
       this.$router.push({ path:`/project_detail/${id}`})

@@ -30,8 +30,6 @@
                 v-model="email"
                 :disabled="true">
             </el-input>
-            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">昵称*</span>
-            <el-input placeholder="请输入昵称" v-model="nickName"/>
             <span style="font-size: 14px;margin-bottom: 15px" class="flex user-input">单位</span>
             <el-input placeholder="请输入单位" v-model="organization"/>
             <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">真实姓名</span>
@@ -45,7 +43,7 @@
               <el-radio :label=0>男</el-radio>
               <el-radio :label=1>女</el-radio>
             </el-radio-group>
-            <el-button type="primary" style="width: 100%;margin-top: 30px;height: 50px"
+            <el-button type="primary" style="width: 100%;margin-top: 30px;height: 50px;margin-bottom: 30px"
                        @click="modify()">确认修改
             </el-button>
           </div>
@@ -84,7 +82,6 @@ export default {
     }).then((res) => {
       //this.info=res;
       let data = res.data.data;
-      this.nickName = data.nick_name;
       this.organization = data.organization;
       this.realName = data.real_name;
       this.major = data.major;
@@ -110,7 +107,7 @@ export default {
         url: "/web/user",
         data: {
           userid:that.user_id,
-          avatar_url:that.avatar_url,
+          avatarUrl:that.avatar_url,
         },
       }).then((res) => {
         console.log(res)
@@ -150,13 +147,12 @@ export default {
         url: "/web/user",
         data: {
           userid:that.user_id,
-          nickName:that.nickName,
           organization:that.organization,
           realName:that.realName,
           major:that.major,
           num:that.num,
           gender:that.radio_sex,
-          avatar:that.avatar_url,
+          avatarUrl:that.avatar_url,
         },
       }).then((res) => {
         console.log(res)

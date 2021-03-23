@@ -18,6 +18,7 @@ import LessonResource from './lesson/LessonResource.vue'
 import StudentEnterLesson from './lesson/StudentEnterLesson.vue'
 import ProjectDetail from './project/ProjectDetail.vue'
 import CurrentIDE from './project/CurrentIDE.vue'
+import TeacherUserCenter from './user/TeacherUserCenter.vue'
 
 
 const routerHistory = createWebHistory()
@@ -106,6 +107,10 @@ const router = createRouter({
                     path:'/current_ide',
                     name:'CurrentIDE',
                     component:CurrentIDE,
+                },
+                {
+                    path:'/teacher_user_center',
+                    component:TeacherUserCenter,
                 }
             ],
         }

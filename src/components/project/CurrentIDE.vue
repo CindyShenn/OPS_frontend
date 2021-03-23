@@ -23,7 +23,6 @@ export default {
   },
   mounted() {
     this.url = this.$route.query.url;
-    let that = this
     window.addEventListener('beforeunload', (e) => {
       e = e || window.event;
       // 兼容IE8和Firefox 4之前的版本
@@ -63,7 +62,7 @@ export default {
   },
 
   destroyed() {
-    window.addEventListener('beforeunload', (e) => {
+    window.removeEventListener('beforeunload', (e) => {
       e = e || window.event;
       // 兼容IE8和Firefox 4之前的版本
       if (e) {
@@ -75,7 +74,7 @@ export default {
 
       return '关闭提示';
     })
-    window.addEventListener( 'unload', e => this.closeWin() );
+    window.removeEventListener( 'unload', e => this.closeWin() );
   },
 
   methods: {

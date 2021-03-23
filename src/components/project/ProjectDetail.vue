@@ -31,19 +31,24 @@
               <div class="flex justify-center align-center" style="height: 100%;width: 100%">
                 <el-upload
                     class="upload-demo"
+                    ref="upload"
                     :action="uploadUrl"
+                    :headers="headers"
                     :on-preview="handlePreview"
                     :on-remove="handleRemove"
-                    :before-remove="beforeRemove"
-                    :on-success="handleSuccess"
-                    :headers="headers"
-                    multiple
                     :limit="1"
                     :on-exceed="handleExceed"
                     :file-list="fileList"
                     :before-upload="beforeUpload"
+                    :on-success="handleSuccess"
+                    :auto-upload="false"
+                    name="pdf"
+                    multiple
                 >
-                  <el-button type="primary">提交报告</el-button>
+                  <template #trigger>
+                    <el-button type="primary">提交报告</el-button>
+                  </template>
+                  <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
                   <template #tip>
                     <div class="el-upload__tip">只能上传 pdf 文件，且不超过 2M</div>
                   </template>
@@ -258,27 +263,32 @@ name: "ProjectDetail",
     handleExceed(files, fileList) {
       this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${ file.name }？`);
+
+    submitUpload() {
+      this.$refs.upload.submit();
     },
     handleSuccess(res) {
       console.log(res)
+      ElMessage.success({
+        message: '实验报告上传成功！',
+        type: 'success'
+      });
       this.fileUrl = 'http://'+res.data.url;
       console.log(this.fileUrl)
       let that = this
       this.axios({
-        method: "put",
-        url: "/web/user",
+        method: "post",
+        url: "/web/summit/report",
         data: {
-          userid:that.user_id,
-          avatar:that.avatar_url,
+          reportUrl: this.fileUrl,
+          labId:this.lab_id,
         },
       }).then((res) => {
         console.log(res)
         if (res.status == 200) {
           if (res.data.code == 0) {
             ElMessage.success({
-              message: '头像修改成功！',
+              message: '实验报告上传成功！',
               type: 'success'
             });
           } else {
@@ -292,9 +302,9 @@ name: "ProjectDetail",
       });
     },
     beforeUpload(file) {
-      const isPDF = file.type === 'pdf';
+      console.log('beforeupload')
+      const isPDF = file.type === 'application/pdf';
       const isLt2M = file.size / 1024 / 1024 < 2;
-
       if (!isPDF) {
         this.$message.error('只能上传PDF格式!');
       }
@@ -303,6 +313,7 @@ name: "ProjectDetail",
       }
       return isPDF && isLt2M;
     },
+
     makeComment(){
       let that = this
       this.axios({

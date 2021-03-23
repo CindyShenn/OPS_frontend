@@ -61,14 +61,19 @@ export default {
         if (res.status == 200) {
           if (res.data.code == 0) {
             let token = res.data.data.token
-            //let role = res.data.data.role
+            let role = res.data.data.role
             console.log(token);
+            console.log(role);
             this.$store.commit('$_setStorage', token);
+            this.$store.commit('$_setStorageRole',role);
             ElMessage.success({
               message: '登录成功！',
               type: 'success'
             });
-            this.redirect('user_center')
+            if (role ==1){
+              this.redirect('teacher_user_center')
+            }
+            else this.redirect('user_center')
           } else {
             let message = res.data.message;
             console.log(message)

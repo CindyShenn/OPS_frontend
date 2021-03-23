@@ -1,5 +1,5 @@
 <template>
-  <div id="user-center">
+  <div id="teacher-user-center">
     <div id="body" class="flex align-center justify-center">
       <div class="container">
         <div id="section" class="flex flex-column align-center justify-center">
@@ -18,7 +18,7 @@
                 </div>
                 <div class="user-info-content flex flex-column" style="text-align: left">
                   <div class="flex flex-row">
-                    <div class="real_name flex align-end">
+                    <div class="real_name flex align-end" >
                       {{ real_name }}
                     </div>
                     <div style="margin-left: 20px;" class="flex align-center">
@@ -44,7 +44,7 @@
                     <div v-for="(item, index) in lessons" class="flex flex-column align-center justify-center line" style="width: 100%;margin: 0px">
                       <div class="each-lesson flex flex-row" v-on:click="redirectLesson(item.course_id)" style="cursor:pointer">
                         <div class="each-lesson-img">
-                          <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
+                          <el-image :src="item.pic_url == null ? src: item.pic_url" style="width: 100%; height: 100%" fit="cover">
                             <template #placeholder>
                               <div class="image-slot">
                                 加载中<span class="dot">...</span>
@@ -99,9 +99,10 @@
 </template>
 
 <script>
-import {getDay} from "../utils/utils.ts"
+import {getDay} from "../utils/utils";
+
 export default {
-  name: "UserCenter",
+name: "TeacherUserCenter",
   data() {
     return {
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
@@ -132,7 +133,7 @@ export default {
     });
     this.axios({
       method: "get",
-      url: "/web/course/study",
+      url: "/web/course/setup",
       data: {
         pageCurrent:1,
         pageSize:20,
@@ -185,7 +186,7 @@ export default {
 </script>
 
 <style scoped>
-#user-center {
+#teacher-user-center {
   height: 100%;
 }
 

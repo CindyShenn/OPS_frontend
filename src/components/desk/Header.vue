@@ -58,6 +58,7 @@ name: "Header.vue",
     },
     logout(){
       this.$store.commit('$_removeStorage');
+      this.$store.commit('$_removeStorageRole');
       this.$router.push({ path:'login'})
     },
     userHandler: function(arg) {
