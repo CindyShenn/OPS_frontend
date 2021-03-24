@@ -15,7 +15,7 @@
           {{title}}
         </div>
         <div class="info flex align-center">
-          任课教师:{{teacher_name}}&emsp;开课时间: {{getDay}}&emsp;是否结课：{{is_closed}}
+          开课时间: {{getDay}}&emsp;是否结课：<el-tag>{{is_closed}}</el-tag>
         </div>
         <div class="description">
           {{description}}

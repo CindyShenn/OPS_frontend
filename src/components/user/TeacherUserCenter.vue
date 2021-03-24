@@ -168,7 +168,7 @@ name: "TeacherUserCenter",
       this.$router.push({ path:url})
     },
     redirectLesson(id){
-      this.$router.push({ path:`/lesson_detail/${id}`})
+      this.$router.push({ path:`/teacher_lesson_detail/${id}`})
     },
     logout(){
       this.$store.commit('$_removeStorage');

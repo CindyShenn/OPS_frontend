@@ -79,7 +79,7 @@
                           <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
                             <div class="project-detail flex align-center justify-center ">
                               <div>
-                                创建时间：{{item.created_at}} &emsp;截止日期：{{item.updated_at}} &emsp;是否完成：{{item.is_finished}}
+                                创建时间：{{Day(item.created_at)}} &emsp;截止日期：{{item.updated_at}} &emsp;<el-tag type="danger">{{item.is_finishe == true ? '已完成':'未完成'}}</el-tag>
                               </div>
                             </div>
                             <el-button type="primary" style="margin-bottom: 10px" @click="redirectProject(item.lab_id)">进入实验</el-button>

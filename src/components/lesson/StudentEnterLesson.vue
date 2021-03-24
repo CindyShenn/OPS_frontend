@@ -30,6 +30,27 @@
           <div id="user-operation">
             <div id="user-operation-content" style="padding: 10px 20px">
               <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="课程实验" name="second">
+                  <div id="lesson-projects">
+                    <div v-for="(item, index) in project_records" style="width: 100%;" class="line">
+                      <div id="single-project" class="flex flex-column align-start">
+                        <div class="flex flex-column align-start justify-between"
+                             style="margin-top: 15px;margin-left: 15px;height: 100%;width: 90%">
+                          <span style="font-size: 25px;font-weight:600">{{ item.title }}</span>
+                          <span style="font-size: 15px;text-align: left">{{ item.content }}</span>
+                          <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
+                            <div class="project-detail flex align-center justify-center ">
+                              <div>
+                                创建时间：{{item.created_at}} &emsp;截止日期：{{item.updated_at}}
+                              </div>
+                            </div>
+                            <el-button type="primary" style="margin-bottom: 10px" @click="redirectProject(item.lab_id)">进入实验</el-button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </el-tab-pane>
                 <el-tab-pane label="课程签到" name="first">
                   <div id="check-in">
                     <div id="check-in-button">
@@ -66,27 +87,6 @@
                     </div>
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="课程实验" name="second">
-                  <div id="lesson-projects">
-                    <div v-for="(item, index) in project_records" style="width: 100%;" class="line">
-                      <div id="single-project" class="flex flex-column align-start">
-                        <div class="flex flex-column align-start justify-between"
-                             style="margin-top: 15px;margin-left: 15px;height: 100%;width: 90%">
-                          <span style="font-size: 25px;font-weight:600">{{ item.title }}</span>
-                          <span style="font-size: 15px;text-align: left">{{ item.content }}</span>
-                          <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
-                            <div class="project-detail flex align-center justify-center ">
-                              <div>
-                                创建时间：{{item.created_at}} &emsp;截止日期：{{item.updated_at}}
-                              </div>
-                            </div>
-                            <el-button type="primary" style="margin-bottom: 10px" @click="redirectProject(item.lab_id)">进入实验</el-button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </el-tab-pane>
               </el-tabs>
             </div>
           </div>
@@ -103,14 +103,14 @@ export default {
 name: "StudentEnterLesson",
   data(){
   return{
-    title:'c++基础课程',
-    teacher_name:'王小明',
-    created_at:'2020.9.2',
-    is_closed:'是',
-    description:'c++是一门基础的编程语言，从这门课程里，你将学习到c++的基础知识，并通过实践巩固理论。',
+    title:'',
+    teacher_name:'',
+    created_at:'',
+    is_closed:'',
+    description:'',
     src:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-    activeName: 'first',
-    formLabelWidth: '80px',
+    activeName: '',
+    formLabelWidth: '',
     resources:[
       {
         content:'这是一个公告',
