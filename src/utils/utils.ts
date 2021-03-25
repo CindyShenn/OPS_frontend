@@ -7,7 +7,3 @@ export function getDay(time:string) {
     let day = time.trim().split(/\s+/)[0]
     return day
 }
-
-export function getLabByCourseId(id:string){
-
-}

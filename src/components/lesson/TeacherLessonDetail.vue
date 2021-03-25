@@ -187,7 +187,7 @@
 </template>
 
 <script>
-import store from "../store";
+import store from "../../store";
 import {ElMessage} from "element-plus";
 
 export default {

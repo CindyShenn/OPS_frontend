@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import {getDay} from "../utils/utils";
+import {getDay} from "../../utils/utils";
 
 export default {
 name: "TeacherUserCenter",

@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import {getDay} from "../utils/utils.ts"
+import {getDay} from "../../utils/utils.ts"
 export default {
 name: "ProjectList",
   props:["project_records",],

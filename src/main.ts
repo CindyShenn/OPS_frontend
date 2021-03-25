@@ -6,7 +6,7 @@ import App from './App.vue'
 import router from  './components/router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import store from "./components/store";
+import store from "./store";
 import ECharts from 'vue-echarts'
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
@@ -14,6 +14,7 @@ import { CalendarComponent,
          VisualMapComponent,
 } from 'echarts/components';
 import { HeatmapChart } from 'echarts/charts';
+import api from "./api/index";
 
 
 use([
@@ -24,13 +25,17 @@ use([
 ]);
 
 
+
 const app = createApp(App)
+
+// 挂载api
+app.config.globalProperties.$api = api;
+
 app.use(VueAxios, axios)
 app.use(ElementPlus)
 app.use(router)
 app.use(store)
 app.component('v-chart', ECharts)
-
 
 axios.defaults.baseURL = 'http://118.178.253.239:8080';//后端开发环境地址
 //添加请求拦截器

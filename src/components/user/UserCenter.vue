@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import {getDay} from "../utils/utils.ts"
+import {getDay} from "../../utils/utils.ts"
 import ProjectList from "../project/ProjectList.vue";
 export default {
   name: "UserCenter",

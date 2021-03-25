@@ -98,7 +98,7 @@
 
 <script>
 import {ElMessage} from "element-plus";
-import {getLabByCourseId} from "../utils/utils"
+//import {getLabByCourseId} from "../utils/utils"
 
 export default {
 name: "StudentEnterLesson",

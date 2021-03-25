@@ -88,7 +88,7 @@
 <script>
 
 import {ElMessage} from "element-plus";
-import store from "../store";
+import store from "../../store";
 
 export default {
   name: "TeacherLesson",
