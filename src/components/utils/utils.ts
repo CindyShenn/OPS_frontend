@@ -1,3 +1,4 @@
+
 //获取除去时分秒的日期
 export function getDay(time:string) {
     if (!time) {
@@ -5,4 +6,8 @@ export function getDay(time:string) {
     }
     let day = time.trim().split(/\s+/)[0]
     return day
+}
+
+export function getLabByCourseId(id:string){
+
 }

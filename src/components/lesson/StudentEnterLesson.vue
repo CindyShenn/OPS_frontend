@@ -98,6 +98,7 @@
 
 <script>
 import {ElMessage} from "element-plus";
+import {getLabByCourseId} from "../utils/utils"
 
 export default {
 name: "StudentEnterLesson",
@@ -191,6 +192,9 @@ name: "StudentEnterLesson",
       this.resource_records = res.data.data.records
       console.log(this.records)
     });
+
+    //this.project_records = getLabByCourseId(this.course_id)
+
     this.axios({
       method: "get",
       url: "/web/lab",

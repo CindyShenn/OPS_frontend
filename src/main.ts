@@ -45,7 +45,7 @@ axios.interceptors.request.use(
         //对请求错误做什么
         //return Promise.reject(error);
     }
-)
+);
 //http response拦截器
 axios.interceptors.response.use(
     response =>{
@@ -61,6 +61,6 @@ axios.interceptors.response.use(
         }
 
     }
-)
+);
 
 app.mount('#app')

@@ -6,60 +6,46 @@
           <template #label>
             <span style="font-size: 15px"> 课程信息</span>
           </template>
-          <div style="padding: 0px 120px;">
-            <div class="flex flex-column justify-start"  style="background-color: #FFFFFF;padding: 30px">
-              <div class="flex flex-row each-item" style="margin-top: 0px">
-                <div class="flex align-center" style="text-align: center;">课程封面:</div>
-                <div class="each-item-content" style="margin-left: 50px;cursor:pointer" onclick="location.href='/project'">
-                  <el-image
-                      style="width: 200px; height: 200px;margin-left: 110px"
-                      :src="src"
-                      :fit="cover"></el-image>
-                </div>
+          <div class="lesson-info">
+            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程封面</span>
+            <el-upload
+                class="avatar-uploader el-upload "
+                :action="uploadUrl"
+                name="pic"
+                :headers="headers"
+                :data="uploadData"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+              <div class="user-img">
+                <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
+                  <template #placeholder>
+                    <div class="image-slot">
+                      加载中<span class="dot">...</span>
+                    </div>
+                  </template>
+                </el-image>
               </div>
-              <div class="flex flex-row each-item">
-                <div class="flex align-center each-item-name">课程ID:</div>
-                <div class="each-item-content">
-                  {{ id }}
-                </div>
-              </div>
-              <div class="flex flex-row each-item">
-                <div class="flex align-center each-item-name">课程名:</div>
-                <div class="each-item-content ">
-                  {{ name }}
-                </div>
-                <div class="button">
-                  <el-button type="primary">修改</el-button>
-                </div>
-              </div>
-              <div class="flex flex-row each-item">
-                <div class="flex align-center each-item-name" style="text-align: center;align-self: flex-end">选课密码:</div>
-                <div class="each-item-content">
-                  {{ password }}
-                </div>
-                <div class="button">
-                  <el-button type="primary">修改</el-button>
-                </div>
-              </div>
-              <div class="flex flex-row each-item">
-                <div class="flex align-center each-item-name" style="text-align: center;align-self: flex-end">是否关闭:</div>
-                <div class="each-item-content">
-                  {{ is_close }}
-                </div>
-                <div class="button">
-                  <el-button type="primary">修改</el-button>
-                </div>
-              </div>
-              <div class="flex flex-row each-item">
-                <div class="flex align-center each-item-name" style="text-align: center;align-self: flex-end">课程描述:</div>
-                <div class="each-item-content align-center" style="font-size: 15px;word-wrap:break-word;height: auto ">
-                  {{ description }}
-                </div>
-                <div class="align-center flex button">
-                  <el-button type="primary" style="align-items: center">修改</el-button>
-                </div>
-              </div>
-            </div>
+            </el-upload>
+            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程ID</span>
+            <el-input
+                v-model="course_id"
+                :disabled="true">
+            </el-input>
+            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程名</span>
+            <el-input placeholder="请输入课程名" v-model="course_name"/>
+            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程描述</span>
+            <el-input placeholder="请输入课程描述" v-model="course_des" autosize/>
+            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">选课密码</span>
+            <el-input placeholder="请输入选课密码" v-model="secret_key"/>
+            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">是否关闭</span>
+            <el-radio-group v-model="is_close" class="flex align-left">
+              <el-radio :label=1>是</el-radio>
+              <el-radio :label=2>否</el-radio>
+            </el-radio-group>
+            <el-button type="primary" style="width: 100%;margin-top: 30px;height: 50px;margin-bottom: 30px"
+                       @click="modify()">确认修改
+            </el-button>
           </div>
         </el-tab-pane>
         <el-tab-pane>
@@ -201,6 +187,9 @@
 </template>
 
 <script>
+import store from "../store";
+import {ElMessage} from "element-plus";
+
 export default {
   name: "TeacherLessonDetail",
   data() {
@@ -208,13 +197,13 @@ export default {
       url: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       tabPosition: 'left',
-      name: 'c++ 基础课程',
-      id: '12344',
-      password: 'abser213123sdf',
-      is_close: '是',
+      course_name: 'c++ 基础课程',
+      course_id: '12344',
+      secret_key: 'abser213123sdf',
+      is_close: 1,
       created_at:'',
       teacher_name:'',
-      description: '这是c++的基础课程，在本次课程里我们将学习c++的语法和基本应用',
+      course_des: '这是c++的基础课程，在本次课程里我们将学习c++的语法和基本应用',
       tableData: [{
         user_id:'0001',
         email:'12345@qq.com',
@@ -247,7 +236,10 @@ export default {
           created_at:'2020.9.1',
           updated_at:'2020.9.1',
         },
-      ]
+      ],
+      uploadData: {
+        width:'256'
+      },
     };
   },
   mounted() {
@@ -258,11 +250,12 @@ export default {
       params: {},
     }).then((res) => {
       console.log(res)
-      this.name = res.data.data.course_name;
+      this.course_name = res.data.data.course_name;
       this.teacher_name = res.data.data.teacher_name;
       this.created_at = res.data.data.created_at;
-      this.is_closed = res.data.data.is_closed == '2' ? '是' : '否';
-      this.description = res.data.data.course_des;
+      this.is_close = Number(res.data.data.is_close);
+      this.course_des = res.data.data.course_des;
+      this.secret_key = res.data.data.secret_key;
       if(res.data.data.pic_url != null){
         this.src = res.data.data.pic_url
       }
@@ -292,8 +285,98 @@ export default {
       this.student_record = res.data.data.records;
       this.total = res.data.data.page_info.total;
       console.log(this.total)
-      console.log(this.records)
+      console.log(this.student_record)
     });
+  },
+  methods:{
+    handleAvatarSuccess(res) {
+      console.log(res)
+      this.src = 'http://'+res.data.url;
+      console.log(this.src)
+      let that = this
+      this.axios({
+        method: "put",
+        url: "/web/course",
+        data: {
+          courseId:that.course_id,
+          picUrl:that.src,
+        },
+      }).then((res) => {
+        console.log(res)
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '课程封面修改成功！',
+              type: 'success'
+            });
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    modify(){
+      let that = this
+      this.axios({
+        method: "put",
+        url: "/web/course",
+        data: {
+          courseId:that.course_id,
+          secretkey:that.secret_key,
+          courseName:that.course_name,
+          courseDes:that.course_des,
+          isClosed:that.is_close,
+        },
+      }).then((res) => {
+        console.log(res)
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '修改成功！',
+              type: 'success'
+            });
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
+    }
+  },
+  computed: {
+    // 设置请求头
+    headers() {
+      return {
+        // 设置Content-Type类型为multipart/form-data
+        'ContentType': 'multipart/form-data',
+        // 设置token
+        'Authorization':'Bearer '+ store.state.token
+      }
+    },
+    // 设置上传地址
+    uploadUrl() {
+      // baseURL是axios的基本路径
+      return this.axios.defaults.baseURL + '/web/upload/pic'
+    }
   },
 }
 </script>
@@ -310,31 +393,19 @@ export default {
   padding: 30px;
 }
 
-.each-item {
-  margin-top: 40px;
-  font-size: 20px;
+.lesson-info{
+  background: #FFFFFF;
+  padding: 30px;
 }
 
-.each-item-name {
-  text-align: center;
-  align-self: flex-end;
-  width: 150px;
+.user-input {
+  margin-top: 20px;
+}
+.user-img {
+  height: 100px;
+  width: 100px;
 }
 
-.each-item-content {
-  margin-left: 60px;
-  align-self: flex-end;
-  color: #606266;
-  width: 250px;
-}
-
-.button{
-  margin-left: 90px
-}
-
-.el-tab-pane{
-  padding:30px
-}
 .line {
   border-bottom: 1px solid #dcdfe6;
 }
