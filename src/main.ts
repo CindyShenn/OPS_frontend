@@ -12,6 +12,7 @@ import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { CalendarComponent,
          VisualMapComponent,
+    TitleComponent,
 } from 'echarts/components';
 import { HeatmapChart } from 'echarts/charts';
 import api from "./api/index";
@@ -22,6 +23,7 @@ use([
     CalendarComponent,
     VisualMapComponent,
     HeatmapChart,
+    TitleComponent,
 ]);
 
 

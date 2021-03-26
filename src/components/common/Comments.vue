@@ -1,5 +1,9 @@
 <template>
   <div id="comment">
+    <div class="flex justify-start" style="width: 100%">
+      <span class="my-title" style="margin-top: 20px;margin-left: 20px">课程评论&nbsp;（{{ total }}&nbsp;条）</span>
+    </div>
+
   <div id="add-comment">
     <div style="padding: 20px">
       <div style="text-align: left">我也评论一下</div>
@@ -134,6 +138,7 @@ props:[
   'records',
   'user_id',
     'courseId',
+    'total',
 
 ],
   data(){

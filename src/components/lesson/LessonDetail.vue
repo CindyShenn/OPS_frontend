@@ -5,7 +5,6 @@
         <div id="section" class="flex flex-column align-center justify-center">
           <div class="flex full-width flex-row right-side">
             <div style="width: 70%" class="flex flex-column">
-              <span class="my-title">课程详情</span>
               <LessonContent
                   :title="title"
                   :description="description"
@@ -14,15 +13,15 @@
                   :src="src"
                   :is_closed="is_closed">
               </LessonContent>
-              <span class="my-title" style="margin-top: 30px">课程评论&nbsp;（{{ total }}&nbsp;条）</span>
               <Comments
                   :records="records"
                   :user_id="user_id"
-                  :courseId="course_id">
+                  :courseId="course_id"
+              :total="total">
               </Comments>
             </div>
             <div id="resource-and-enter" class="flex flex-column justify-between left-side">
-              <el-affix :offset="168" style="width: 100%">
+              <el-affix :offset="130" style="width: 100%">
                 <div id="teacher-detail" class="flex flex-column">
                   <div class="my-title">任课教师</div>
                   <div class="flex justify-center align-center flex-column" style="height: 100%;width: 100%">
@@ -53,7 +52,6 @@
                   </div>
                 </div>
                 <div id="enter-lesson" class="flex flex-column">
-                  <div class="my-title">进入课程</div>
                   <div class="flex justify-center align-center" style="height: 100%;width: 100%">
                     <el-button type="primary" @click="redirectEnterLesson(course_id)">进入课程</el-button>
                   </div>
@@ -218,7 +216,7 @@ export default {
 
 #enter-lesson {
   margin-top: 10px;
-  height: 150px;
+  height: auto;
   background: #FFFFFF;
   padding: 25px;
 }

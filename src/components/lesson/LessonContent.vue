@@ -1,5 +1,8 @@
 <template>
   <div id="content">
+    <div class="flex justify-start" style="width: 100%">
+      <span class="my-title" style="margin-top: 20px;margin-left: 20px">课程详情</span>
+    </div>
     <div class="flex flex-row" style="padding: 20px">
       <div class="lesson-img">
         <el-image :src="src" style="width: 100%; height: 100%" fit="cover">

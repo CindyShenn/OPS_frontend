@@ -13,61 +13,53 @@ export default {
   data() {
     return {
       data: [],
+      option : {
+
+      }
     }
   },
   methods:{
-    getVirtulData(year) {
-      let data = [];
-      return data;
+    getData(dataArray){
+      for (let num in dataArray){
+        let eachData = dataArray[num]
+        let eachDay = [eachData.date,eachData.time]
+        this.data.push(eachDay)
+      }
+      console.log(this.data)
     }
   },
-    // setup: () => {
-    //   const option = ref({
-    //     visualMap: {
-    //       show: false,
-    //       min: 0,
-    //       max: 10000
-    //     },
-    //     calendar: {
-    //       range: '2017'
-    //     },
-    //     series: {
-    //       type: 'heatmap',
-    //       coordinateSystem: 'calendar',
-    //       data: [],
-    //     }
-    //   });
-    //
-    //   return { option };
-    // },
   mounted() {
-    const option = ref({
+    this.axios({
+      method: "get",
+      url: "/web/coding_time",
+      data: {},
+    }).then((res) => {
+      this.getData(res.data.data.coding_time)
+      console.log(res);
+    });
+    const option ={
       visualMap: {
         show: false,
         min: 0,
         max: 10000
       },
       calendar: {
-        range: '2017'
+        range: '2021'
       },
       series: {
         type: 'heatmap',
         coordinateSystem: 'calendar',
         data: this.data,
       }
-    });
-    this.axios({
-      method: "get",
-      url: "/web/coding_time",
-      data: {},
-    }).then((res) => {
-      this.data=res.data.data.coding_time;
-      console.log(res);
-    });
+    };
+    this.option = option;
   }
 }
 </script>
 
 <style scoped>
-
+.chart {
+  height: 400px;
+  width: 100%;
+}
 </style>
