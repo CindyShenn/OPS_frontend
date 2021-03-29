@@ -1,20 +1,19 @@
 <template>
   <div>
-    <v-chart class="chart" :option="option" />
+    <CodingTimeTable :table_data="data"></CodingTimeTable>
   </div>
 </template>
 
 <script>
 
-import {ref} from "@vue/reactivity";
-
+import CodingTimeTable from "./user/CodingTimeTable.vue";
 export default {
   name: "test",
+  components:{CodingTimeTable},
   data() {
     return {
       data: [],
       option : {
-
       }
     }
   },
@@ -26,7 +25,7 @@ export default {
         this.data.push(eachDay)
       }
       console.log(this.data)
-    }
+    },
   },
   mounted() {
     this.axios({
@@ -34,25 +33,10 @@ export default {
       url: "/web/coding_time",
       data: {},
     }).then((res) => {
-      this.getData(res.data.data.coding_time)
+      //this.getData(res.data.data.coding_time)
+      this.data = res.data.data.coding_time
       console.log(res);
     });
-    const option ={
-      visualMap: {
-        show: false,
-        min: 0,
-        max: 10000
-      },
-      calendar: {
-        range: '2021'
-      },
-      series: {
-        type: 'heatmap',
-        coordinateSystem: 'calendar',
-        data: this.data,
-      }
-    };
-    this.option = option;
   }
 }
 </script>

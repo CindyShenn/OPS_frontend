@@ -13,6 +13,7 @@ import { CanvasRenderer } from "echarts/renderers";
 import { CalendarComponent,
          VisualMapComponent,
     TitleComponent,
+    LegendComponent,
 } from 'echarts/components';
 import { HeatmapChart } from 'echarts/charts';
 import api from "./api/index";
@@ -24,6 +25,7 @@ use([
     VisualMapComponent,
     HeatmapChart,
     TitleComponent,
+    LegendComponent,
 ]);
 
 

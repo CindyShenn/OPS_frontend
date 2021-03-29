@@ -36,8 +36,14 @@
               </div>
             </div>
           </div>
+          <div id="user-coding-time">
+            <div style="padding: 20px">
+              <div class="my-title" style="font-size: 20px">我的学习记录</div>
+              <CodingTimeTable :table_data="table_data"></CodingTimeTable>
+            </div>
+          </div>
           <div id="user-operation">
-            <div id="user-operation-content" style="padding: 10px 20px">
+            <div id="user-operation-content" style="padding: 10px 20px 20px">
               <el-tabs v-model="activeName"  @tab-click="handleClick">
                 <el-tab-pane label="我的课程" name="first">
                   <div id="lesson-list"  style="width: 100%">
@@ -85,10 +91,13 @@
 <script>
 import {getDay} from "../../utils/utils.ts"
 import ProjectList from "../project/ProjectList.vue";
+import CodingTimeTable from "./CodingTimeTable.vue";
+
 export default {
   name: "UserCenter",
   components:{
     ProjectList,
+    CodingTimeTable,
   },
   data() {
     return {
@@ -99,6 +108,7 @@ export default {
       activeName: 'first',
       lessons:[],
       project_records:[],
+      table_data:[],
     }
   },
   mounted() {
@@ -142,6 +152,15 @@ export default {
       this.project_records = res.data.data.records;
       console.log(this.total)
       console.log(this.records)
+    });
+    this.axios({
+      method: "get",
+      url: "/web/coding_time",
+      data: {},
+    }).then((res) => {
+      //this.getData(res.data.data.coding_time)
+      this.table_data = res.data.data.coding_time
+      console.log(res);
     });
   },
   methods:{
@@ -187,6 +206,13 @@ export default {
   width: 100%;
   background-color: #FFFFFF;
 
+}
+
+#user-coding-time{
+  margin-top: 20px;
+  height: auto;
+  width: 100%;
+  background-color: #FFFFFF;
 }
 
 #user-operation {

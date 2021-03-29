@@ -179,6 +179,7 @@ export default {
       this.resource_records = res.data.data.records
       console.log(this.records)
     });
+
   },
   methods: {
     redirectEnterLesson(id) {
