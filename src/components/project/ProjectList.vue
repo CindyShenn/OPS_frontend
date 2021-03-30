@@ -37,5 +37,21 @@ name: "ProjectList",
 </script>
 
 <style scoped>
+#single-project {
+  height: 150px;
+  background: #FFFFFF;
+}
 
+
+#single-project {
+  height: 150px;
+  background: #FFFFFF;
+}
+#lesson-projects{
+  padding: 0px 20px 20px 20px;
+}
+.project-detail{
+  color: #606266;
+  font-size: 15px;
+}
 </style>

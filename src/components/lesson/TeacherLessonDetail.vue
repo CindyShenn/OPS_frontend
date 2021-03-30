@@ -1,8 +1,8 @@
 <template>
   <div id="teacher-lesson-detail" class="flex justify-center">
     <div id="body">
-      <el-tabs :tab-position="tabPosition" stretch style="height: auto;font-size: 30px">
-        <el-tab-pane>
+      <el-tabs :tab-position="tabPosition" v-model="activeName" stretch style="height: auto;font-size: 30px">
+        <el-tab-pane name="first">
           <template #label>
             <span style="font-size: 15px"> 课程信息</span>
           </template>
@@ -50,7 +50,7 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane name="second">
           <template #label>
             <span style="font-size: 15px">课程签到</span>
           </template>
@@ -113,12 +113,12 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane name="third">
           <template #label>
             <span style="font-size: 15px">课程实验</span>
           </template>
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane name="fourth">
           <template #label>
             <span style="font-size: 15px">学生管理</span>
           </template>
@@ -177,7 +177,7 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane name="fifth">
           <template #label>
             <span style="font-size: 15px">课程评论</span>
           </template>
@@ -254,11 +254,13 @@ import {ElMessage} from "element-plus";
 
 export default {
   name: "TeacherLessonDetail",
+  inject:['reload'],
   data() {
     return {
       url: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       tabPosition: 'left',
+      activeName: 'first',
       course_name: 'c++ 基础课程',
       course_id: '12344',
       secret_key: 'abser213123sdf',
@@ -286,27 +288,6 @@ export default {
         }
       ],
       comments:[
-        {
-          nick_name:'cindy',
-          user_id:'00002',
-          comment:'这个课非常好，老师讲得很棒',
-          created_at:'2020.9.1',
-          updated_at:'2020.9.1',
-        },
-        {
-          nick_name:'cindy',
-          user_id:'00002',
-          comment:'这个课非常好，老师讲得很棒',
-          created_at:'2020.9.1',
-          updated_at:'2020.9.1',
-        },
-        {
-          nick_name:'cindy',
-          user_id:'00002',
-          comment:'这个课非常好，老师讲得很棒',
-          created_at:'2020.9.1',
-          updated_at:'2020.9.1',
-        },
       ],
       uploadData: {
         width:'256'
@@ -318,6 +299,7 @@ export default {
         secretKey:'',
       },
       formLabelWidth: '80px',
+
     };
   },
   mounted() {
@@ -459,6 +441,7 @@ export default {
               message: '创建成功！',
               type: 'success'
             });
+            this.reload()
           } else {
             let message = res.data.message;
             console.log(message)
@@ -467,6 +450,31 @@ export default {
         } else {
           ElMessage.error('服务器错误');
         }
+      });
+    },
+    deleteCheckIn(id){
+      this.$confirm('此操作将永久删除该签到记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios({
+          method: "delete",
+          url: "/web/checkin/record/"+id,
+          params: {
+          },
+        }).then((res) => {
+          console.log(res)
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
       });
     },
     checkInDetail(id){
@@ -494,7 +502,6 @@ export default {
 
 <style scoped>
 #teacher-lesson-detail {
-  height: 100%;
   width: 100%;
 }
 

@@ -9,11 +9,11 @@
             <el-dialog title="创建课程" v-model="dialogFormVisible" append-to-body="true" lock-scroll="true" modal="true">
               <el-form :model="form">
                 <el-form-item label="课程名称" :label-width="formLabelWidth">
-                  <el-input v-model="form.name" autocomplete="off" placeholder="请输入班级名称"></el-input>
+                  <el-input v-model="form.name" autocomplete="off" placeholder="请输入课程名称"></el-input>
                 </el-form-item>
-                <el-form-item label="班级描述" :label-width="formLabelWidth">
+                <el-form-item label="课程描述" :label-width="formLabelWidth">
                   <el-input v-model="form.description" type="textarea"
-                            placeholder="请输入班级描述" autocomplete="off" maxlength="30"
+                            placeholder="请输入课程描述" autocomplete="off" maxlength="30"
                             show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="加入密码" :label-width="formLabelWidth">
@@ -92,6 +92,7 @@ import store from "../../store";
 
 export default {
   name: "TeacherLesson",
+  inject:['reload'],
   data(){
     return{
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
@@ -139,6 +140,7 @@ export default {
               message: '创建成功！',
               type: 'success'
             });
+            this.reload();
           } else {
             let message = res.data.message;
             console.log(message)

@@ -1,6 +1,9 @@
 <template>
   <div>
     <CodingTimeTable :table_data="data"></CodingTimeTable>
+    <div>
+      {{test_num}}
+    </div>
   </div>
 </template>
 
@@ -14,7 +17,8 @@ export default {
     return {
       data: [],
       option : {
-      }
+      },
+      test_num:1,
     }
   },
   methods:{
