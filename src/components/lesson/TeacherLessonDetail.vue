@@ -6,52 +6,112 @@
           <template #label>
             <span style="font-size: 15px"> 课程信息</span>
           </template>
-          <div class="lesson-info">
-            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程封面</span>
-            <el-upload
-                class="avatar-uploader el-upload "
-                :action="uploadUrl"
-                name="pic"
-                :headers="headers"
-                :data="uploadData"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-              <div class="user-img">
-                <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
-                  <template #placeholder>
-                    <div class="image-slot">
-                      加载中<span class="dot">...</span>
-                    </div>
-                  </template>
-                </el-image>
-              </div>
-            </el-upload>
-            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程ID</span>
-            <el-input
-                v-model="course_id"
-                :disabled="true">
-            </el-input>
-            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程名</span>
-            <el-input placeholder="请输入课程名" v-model="course_name"/>
-            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程描述</span>
-            <el-input placeholder="请输入课程描述" v-model="course_des" autosize/>
-            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">选课密码</span>
-            <el-input placeholder="请输入选课密码" v-model="secret_key"/>
-            <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">是否关闭</span>
-            <el-radio-group v-model="is_close" class="flex align-left">
-              <el-radio :label=1>是</el-radio>
-              <el-radio :label=2>否</el-radio>
-            </el-radio-group>
-            <el-button type="primary" style="width: 100%;margin-top: 30px;height: 50px;margin-bottom: 30px"
-                       @click="modify()">确认修改
-            </el-button>
+          <div style="padding: 20px">
+            <div class="lesson-info">
+              <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程封面</span>
+              <el-upload
+                  class="avatar-uploader el-upload "
+                  :action="uploadUrl"
+                  name="pic"
+                  :headers="headers"
+                  :data="uploadData"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess"
+                  :before-upload="beforeAvatarUpload">
+                <div class="user-img">
+                  <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
+                    <template #placeholder>
+                      <div class="image-slot">
+                        加载中<span class="dot">...</span>
+                      </div>
+                    </template>
+                  </el-image>
+                </div>
+              </el-upload>
+              <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程ID</span>
+              <el-input
+                  v-model="course_id"
+                  :disabled="true">
+              </el-input>
+              <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程名</span>
+              <el-input placeholder="请输入课程名" v-model="course_name"/>
+              <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程描述</span>
+              <el-input placeholder="请输入课程描述" v-model="course_des" autosize/>
+              <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">选课密码</span>
+              <el-input placeholder="请输入选课密码" v-model="secret_key"/>
+              <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">是否关闭</span>
+              <el-radio-group v-model="is_close" class="flex align-left">
+                <el-radio :label=1>是</el-radio>
+                <el-radio :label=2>否</el-radio>
+              </el-radio-group>
+              <el-button type="primary" style="width: 100%;margin-top: 30px;height: 50px;margin-bottom: 30px"
+                         @click="modify()">确认修改
+              </el-button>
+            </div>
           </div>
         </el-tab-pane>
         <el-tab-pane>
           <template #label>
             <span style="font-size: 15px">课程签到</span>
           </template>
+          <div class="check-in">
+            <div id="new-check-in" class="flex">
+              <el-button plain icon="el-icon-plus" @click="newChenckinFormVisible = true">新建签到</el-button>
+              <el-dialog title="新建签到" v-model="newChenckinFormVisible" append-to-body="true" lock-scroll="true" modal="true">
+                <el-form :model="check_in_form">
+                  <el-form-item label="签到名称" :label-width="formLabelWidth">
+                    <el-input v-model="check_in_form.name" autocomplete="off" placeholder="请输入签到名称"></el-input>
+                  </el-form-item>
+                  <el-form-item label="签到时长" :label-width="formLabelWidth">
+                    <el-input v-model="check_in_form.duration" autocomplete="off" placeholder="请输入签到时长"></el-input>
+                  </el-form-item>
+                  <el-form-item label="签到密码" :label-width="formLabelWidth">
+                    <el-input v-model="check_in_form.secretKey" autocomplete="off" placeholder="请输入签到密码"></el-input>
+                  </el-form-item>
+                </el-form>
+                <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="newChenckinFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="newCheckIn">确 定</el-button>
+    </span>
+                </template>
+              </el-dialog>
+            </div>
+            <div class="check-in-record-table" style="margin-top: 30px">
+              <el-table
+                  :data="check_in_records"
+                  style="width: 100%">
+                <el-table-column
+                    prop="name"
+                    label="签到名称">
+                </el-table-column>
+                <el-table-column
+                    prop="total"
+                    label="选课人数">
+                </el-table-column>
+                <el-table-column
+                    label="签到人数"
+                    prop="actual">
+                </el-table-column>
+                <el-table-column
+                    prop="created_at"
+                    label="签到时间">
+                </el-table-column>
+                <el-table-column
+                    label="查看详情">
+                  <template #default="scope">
+                    <el-button @click="checkInDetail(scope.row.checkin_record_id)" type="text">查看</el-button>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                    label="删除签到">
+                  <template #default="scope">
+                    <el-button @click="deleteCheckIn(scope.row.checkin_record_id)" type="text" style="color: #f56c6c">删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
         </el-tab-pane>
         <el-tab-pane>
           <template #label>
@@ -62,57 +122,59 @@
           <template #label>
             <span style="font-size: 15px">学生管理</span>
           </template>
-          <div>
-            <div class="flex justify-between" style="width: 100%">
-              <div>
-                <el-button plain icon="el-icon-plus" @click="dialogFormVisible = true">添加学生</el-button>
-                <el-button plain icon="el-icon-plus" @click="dialogFormVisible = true">导入学生列表</el-button>
-              </div>
-              <div style="width: 200px">
-                <el-input
-                    width="200px"
-                    placeholder="搜索课程"
-                    prefix-icon="el-icon-search"
-                    v-model="search">
-                </el-input>
+          <div class="student-management">
+            <div>
+              <div class="flex justify-between" style="width: 100%">
+                <div>
+                  <el-button plain icon="el-icon-plus" @click="newStudentFormVisible = true">添加学生</el-button>
+                  <el-button plain icon="el-icon-plus" @click="dialogFormVisible = true">导入学生列表</el-button>
+                </div>
+                <div style="width: 200px">
+                  <el-input
+                      width="200px"
+                      placeholder="搜索学生"
+                      prefix-icon="el-icon-search"
+                      v-model="search">
+                  </el-input>
+                </div>
               </div>
             </div>
-          </div>
-          <div style="margin-top: 30px">
-            <el-table
-                :data="student_record"
-                style="width: 100%">
-              <el-table-column
-                  prop="user_id"
-                  label="学生编号">
-              </el-table-column>
-              <el-table-column
-                  prop="email"
-                  label="邮箱地址">
-              </el-table-column>
-              <el-table-column
-                  label="昵称"
-                  prop="nick_name">
-              </el-table-column>
-              <el-table-column
-                  prop="real_name"
-                  label="真实姓名">
-              </el-table-column>
-              <el-table-column
-                  prop="major"
-                  label="专业">
-              </el-table-column>
-              <el-table-column
-                  prop="organization"
-                  label="单位">
-              </el-table-column>
-              <el-table-column
-                  label="操作">
-                <template #default="scope">
-                  <el-button @click="handleClick(scope.row)" type="text">删除</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+            <div style="margin-top: 30px">
+              <el-table
+                  :data="student_record"
+                  style="width: 100%">
+                <el-table-column
+                    prop="user_id"
+                    label="学生编号">
+                </el-table-column>
+                <el-table-column
+                    prop="email"
+                    label="邮箱地址">
+                </el-table-column>
+                <el-table-column
+                    label="昵称"
+                    prop="nick_name">
+                </el-table-column>
+                <el-table-column
+                    prop="real_name"
+                    label="真实姓名">
+                </el-table-column>
+                <el-table-column
+                    prop="major"
+                    label="专业">
+                </el-table-column>
+                <el-table-column
+                    prop="organization"
+                    label="单位">
+                </el-table-column>
+                <el-table-column
+                    label="操作">
+                  <template #default="scope">
+                    <el-button @click="handleClick(scope.row)" type="text">删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
           </div>
         </el-tab-pane>
         <el-tab-pane>
@@ -203,7 +265,7 @@ export default {
       is_close: 1,
       created_at:'',
       teacher_name:'',
-      course_des: '这是c++的基础课程，在本次课程里我们将学习c++的语法和基本应用',
+      course_des: '',
       tableData: [{
         user_id:'0001',
         email:'12345@qq.com',
@@ -214,6 +276,15 @@ export default {
         organization:'华南师范大学'
       }, ],
       student_record:[],
+      check_in_records:[
+        {
+          name:'第一次签到',
+          total:'20',
+          actual:'15',
+          created_at:'2020.9.2',
+          checkin_record_id:'001',
+        }
+      ],
       comments:[
         {
           nick_name:'cindy',
@@ -240,6 +311,13 @@ export default {
       uploadData: {
         width:'256'
       },
+      newChenckinFormVisible:false,
+      check_in_form:{
+        name:'',
+        duration:'',
+        secretKey:'',
+      },
+      formLabelWidth: '80px',
     };
   },
   mounted() {
@@ -360,7 +438,40 @@ export default {
           ElMessage.error('服务器错误');
         }
       });
-    }
+    },
+    newCheckIn(){
+      let that = this
+      that.newChenckinFormVisible = false;
+      this.axios({
+        method: "post",
+        url: "/web/checkin/start",
+        data: {
+          secretKey: that.check_in_form.secretKey,
+          courseId: that.course_id,
+          duration:that.check_in_form.duration,
+          name:that.check_in_form.name,
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '创建成功！',
+              type: 'success'
+            });
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
+    },
+    checkInDetail(id){
+      this.$router.push({path: `/check_in_detail/${id}`})
+    },
   },
   computed: {
     // 设置请求头
@@ -449,5 +560,16 @@ export default {
 .each-reply-item{
   margin-left: 30px;
   width: auto;
+}
+
+.check-in{
+  padding: 20px;
+}
+#new-check-in{
+  width: 100%;
+}
+
+.student-management{
+  padding: 20px;
 }
 </style>

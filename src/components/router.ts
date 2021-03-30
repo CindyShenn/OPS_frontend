@@ -19,6 +19,7 @@ import StudentEnterLesson from './lesson/StudentEnterLesson.vue'
 import ProjectDetail from './project/ProjectDetail.vue'
 import CurrentIDE from './project/CurrentIDE.vue'
 import TeacherUserCenter from './user/TeacherUserCenter.vue'
+import CheckInDetail from './teacher_op/CheckInDetail.vue'
 
 
 const routerHistory = createWebHistory()
@@ -111,6 +112,10 @@ const router = createRouter({
                 {
                     path:'/teacher_user_center',
                     component:TeacherUserCenter,
+                },
+                {
+                    path:'/check_in_detail/:id',
+                    component:CheckInDetail,
                 }
             ],
         }
