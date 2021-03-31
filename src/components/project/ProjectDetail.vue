@@ -3,22 +3,13 @@
     <div id="body" class="flex justify-center align-center">
       <div class="container">
         <div id="section" class="flex flex-column align-center justify-center">
-          <div id="content">
-            <div class="flex flex-column" style="padding: 20px">
-              <div class="title">
-                {{title}}
-              </div>
-              <div class="info flex align-center">
-                创建时间：{{created_at}} &emsp;截止日期：{{dead_line}}
-              </div>
-              <div class="description">
-                {{description}}
-              </div>
-              <div class="url">
-                <div v-if="attachmentUrl" style="text-align: left;margin-top: 20px">资源链接：<el-link href="attachmentUrl" target="_blank">{{attachmentUrl}}</el-link></div>
-              </div>
-            </div>
-          </div>
+          <ProjectContent
+            :title="title"
+            :created_at="created_at"
+            :dead_line="dead_line"
+            :description="description"
+            :attachment-url="attachmentUrl">
+          </ProjectContent>
           <div id="enter-and-upload" class="flex flex-row justify-between">
             <div id="enter-project" class="flex flex-column">
               <div class="my-title">进入实验</div>
@@ -46,9 +37,9 @@
                     multiple
                 >
                   <template #trigger>
-                    <el-button type="primary">提交报告</el-button>
+                    <el-button type="primary">上传</el-button>
                   </template>
-                  <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                  <el-button style="margin-left: 10px;" type="success" @click="submitUpload">提交报告</el-button>
                   <template #tip>
                     <div class="el-upload__tip">只能上传 pdf 文件，且不超过 2M</div>
                   </template>
@@ -165,9 +156,11 @@
 <script>
 import {ElMessage} from "element-plus";
 import store from "../../store";
+import ProjectContent from "./ProjectContent.vue";
 
 export default {
 name: "ProjectDetail",
+  components:{ProjectContent},
   data(){
   return{
     title:'',
@@ -385,22 +378,6 @@ name: "ProjectDetail",
   margin-left: 20px;
 }
 
-.title{
-  height: 20%;
-  text-align: left;
-  font-size: 30px;
-  font-weight: 600;
-}
-.info{
-  height: 20%;
-  text-align: left;
-  color: #606266;
-  font-size: 15px;
-}
-.description{
-  height: 60%;
-  text-align: left;
-}
 
 
 .title{

@@ -8,7 +8,7 @@
               <span style="font-size: 20px">我的班级</span>
             </template>
             <div class="flex justify-between" style="margin-top: 10px;margin-bottom: 15px">
-              <el-button type="success" @click="dialogFormVisible = true">创建班级</el-button>
+              <el-button type="primary" @click="dialogFormVisible = true">创建班级</el-button>
               <el-dialog title="创建班级" v-model="dialogFormVisible">
                 <el-form :model="form">
                   <el-form-item label="班级名称" :label-width="formLabelWidth">
@@ -167,18 +167,6 @@ export default {
         description: '20级5、6班c++实训课程',
         password:'123456',
         createTime:'2020-05-06',
-      }, {
-        number: '0003',
-        class: 'c++ 1班',
-        description: '20级5、6班c++实训课程',
-        password:'123456',
-        createTime:'2020-05-06',
-      }, {
-        number: '0004',
-        class: 'c++ 1班',
-        description: '20级5、6班c++实训课程',
-        password:'123456',
-        createTime:'2020-05-06',
       }],
       form: {
         name: '',
@@ -229,13 +217,10 @@ export default {
 #main {
   height: 100%;
   width: 100%;
-  background: #3589BF;
 }
 #teacher-class-card{
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
   background: #FFFFFF;
-  box-shadow: 0px 0px 15px 0px #504d5f;
-  border-radius: 10px;
 }
 </style>

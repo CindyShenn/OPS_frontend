@@ -4,22 +4,8 @@
       <img src="../../assets/scnulogo.png" height="50">
     </div>
     <div id="navMenu">
-      <el-menu
-          id="menu"
-          ref="menu"
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="handleSelect"
-          :default-active="activeIndex"
-          background-color="#002d54"
-          text-color="#fff"
-          style="height: 60px">
-        <el-menu-item v-show="0" index="0"></el-menu-item>
-
-      </el-menu>
+      <div id="title" class="flex align-center justify-center">在线编程系统</div>
       <div id="user">
-
-
         <el-dropdown @command="userHandler">
   <span class="el-dropdown-link flex align-center">
                         <el-avatar :src="$store.state.head"></el-avatar>
@@ -32,9 +18,6 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-
-
-
       </div>
     </div>
   </div>
@@ -102,10 +85,6 @@ name: "Header.vue",
   box-shadow: 1px 8px 27px 0px rgba(0, 0, 0, 0.29);
 }
 
-#menu{
-  width: 90%;
-  min-width: 600px;
-}
 
 #navMenu .el-menu-item {
   height: 60px !important;
@@ -131,6 +110,13 @@ name: "Header.vue",
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+
+#title {
+  color: white;
+  text-align: center;
+  font-size: 20px;
+  letter-spacing:5px;
 }
 
 </style>

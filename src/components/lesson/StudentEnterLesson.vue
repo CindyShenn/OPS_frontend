@@ -30,7 +30,7 @@
           <div id="user-operation">
             <div id="user-operation-content" style="padding: 10px 20px">
               <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="课程实验" name="second">
+                <el-tab-pane label="课程实验" name="first">
                   <div id="lesson-projects">
                     <div v-for="(item, index) in project_records" style="width: 100%;" class="line">
                       <div id="single-project" class="flex flex-column align-start">
@@ -51,7 +51,7 @@
                     </div>
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="课程签到" name="first">
+                <el-tab-pane label="课程签到" name="second">
                   <div id="check-in">
                     <div id="check-in-button">
                       <el-button type="primary" @click="dialogFormVisible = true">签到</el-button>
@@ -69,7 +69,7 @@
                     </div>
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="课程公告" name="first">
+                <el-tab-pane label="课程公告" name="third">
                   <div v-for="(item, index) in resource_records" class="flex flex-column align-center justify-center line" style="width: 100%;margin: 0px">
                       <div class="resource">
                         <div class="single-resource flex flex-column">
@@ -110,7 +110,7 @@ name: "StudentEnterLesson",
     is_closed:'',
     description:'',
     src:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-    activeName: '',
+    activeName: 'first',
     formLabelWidth: '',
     resources:[
       {

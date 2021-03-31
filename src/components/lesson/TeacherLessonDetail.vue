@@ -56,8 +56,8 @@
           </template>
           <div class="check-in">
             <div id="new-check-in" class="flex">
-              <el-button plain icon="el-icon-plus" @click="newChenckinFormVisible = true">新建签到</el-button>
-              <el-dialog title="新建签到" v-model="newChenckinFormVisible" append-to-body="true" lock-scroll="true" modal="true">
+              <el-button plain icon="el-icon-plus" @click="newCheckInFormVisible = true">新建签到</el-button>
+              <el-dialog title="新建签到" v-model="newCheckInFormVisible" append-to-body="true" lock-scroll="true" modal="true">
                 <el-form :model="check_in_form">
                   <el-form-item label="签到名称" :label-width="formLabelWidth">
                     <el-input v-model="check_in_form.name" autocomplete="off" placeholder="请输入签到名称"></el-input>
@@ -71,7 +71,7 @@
                 </el-form>
                 <template #footer>
     <span class="dialog-footer">
-      <el-button @click="newChenckinFormVisible = false">取 消</el-button>
+      <el-button @click="newCheckInFormVisible = false">取 消</el-button>
       <el-button type="primary" @click="newCheckIn">确 定</el-button>
     </span>
                 </template>
@@ -117,6 +117,38 @@
           <template #label>
             <span style="font-size: 15px">课程实验</span>
           </template>
+          <div id="lesson-project" style="padding: 20px">
+            <div id="new-project" class="flex">
+              <el-button plain icon="el-icon-plus" @click="newProjectFormVisible = true">新建实验</el-button>
+              <el-dialog title="新建实验" v-model="newProjectFormVisible"  append-to-body="true" lock-scroll="true" modal="true">
+                <el-form :model="project_form" :rules="project_rules">
+                  <el-form-item label="实验标题" :label-width="formLabelWidth" prop="title">
+                    <el-input v-model="project_form.title" autocomplete="off" placeholder="请输入实验标题"></el-input>
+                  </el-form-item>
+                  <el-form-item label="实验描述" :label-width="formLabelWidth" prop="content">
+                    <el-input v-model="project_form.content" autocomplete="off" placeholder="请输入实验描述"></el-input>
+                  </el-form-item>
+                  <el-form-item label="截止日期" :label-width="formLabelWidth" prop="deadLine" >
+                    <el-input v-model="project_form.deadLine" autocomplete="off" placeholder="请输入实验截止日期"></el-input>
+                  </el-form-item>
+                  <el-form-item label="上传附件" :label-width="formLabelWidth" prop="attachmentUrl" style="margin-top: 40px">
+                    <UploadRar v-on:getUrl = "getProjectUploadUrl"></UploadRar>
+                  </el-form-item>
+                </el-form>
+                <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="newProjectFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="newProject">确 定</el-button>
+    </span>
+                </template>
+              </el-dialog>
+            </div>
+            <div id="project-list">
+              <teacher-project-list
+                  :project_records="project_records">
+              </teacher-project-list>
+            </div>
+          </div>
         </el-tab-pane>
         <el-tab-pane name="fourth">
           <template #label>
@@ -179,67 +211,49 @@
         </el-tab-pane>
         <el-tab-pane name="fifth">
           <template #label>
+            <span style="font-size: 15px">课程公告</span>
+          </template>
+          <div id="lesson-resource">
+            <div id="new-resource" class="flex">
+              <el-button plain icon="el-icon-plus" @click="newResourceFormVisible = true">新建公告</el-button>
+              <el-dialog title="新建公告" v-model="newResourceFormVisible"  append-to-body="true" lock-scroll="true" modal="true">
+                <el-form :model="resource_form" :rules="project_rules">
+                  <el-form-item label="公告标题" :label-width="formLabelWidth" prop="title">
+                    <el-input v-model="resource_form.title" autocomplete="off" placeholder="请输入公告标题"></el-input>
+                  </el-form-item>
+                  <el-form-item label="公告详情" :label-width="formLabelWidth" prop="content">
+                    <el-input v-model="resource_form.content" autocomplete="off" placeholder="请输入公告详情"></el-input>
+                  </el-form-item>
+                  <el-form-item label="上传附件" :label-width="formLabelWidth" prop="attachmentUrl" style="margin-top: 40px">
+                    <UploadRar v-on:getUrl = "getResourceUploadUrl"></UploadRar>
+                  </el-form-item>
+                </el-form>
+                <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="newResourceFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="newResource">确 定</el-button>
+    </span>
+                </template>
+              </el-dialog>
+            </div>
+            <div id="resource-list">
+              <ResourceList
+                  :resource_records="resource_records">
+              </ResourceList>
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane name="sixth">
+          <template #label>
             <span style="font-size: 15px">课程评论</span>
           </template>
-          <div style="background-color: #FFFFFF;padding: 20px">
-            <div style="font-size: 28px;text-align: left;font-weight: 400;width: 100%">课程评论</div>
-            <div v-for="(item, index) in comments" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 40px">
-              <div class="each-lesson ">
-                <div class="flex flex-row line">
-                  <div class="each-lesson-img">
-                    <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
-                      <template #placeholder>
-                        <div class="image-slot">
-                          加载中<span class="dot">...</span>
-                        </div>
-                      </template>
-                    </el-image>
-                  </div>
-                  <div class="each-lesson-info flex flex-column">
-                    <div class="user-info flex flex-row align-center" style="height: 20%">
-                      <div style="text-align: left;font-size: 20px;font-weight: 600;">{{item.nick_name}}</div>
-                      <div style="text-align: left;font-size: 15px;margin-left: 15px">(用户id:{{item.user_id}})</div>
-                    </div>
-                    <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%">
-                      {{ item.comment }}
-                    </div>
-                    <div class="lesson-detail flex flex-row align-end justify-between" style="height: 20%;font-size: 8px">
-                      <div class="lesson-detail-content">评论时间：{{item.created_at}}</div>
-                      <div class="lesson-detail-content">更新时间：{{item.updated_at}}</div>
-                    </div>
-                  </div>
-                </div>
-                <div id="reply" class="flex flex-column">
-                  <div v-for="(item, index) in comments" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 10px">
-                    <div class="line each-reply">
-                      <div class="flex flex-row">
-                        <div class="each-reply-img">
-                          <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
-                            <template #placeholder>
-                              <div class="image-slot">
-                                加载中<span class="dot">...</span>
-                              </div>
-                            </template>
-                          </el-image>
-                        </div>
-                        <div class="each-reply-item flex flex-column">
-                          <div class="user-info flex flex-row align-center" style="height: 30%">
-                            <div style="text-align: left;font-size: 15px;font-weight: 600;">{{item.nick_name}}</div>
-                            <div style="text-align: left;font-size: 12px;margin-left: 15px">(用户id:{{item.user_id}})</div>
-                          </div>
-                          <div class="reply-comment" style="text-align: left;color: #504d5f;font-size: 8px;height: 40%;width: auto;word-wrap:break-word">
-                            {{reply-comment}}
-                          </div>
-                          <div class="reply-time" style="height: 30%;font-size: 8px;width: auto;text-align: left">
-                            {{reply-time}}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div id="lesson-comment">
+            <Comments
+                :records="comments_records"
+                :user_id="user_id"
+                :courseId="course_id"
+                :total="comments_total">
+            </Comments>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -251,33 +265,50 @@
 <script>
 import store from "../../store";
 import {ElMessage} from "element-plus";
+import TeacherProjectList from "../project/TeacherProjectList.vue";
+import UploadRar from "../common/UploadRar.vue";
+import Comments from "../common/Comments.vue";
+import ResourceList from "../teacher_op/ResourceList.vue";
 
 export default {
   name: "TeacherLessonDetail",
   inject:['reload'],
+  components:{
+    TeacherProjectList,
+    UploadRar,
+    Comments,
+    ResourceList,
+  },
   data() {
     return {
       url: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       tabPosition: 'left',
       activeName: 'first',
-      course_name: 'c++ 基础课程',
-      course_id: '12344',
-      secret_key: 'abser213123sdf',
+      course_name: '',
+
+      course_id: '',
+      user_id:'1',
+      comments_records:[],
+      comments_total:'',
+
+      secret_key: '',
       is_close: 1,
       created_at:'',
       teacher_name:'',
       course_des: '',
       tableData: [{
-        user_id:'0001',
-        email:'12345@qq.com',
-        nick_name:'cindy',
-        real_name:'王小明',
-        gender:'男',
-        major:'计算机科学',
-        organization:'华南师范大学'
+        user_id:'',
+        email:'',
+        nick_name:'',
+        real_name:'',
+        gender:'',
+        major:'',
+        organization:''
       }, ],
       student_record:[],
+      project_records:[],
+      resource_records:[],
       check_in_records:[
         {
           name:'第一次签到',
@@ -292,15 +323,40 @@ export default {
       uploadData: {
         width:'256'
       },
-      newChenckinFormVisible:false,
+      
+      newCheckInFormVisible:false,
+      newProjectFormVisible:false,
+      newResourceFormVisible:false,
+      
       check_in_form:{
         name:'',
         duration:'',
         secretKey:'',
       },
-      formLabelWidth: '80px',
+      project_form:{
+        title:'',
+        content: '',
+        attachmentUrl:'',
+        deadLine:'',
+    },
+      resource_form:{
+        title:'',
+        content: '',
+        attachmentUrl:'',
+      },
 
-    };
+      formLabelWidth: '80px',
+      project_rules: {
+        title:[
+          { required: true, message: '请输入实验标题', trigger: 'blur' },
+        ],
+        content:[
+          { required: true, message: '请输入实验描述', trigger: 'blur' },
+        ],
+      },
+
+      upload_url:'',
+    }
   },
   mounted() {
     this.course_id = this.$route.params.id
@@ -320,21 +376,37 @@ export default {
         this.src = res.data.data.pic_url
       }
     });
+
+
     this.axios({
       method: "get",
       url: "/web/comment/course",
       params: {
         pageCurrent:1,
         pageSize:20,
-        courseId:this.$route.params.id
+        courseId:this.course_id
       },
     }).then((res) => {
       console.log(res)
-      this.records = res.data.data.records;
-      this.total = res.data.data.page_info.total;
-      console.log(this.total)
-      console.log(this.records)
+      this.comments_records = res.data.data.records;
+      this.comments_total = res.data.data.page_info.total;
+      console.log(this.comments_records)
     });
+
+    this.axios({
+      method: "get",
+      url: "/web/course/recourse",
+      params: {
+        pageCurrent:1,
+        pageSize:20,
+        courseId:this.course_id
+      },
+    }).then((res) => {
+      console.log(res)
+      this.resource_records = res.data.data.records;
+      console.log(this.comments_records)
+    });
+
     this.axios({
       method: "get",
       url: "web/course/student/"+this.$route.params.id,
@@ -346,6 +418,21 @@ export default {
       this.total = res.data.data.page_info.total;
       console.log(this.total)
       console.log(this.student_record)
+    });
+
+    //课程实验
+    this.axios({
+      method: "get",
+      url: "/web/lab",
+      params: {
+        pageCurrent:1,
+        pageSize:20,
+        courseId:this.course_id
+      },
+    }).then((res) => {
+      console.log(res)
+      this.project_records = res.data.data.records
+      console.log(this.records)
     });
   },
   methods:{
@@ -423,7 +510,7 @@ export default {
     },
     newCheckIn(){
       let that = this
-      that.newChenckinFormVisible = false;
+      that.newCheckInFormVisible = false;
       this.axios({
         method: "post",
         url: "/web/checkin/start",
@@ -432,6 +519,69 @@ export default {
           courseId: that.course_id,
           duration:that.check_in_form.duration,
           name:that.check_in_form.name,
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '创建成功！',
+              type: 'success'
+            });
+            this.reload()
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
+    },
+    newProject(){
+      let that = this
+      that.newProjectFormVisible = false;
+      this.axios({
+        method: "post",
+        url: "/web/lab",
+        data: {
+          courseId: that.course_id,
+          title: that.project_form.title,
+          content:that.project_form.content,
+          attachmentUrl:that.project_form.attachmentUrl,
+          deadLine:that.project_form.deadLine,
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '创建成功！',
+              type: 'success'
+            });
+            this.reload()
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
+    },
+    newResource(){
+      let that = this
+      that.newProjectFormVisible = false;
+      this.axios({
+        method: "post",
+        url: "/web/course/resource",
+        data: {
+          courseId: that.course_id,
+          title: that.resource_form.title,
+          content:that.resource_form.content,
+          attachmentUrl:that.resource_form.attachmentUrl,
         },
       }).then((res) => {
         console.log(res);
@@ -480,6 +630,12 @@ export default {
     checkInDetail(id){
       this.$router.push({path: `/check_in_detail/${id}`})
     },
+    getProjectUploadUrl(url){
+      this.project_form.attachmentUrl = url;
+    },
+    getResourceUploadUrl(url){
+      this.resource_form.attachmentUrl = url;
+    },
   },
   computed: {
     // 设置请求头
@@ -524,51 +680,6 @@ export default {
   width: 100px;
 }
 
-.line {
-  border-bottom: 1px solid #dcdfe6;
-}
-
-.each-lesson {
-  height: auto;
-  width: 80%;
-  background: #FFFFFF;
-  padding: 25px;
-}
-.each-lesson-img {
-  height: 120px;
-  width: 120px;
-  background: #002d54;
-}
-.each-lesson-info {
-  height: 150px;
-  width:calc(100% - 180px);
-  margin-left: 30px;
-}
-
-.lesson-detail-content{
-  width: 50%;
-  text-align: left;
-}
-
-#reply {
-  height: auto;
-  width: 500px;
-  margin-left: 150px;
-}
-.each-reply {
-  height: auto;
-  padding: 5px;
-  width: 100%;
-}
-.each-reply-img{
-  height: 65px;
-  width: 65px;
-}
-.each-reply-item{
-  margin-left: 30px;
-  width: auto;
-}
-
 .check-in{
   padding: 20px;
 }
@@ -579,4 +690,11 @@ export default {
 .student-management{
   padding: 20px;
 }
+#lesson-resource{
+  padding: 20px;
+}
+#project-list{
+  margin-top: 20px;
+}
+
 </style>

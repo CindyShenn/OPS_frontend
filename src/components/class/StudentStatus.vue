@@ -65,13 +65,10 @@ name: "StudentStatus"
 #main {
   height: 100%;
   width: 100%;
-  background: #3589BF;
 }
 #student-status-card{
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
   background: #FFFFFF;
-  box-shadow: 0px 0px 15px 0px #504d5f;
-  border-radius: 10px;
 }
 </style>

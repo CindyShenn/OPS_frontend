@@ -1,5 +1,8 @@
 <template>
   <div id="lesson-projects">
+    <div id="project-list">
+    <el-empty v-if="project_records==''" description="该课程还没有实验哦，赶紧创建一个吧~">
+    </el-empty>
     <div v-for="(item, index) in project_records" style="width: 100%;" class="line">
       <div id="single-project" class="flex flex-column align-start">
         <div class="flex flex-column align-start justify-between"
@@ -18,6 +21,7 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -30,25 +34,25 @@ name: "TeacherProjectList",
       return getDay(time)
     },
     redirectProject(id){
-      this.$router.push({ path:`/project_detail/${id}`})
+      this.$router.push({ path:`/teacher_project_detail/${id}`})
     },
   }
 }
 </script>
 
 <style scoped>
+#lesson-projects{
+  background: #FFFFFF;
+}
 #single-project {
   height: 150px;
   background: #FFFFFF;
 }
-
-
 #single-project {
   height: 150px;
   background: #FFFFFF;
 }
 #lesson-projects{
-  padding: 0px 20px 20px 20px;
 }
 .project-detail{
   color: #606266;

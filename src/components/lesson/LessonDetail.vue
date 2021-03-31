@@ -17,7 +17,7 @@
                   :records="records"
                   :user_id="user_id"
                   :courseId="course_id"
-              :total="total">
+                  :total="total">
               </Comments>
             </div>
             <div id="resource-and-enter" class="flex flex-column justify-between left-side">
@@ -67,7 +67,6 @@
 
 <script>
 
-import {ElMessage} from "element-plus";
 import Comments from "../common/Comments.vue"
 import LessonContent from "./LessonContent.vue"
 
@@ -132,6 +131,7 @@ export default {
         this.teacher_avatar_url = res.data.data.avatar_url;
       });
     })
+
     this.axios({
       method: "get",
       url: "/web/user",
@@ -151,6 +151,7 @@ export default {
       this.lessons = res.data.data.records
       console.log(res.data.data.records)
     });
+
     this.axios({
       method: "get",
       url: "/web/comment/course",
@@ -166,6 +167,7 @@ export default {
       console.log(this.total)
       console.log(this.records)
     });
+
     this.axios({
       method: "get",
       url: "/web/course/resource",
