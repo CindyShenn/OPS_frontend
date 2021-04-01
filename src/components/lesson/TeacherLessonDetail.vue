@@ -1,5 +1,7 @@
 <template>
+  <PageHeader content="课程详情"></PageHeader>
   <div id="teacher-lesson-detail" class="flex justify-center">
+
     <div id="body">
       <el-tabs :tab-position="tabPosition" v-model="activeName" stretch style="height: auto;font-size: 30px">
         <el-tab-pane name="first">
@@ -8,7 +10,7 @@
           </template>
           <div style="padding: 20px">
             <div class="lesson-info">
-              <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程封面</span>
+              <span style="font-size: 14px;margin-bottom: 7px;margin-top: 0px" class="flex user-input">课程封面</span>
               <el-upload
                   class="avatar-uploader el-upload "
                   :action="uploadUrl"
@@ -245,6 +247,51 @@
         </el-tab-pane>
         <el-tab-pane name="sixth">
           <template #label>
+            <span style="font-size: 15px">课程资源</span>
+          </template>
+
+        </el-tab-pane>
+        <el-tab-pane name="seventh">
+          <template #label>
+            <span style="font-size: 15px">课程问答</span>
+          </template>
+        </el-tab-pane>
+        <el-tab-pane name="eighth">
+          <template #label>
+            <span style="font-size: 15px">学生编码活跃度</span>
+          </template>
+          <div id="student-coding-time">
+            <el-table
+                :data="coding_time_records"
+                style="width: 100%">
+              <el-table-column
+                  prop="num"
+                  label="学生学号">
+              </el-table-column>
+              <el-table-column
+                  prop="real_name"
+                  label="学生姓名">
+              </el-table-column>
+              <el-table-column
+                  label="查看编码活跃度">
+                <template #default="scope">
+                  <el-popover
+                      placement="bottom"
+                      :width="800"
+                      trigger="click"
+                  >
+                    <template #reference>
+                      <el-button>查看</el-button>
+                    </template>
+                    <CodingTimeTable :table_data="scope.row.coding_time"></CodingTimeTable>
+                  </el-popover>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane name="ninth">
+          <template #label>
             <span style="font-size: 15px">课程评论</span>
           </template>
           <div id="lesson-comment">
@@ -269,6 +316,8 @@ import TeacherProjectList from "../project/TeacherProjectList.vue";
 import UploadRar from "../common/UploadRar.vue";
 import Comments from "../common/Comments.vue";
 import ResourceList from "../teacher_op/ResourceList.vue";
+import PageHeader from "../desk/PageHeader";
+import CodingTimeTable from "../user/CodingTimeTable";
 
 export default {
   name: "TeacherLessonDetail",
@@ -278,6 +327,8 @@ export default {
     UploadRar,
     Comments,
     ResourceList,
+    PageHeader,
+    CodingTimeTable,
   },
   data() {
     return {
@@ -306,9 +357,11 @@ export default {
         major:'',
         organization:''
       }, ],
+
       student_record:[],
       project_records:[],
       resource_records:[],
+      coding_time_records:[],
       check_in_records:[
         {
           name:'第一次签到',
@@ -433,6 +486,18 @@ export default {
       console.log(res)
       this.project_records = res.data.data.records
       console.log(this.records)
+    });
+
+    //编码活跃度
+    this.axios({
+      method: "get",
+      url: "/web/coding_time/"+this.$route.params.id,
+      params: {
+      },
+    }).then((res) => {
+      console.log(res)
+      this.coding_time_records = res.data.data.records;
+      console.log(this.student_record)
     });
   },
   methods:{
@@ -659,17 +724,18 @@ export default {
 <style scoped>
 #teacher-lesson-detail {
   width: 100%;
+  height: calc(100% - 60px);
 }
 
 #body {
   height: auto;
-  width: 80%;
+  width: 90%;
   padding: 30px;
+  background: #FFFFFF;
 }
 
 .lesson-info{
   background: #FFFFFF;
-  padding: 30px;
 }
 
 .user-input {
@@ -696,5 +762,7 @@ export default {
 #project-list{
   margin-top: 20px;
 }
-
+#lesson-comment{
+  padding: 0px 20px;
+}
 </style>

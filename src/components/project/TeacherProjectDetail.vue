@@ -65,6 +65,9 @@
                   </el-form>
                   <el-button type="danger" @click="modify">确认修改</el-button>
                 </el-tab-pane>
+                <el-tab-pane label="删除实验" name="forth">
+                  <el-button type="danger" @click="deleteProject" style="margin-top: 10px">删除该实验</el-button>
+                </el-tab-pane>
               </el-tabs>
             </div>
           </div>
@@ -172,7 +175,44 @@ name: "TeacherProjectDetail",
           ElMessage.error('服务器错误');
         }
       });
-    }
+    },
+    deleteProject(){
+      let that = this
+      this.$confirm('此操作将永久删除该实验, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios({
+          method: "delete",
+          url: "/web/lab",
+          data: {
+            lab:that.lab_id,
+          },
+        }).then((res) => {
+          console.log(res)
+          if (res.status == 200) {
+            if (res.data.code == 0) {
+              ElMessage.success({
+                message: '删除成功！',
+                type: 'success'
+              });
+            } else {
+              let message = res.data.message;
+              console.log(message)
+              ElMessage.error(message);
+            }
+          } else {
+            ElMessage.error('服务器错误');
+          }
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
   }
 }
 </script>

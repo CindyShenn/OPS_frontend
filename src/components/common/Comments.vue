@@ -6,7 +6,7 @@
 
   <div id="add-comment">
     <div style="padding: 20px">
-      <div style="text-align: left">我也评论一下</div>
+      <div style="text-align: left;font-size: 20px">我也评论一下</div>
       <el-input
           type="textarea"
           placeholder="请输入内容"
@@ -37,7 +37,7 @@
         </div>
         <div class="each-comment-info flex flex-column">
           <div class="user-info flex flex-row align-center" style="height: 20%">
-            <div style="text-align: left;font-weight: 600;">{{item.comment.username}}</div>
+            <div style="text-align: left;font-weight: 600;font-size: 20px">{{item.comment.username}}</div>
           </div>
           <div class="comment-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%;margin-top: 10px">
             {{ item.comment.comment_text }}
@@ -85,9 +85,9 @@
               </div>
               <div class="each-reply-item flex flex-column">
                 <div class="user-info flex flex-row align-center" style="height: 30%">
-                  <div style="text-align: left;font-weight: 600">{{item1.username}}</div>
+                  <div style="text-align: left;font-weight: 600;font-size: 20px">{{item1.username}}</div>
                   <i class="el-icon-caret-right" style="margin-left: 8px"></i>
-                  <div style="text-align: left;font-weight: 600;margin-left: 8px">{{item1.reply_username}}</div>
+                  <div style="text-align: left;font-weight: 600;margin-left: 8px;font-size: 20px">{{item1.reply_username}}</div>
                 </div>
                 <div class="reply-comment" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%;width: auto;margin-top:10px;color: #606266;word-wrap:break-word">
                   {{item1.comment_text}}

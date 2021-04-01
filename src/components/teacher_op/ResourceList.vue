@@ -1,5 +1,7 @@
 <template>
   <div id="resource">
+    <el-empty v-if="resource_records==null" description="该课程还没有公告哦，赶紧创建一个吧~">
+    </el-empty>
     <div v-for="(item, index) in resource_records" style="width: 100%;" class="line">
       <div class="flex flex-column single-resource">
         <div class="my-title">{{item.title}}</div>

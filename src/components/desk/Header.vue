@@ -4,7 +4,7 @@
       <img src="../../assets/scnulogo.png" height="50">
     </div>
     <div id="navMenu">
-      <div id="title" class="flex align-center justify-center">在线编程系统</div>
+      <div id="title" class="flex align-center justify-center">在线编程教学平台</div>
       <div id="user">
         <el-dropdown @command="userHandler">
   <span class="el-dropdown-link flex align-center">
