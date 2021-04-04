@@ -316,8 +316,8 @@ import TeacherProjectList from "../project/TeacherProjectList.vue";
 import UploadRar from "../common/UploadRar.vue";
 import Comments from "../common/Comments.vue";
 import ResourceList from "../teacher_op/ResourceList.vue";
-import PageHeader from "../desk/PageHeader";
-import CodingTimeTable from "../user/CodingTimeTable";
+import PageHeader from "../desk/PageHeader.vue";
+import CodingTimeTable from "../user/CodingTimeTable.vue";
 
 export default {
   name: "TeacherLessonDetail",
