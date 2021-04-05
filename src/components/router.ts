@@ -21,6 +21,7 @@ import CurrentIDE from './project/CurrentIDE.vue'
 import TeacherUserCenter from './user/TeacherUserCenter.vue'
 import CheckInDetail from './teacher_op/CheckInDetail.vue'
 import TeacherProjectDetail from './project/TeacherProjectDetail.vue'
+import LessonResourceAll from './lesson/LessonResourceAll.vue'
 
 
 const routerHistory = createWebHistory()
@@ -94,7 +95,8 @@ const router = createRouter({
                     component:UserCenter,
                 },
                 {
-                    path:'/lesson_resource',
+                    name:'LessonResource',
+                    path:'/lesson_resource/:id',
                     component:LessonResource,
                 },
                 {
@@ -121,6 +123,10 @@ const router = createRouter({
                 {
                     path:'/teacher_project_detail/:id',
                     component:TeacherProjectDetail,
+                },
+                {
+                    path:'/lesson_resource_all/:id',
+                    component:LessonResourceAll,
                 }
             ],
         }

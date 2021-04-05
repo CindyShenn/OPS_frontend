@@ -26,6 +26,7 @@
             <div class="comment-detail flex flex-row align-end justify-between" style="height: 20%;font-size: 8px;color: #606266;">
               <div class="comment-detail-content">提问时间：{{item.comment.created_at}}</div>
               <div class="flex">
+                <el-button v-if="item.comment.user_id == user_id" style="margin-left: 10px;color: #dd6161" type="text" @click="makeDelete(item.comment.course_comment_id)">删除</el-button>
                 <el-button type="text" style="padding: 0px;min-height:0px" @click="replyDialog(item.comment.course_comment_id)">回复</el-button>
                 <el-dialog title="回复此提问" v-model="dialogFormVisible">
                   <el-input
@@ -46,7 +47,6 @@
     </span>
                   </template>
                 </el-dialog>
-                <div v-if="item.comment.user_id == user_id" style="margin-left: 10px"><el-button type="text" style="padding: 0px;min-height:0px" @click="makeDelete(item.comment.course_comment_id)">删除</el-button></div>
               </div>
             </div>
           </div>
@@ -77,7 +77,9 @@
                     <div class="reply-time" style="font-size: 8px;width: auto;text-align: left;color: #606266;">
                       回复时间：{{item1.created_at}}
                     </div>
-                    <div class="flex"><el-button type="text" style="padding: 0px;min-height:0px" @click="replyDialog(item1.course_comment_id)">回复</el-button>
+                    <div class="flex justify-center align-center">
+                      <el-button v-if="item1.user_id == user_id" type="text" @click="makeDelete(item1.course_comment_id)" style="margin-left: 10px;color: #dd6161">删除</el-button>
+                      <el-button type="text" @click="replyDialog(item1.course_comment_id)">回复</el-button>
                       <el-dialog title="回复" v-model="dialogFormVisible">
                         <el-input
                             type="textarea"
@@ -97,7 +99,6 @@
     </span>
                         </template>
                       </el-dialog>
-                      <div v-if="item1.user_id == user_id" style="margin-left: 10px"><el-button type="text" style="padding: 0px;min-height:0px" @click="makeDelete(item1.course_comment_id)">删除</el-button></div>
                     </div>
                   </div>
                 </div>
@@ -272,7 +273,6 @@ name: "TeacherQA",
   width: 100%;
   height: auto;
   background-color: #FFFFFF;
-  margin-top: 20px;
 }
 
 </style>

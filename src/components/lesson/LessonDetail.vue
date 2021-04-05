@@ -13,12 +13,12 @@
                   :src="src"
                   :is_closed="is_closed">
               </LessonContent>
-              <Comments
+              <LessonQA
                   :records="records"
                   :user_id="user_id"
                   :courseId="course_id"
                   :total="total">
-              </Comments>
+              </LessonQA>
             </div>
             <div id="resource-and-enter" class="flex flex-column justify-between left-side">
               <el-affix :offset="130" style="width: 100%">
@@ -40,12 +40,12 @@
                   </div>
                 </div>
                 <div id="lesson-resource">
-                  <div class="my-title" style="cursor:pointer" onclick="location.href='/project'">课程公告</div>
+                  <div class="my-title" style="cursor:pointer" @click="redirectEnterAllResource">课程公告</div>
                   <div id="resource-contents">
                     <div v-for="(item,index) in resource_records" class="flex flex-column align-center justify-start"
                          style="width: 100%;margin-top: 5px;">
                       <div class="each-resource limit-length" style="text-align: left;width: 100%;cursor:pointer"
-                           onclick="location.href='/project'">
+                           @click="redirectEnterResource(item.course_recourse_id)">
                         {{ item.title }}
                       </div>
                     </div>
@@ -67,11 +67,11 @@
 
 <script>
 
-import Comments from "../common/Comments.vue"
 import LessonContent from "./LessonContent.vue"
+import LessonQA from "./LessonQA.vue";
 
 export default {
-  components: {LessonContent, Comments},
+  components: {LessonContent, LessonQA},
   name: "LessonDetail",
   data() {
     return {
@@ -142,6 +142,7 @@ export default {
       this.user_id = data.user_id;
       console.log("userID", this.user_id)
     });
+
     this.axios({
       method: "get",
       url: "/web/course/study",
@@ -186,6 +187,12 @@ export default {
   methods: {
     redirectEnterLesson(id) {
       this.$router.push({path: `/student_enter_lesson/${id}`})
+    },
+    redirectEnterResource(id) {
+      this.$router.push({name: 'LessonResource', params: { id: id,courseId:this.course_id }})
+    },
+    redirectEnterAllResource() {
+      this.$router.push({path: `/lesson_resource_all/${this.course_id}`})
     },
     replyDialog(id) {
       this.dialogFormVisible = true;

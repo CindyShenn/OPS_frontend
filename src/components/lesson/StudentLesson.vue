@@ -6,12 +6,12 @@
           <span style="font-size: 28px;text-align: left;font-weight: 400;width: 100%">我的课程</span>
           <div class="flex justify-between" style="margin-top: 30px;width: 85%">
             <el-button plain icon="el-icon-plus" @click="dialogFormVisible = true">加入课程</el-button>
-            <el-dialog title="创建班级" v-model="dialogFormVisible">
+            <el-dialog title="加入课程" v-model="dialogFormVisible">
               <el-form :model="form">
-                <el-form-item label="班级名称" :label-width="formLabelWidth">
+                <el-form-item label="课程名称" :label-width="formLabelWidth">
                   <el-input v-model="form.name" autocomplete="off" placeholder="请输入班级名称"></el-input>
                 </el-form-item>
-                <el-form-item label="班级描述" :label-width="formLabelWidth">
+                <el-form-item label="课程描述" :label-width="formLabelWidth">
                   <el-input v-model="form.description" type="textarea"
                             placeholder="请输入班级描述" autocomplete="off" maxlength="30"
                             show-word-limit></el-input>

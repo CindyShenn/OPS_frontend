@@ -8,7 +8,9 @@
       <div id="user">
         <el-dropdown @command="userHandler">
   <span class="el-dropdown-link flex align-center">
+    <el-badge is-dot type="danger">
                         <el-avatar :src="$store.state.head"></el-avatar>
+    </el-badge>
                         <i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
           <template #dropdown>
@@ -26,7 +28,7 @@
 
 <script>
 export default {
-name: "Header.vue",
+  name: "Header.vue",
   data() {
     return {
       activeIndex: '8',
@@ -35,17 +37,17 @@ name: "Header.vue",
 
   mounted() {
   },
-  methods:{
-    redirect(url){
-      this.$router.push({ path:url})
+  methods: {
+    redirect(url) {
+      this.$router.push({path: url})
     },
-    logout(){
+    logout() {
       this.$store.commit('$_removeStorage');
       this.$store.commit('$_removeStorageRole');
-      this.$router.push({ path:'login'})
+      this.$router.push({path: 'login'})
     },
-    userHandler: function(arg) {
-      switch(arg) {
+    userHandler: function (arg) {
+      switch (arg) {
         case "logout" :
           this.logout()
           break;
@@ -102,7 +104,7 @@ name: "Header.vue",
   border-bottom-width: 4px;
 }
 
-#navMenu .el-menu.el-menu--horizontal{
+#navMenu .el-menu.el-menu--horizontal {
   border: none;
 }
 
@@ -116,7 +118,7 @@ name: "Header.vue",
   color: white;
   text-align: center;
   font-size: 20px;
-  letter-spacing:5px;
+  letter-spacing: 5px;
 }
 
 </style>

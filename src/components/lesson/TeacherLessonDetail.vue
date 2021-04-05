@@ -239,9 +239,9 @@
               </el-dialog>
             </div>
             <div id="resource-list">
-              <ResourceList
+              <TeacherResourceList
                   :resource_records="resource_records">
-              </ResourceList>
+              </TeacherResourceList>
             </div>
           </div>
         </el-tab-pane>
@@ -255,6 +255,12 @@
           <template #label>
             <span style="font-size: 15px">课程问答</span>
           </template>
+          <TeacherQA
+              :records="comments_records"
+              :user_id="user_id"
+              :courseId="course_id"
+              :total="comments_total">
+          </TeacherQA>
         </el-tab-pane>
         <el-tab-pane name="eighth">
           <template #label>
@@ -273,7 +279,7 @@
                   label="学生姓名">
               </el-table-column>
               <el-table-column
-                  label="查看编码活跃度">
+                  label="编码活跃度">
                 <template #default="scope">
                   <el-popover
                       placement="bottom"
@@ -290,19 +296,6 @@
             </el-table>
           </div>
         </el-tab-pane>
-        <el-tab-pane name="ninth">
-          <template #label>
-            <span style="font-size: 15px">课程评论</span>
-          </template>
-          <div id="lesson-comment">
-            <Comments
-                :records="comments_records"
-                :user_id="user_id"
-                :courseId="course_id"
-                :total="comments_total">
-            </Comments>
-          </div>
-        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -314,10 +307,10 @@ import store from "../../store";
 import {ElMessage} from "element-plus";
 import TeacherProjectList from "../project/TeacherProjectList.vue";
 import UploadRar from "../common/UploadRar.vue";
-import Comments from "../common/Comments.vue";
-import ResourceList from "../teacher_op/ResourceList.vue";
+import TeacherResourceList from "../teacher_op/TeacherResourceList.vue";
 import PageHeader from "../desk/PageHeader.vue";
 import CodingTimeTable from "../user/CodingTimeTable.vue";
+import TeacherQA from "../teacher_op/TeacherQA.vue";
 
 export default {
   name: "TeacherLessonDetail",
@@ -325,10 +318,10 @@ export default {
   components:{
     TeacherProjectList,
     UploadRar,
-    Comments,
-    ResourceList,
+    TeacherResourceList,
     PageHeader,
     CodingTimeTable,
+    TeacherQA,
   },
   data() {
     return {
@@ -724,7 +717,7 @@ export default {
 <style scoped>
 #teacher-lesson-detail {
   width: 100%;
-  height: calc(100% - 60px);
+  height: auto;
 }
 
 #body {

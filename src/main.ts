@@ -63,9 +63,10 @@ axios.interceptors.response.use(
     error=>{
         if(error.response){
             switch(error.response.status){
-                case 401:
+                case 20001:
                     localStorage.removeItem('token');
-                    router.push({path: 'login'})
+                    router.push({path: 'login'});
+                    break;
             }
         }
 
