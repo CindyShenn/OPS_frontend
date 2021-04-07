@@ -126,10 +126,9 @@
 import ProjectContent from "./ProjectContent.vue";
 import UploadRar from "../common/UploadRar.vue";
 import {ElMessage} from "element-plus";
-import PageHeader from "../desk/PageHeader";
 export default {
 name: "TeacherProjectDetail",
-  components:{PageHeader, ProjectContent,UploadRar},
+  components:{ProjectContent,UploadRar},
   data(){
   return{
     title:'',
