@@ -1,4 +1,5 @@
 <template>
+  <PageHeader content="课程详情"></PageHeader>
   <div id="student-enter-lesson" >
     <div id="body" class="flex justify-center align-center">
       <div class="container">
@@ -32,23 +33,9 @@
               <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="课程实验" name="first">
                   <div id="lesson-projects">
-                    <div v-for="(item, index) in project_records" style="width: 100%;" class="line">
-                      <div id="single-project" class="flex flex-column align-start">
-                        <div class="flex flex-column align-start justify-between"
-                             style="margin-top: 15px;margin-left: 15px;height: 100%;width: 90%">
-                          <span style="font-size: 25px;font-weight:600">{{ item.title }}</span>
-                          <span style="font-size: 15px;text-align: left">{{ item.content }}</span>
-                          <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
-                            <div class="project-detail flex align-center justify-center ">
-                              <div>
-                                创建时间：{{item.created_at}} &emsp;截止日期：{{item.updated_at}}
-                              </div>
-                            </div>
-                            <el-button type="primary" style="margin-bottom: 10px" @click="redirectProject(item.lab_id)">进入实验</el-button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <ProjectList
+                      :project_records="project_records">
+                  </ProjectList>
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="课程签到" name="second">
@@ -98,10 +85,12 @@
 
 <script>
 import {ElMessage} from "element-plus";
+import ProjectList from "../project/ProjectList.vue";
 //import {getLabByCourseId} from "../utils/utils"
 
 export default {
 name: "StudentEnterLesson",
+  components:{ProjectList},
   data(){
   return{
     title:'',
@@ -206,7 +195,6 @@ name: "StudentEnterLesson",
     }).then((res) => {
       console.log(res)
       this.project_records = res.data.data.records
-      console.log(this.records)
     });
   }
 }

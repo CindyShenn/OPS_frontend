@@ -118,20 +118,4 @@ export default {
   width: 100%;
   height: 100%;
 }
-
-#body {
-  width: 100%;
-  height: 100%;
-}
-
-.container-ide {
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-}
-
-#section-ide {
-  width: 100%;
-  height: 100%;
-}
 </style>

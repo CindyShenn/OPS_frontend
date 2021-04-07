@@ -46,6 +46,11 @@ const router = createRouter({
             component: ChangePwd,
         },
         {
+            path:'/current_ide',
+            name:'CurrentIDE',
+            component:CurrentIDE,
+        },
+        {
             path:'/',
             component: () => import(/* webpackChunkName: "about" */ '../index.vue'),
             children:[
@@ -106,11 +111,6 @@ const router = createRouter({
                 {
                     path:'/project_detail/:id',
                     component:ProjectDetail,
-                },
-                {
-                    path:'/current_ide',
-                    name:'CurrentIDE',
-                    component:CurrentIDE,
                 },
                 {
                     path:'/teacher_user_center',
