@@ -1,8 +1,17 @@
 <template>
+  <PageHeader content="所有公告"></PageHeader>
   <div id="lesson-resource">
     <div id="body" class="flex justify-center align-center">
       <div class="container">
         <div id="section" class="flex flex-column align-center justify-center">
+          <LessonContent
+              :title="course_name"
+              :description="description"
+              :teacher_name="teacher_name"
+              :created_at="created_at"
+              :src="src"
+              :is_closed="is_closed">
+          </LessonContent>
           <ResourceList
           :resource_records="resource_records">
           </ResourceList>
@@ -14,9 +23,10 @@
 
 <script>
 import ResourceList from "./ResourceList.vue";
+import LessonContent from "./LessonContent.vue";
 export default {
   name: "LessonResourceAll",
-  components:{ResourceList},
+  components:{ResourceList,LessonContent},
   data(){
     return{
       course_id:'',
@@ -32,7 +42,7 @@ export default {
   },
   mounted() {
     // 获取课程id
-    this.course_id = this.$route.params.courseId;
+    this.course_id = this.$route.params.id;
 
     //根据课程id获取课程信息
     this.axios({
@@ -55,11 +65,11 @@ export default {
     //获取课程资源列表
     this.axios({
       method: "get",
-      url: "/web/comment/course",
+      url: "/web/course/resource",
       params: {
         pageCurrent: 1,
         pageSize: 20,
-        courseId: this.$route.params.id
+        courseId: this.course_id
       },
     }).then((res) => {
       console.log(res)

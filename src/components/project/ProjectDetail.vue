@@ -411,8 +411,7 @@ name: "ProjectDetail",
   margin-right: 10px;
 }
 #upload-report{
-  width: 50%;
-  height: 150px;
+  height: auto;
   background: #FFFFFF;
   padding: 25px;
 }

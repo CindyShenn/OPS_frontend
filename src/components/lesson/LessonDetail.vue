@@ -1,4 +1,5 @@
 <template>
+  <PageHeader content="课程详情"></PageHeader>
   <div id="lesson_detail">
     <div id="body" class="flex justify-center align-center">
       <div class="container">
@@ -40,7 +41,7 @@
                   </div>
                 </div>
                 <div id="lesson-resource">
-                  <div class="my-title" style="cursor:pointer" @click="redirectEnterAllResource">课程公告</div>
+                  <div class="my-title" style="cursor:pointer" @click="redirectEnterAllResource(course_id)">课程公告</div>
                   <div id="resource-contents">
                     <div v-for="(item,index) in resource_records" class="flex flex-column align-center justify-start"
                          style="width: 100%;margin-top: 5px;">
@@ -191,8 +192,8 @@ export default {
     redirectEnterResource(id) {
       this.$router.push({name: 'LessonResource', params: { id: id,courseId:this.course_id }})
     },
-    redirectEnterAllResource() {
-      this.$router.push({path: `/lesson_resource_all/${this.course_id}`})
+    redirectEnterAllResource(id) {
+      this.$router.push({path: `/lesson_resource_all/${id}`})
     },
     replyDialog(id) {
       this.dialogFormVisible = true;

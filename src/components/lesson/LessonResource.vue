@@ -1,4 +1,5 @@
 <template>
+  <PageHeader content="公告详情"></PageHeader>
   <div id="lesson-resource">
     <div id="body" class="flex justify-center align-center">
       <div class="container">
@@ -13,7 +14,7 @@
           </LessonContent>
           <div id="resource">
             <div class="flex flex-column single-resource">
-              <div class="my-title">课程公告</div>
+              <div class="my-title">{{ title }}</div>
               <div class="resource-content" style="text-align: left;margin-top: 20px">
                 {{ content }}
               </div>

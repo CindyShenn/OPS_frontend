@@ -62,8 +62,8 @@
                           <div class="lesson-title flex flex-row align-center" style="height: 30%">
                             <div style="text-align: left;font-size: 30px;font-weight: 600;">{{item.course_name}}</div>
                           </div>
-                          <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%">
-                            {{ course_des }}
+                          <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%;margin-top: 10px">
+                            任课教师：{{ item.teacher_name }}
                           </div>
                           <div class="lesson-detail flex flex-row align-end justify-between" style="height: 30%">
                             <div class="lesson-detail-content">开课时间：{{Day(item.created_at)}}</div>

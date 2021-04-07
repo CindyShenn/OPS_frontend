@@ -19,10 +19,13 @@ export default {
       startTime: '',
       endTime: '',
       readyStateTime: '',
+      labId: '',
     }
   },
   mounted() {
     this.url = this.$route.query.url;
+    this.labId = this.$route.query.labId;
+    let that = this;
     window.addEventListener('beforeunload', (e) => {
       e = e || window.event;
       // 兼容IE8和Firefox 4之前的版本
@@ -32,23 +35,11 @@ export default {
       console.log('close')
       // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
       e.returnValue = '关闭提示';
-
+      //that.closeWin();
       return '关闭提示';
     })
     window.addEventListener( 'unload', e => this.closeWin() );
 
-    // window.onbeforeunload = function (e) {
-    //   e = e || window.event;
-    //   // 兼容IE8和Firefox 4之前的版本
-    //   if (e) {
-    //     e.returnValue = '关闭提示';
-    //   }
-    //   console.log('close')
-    //   // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-    //   e.returnValue = '关闭提示';
-    //
-    //   return '关闭提示';
-    // };
 
     var oFrm = document.getElementById('ide');
     oFrm.onload = oFrm.onreadystatechange = function () {
@@ -62,6 +53,7 @@ export default {
   },
 
   destroyed() {
+    let that = this
     window.removeEventListener('beforeunload', (e) => {
       e = e || window.event;
       // 兼容IE8和Firefox 4之前的版本
@@ -71,6 +63,7 @@ export default {
       console.log('close')
       // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
       e.returnValue = '关闭提示';
+      that.closeWin();
 
       return '关闭提示';
     })
@@ -90,13 +83,14 @@ export default {
         method: "delete",
         url: "/web/ide",
         data: {
-          labId: that.lab_id,
-          duration: timeD,
+          labId: that.labId,
         },
       }).then((res) => {
+        localStorage.setItem("unload","addEventListener.unload");
         console.log(res);
         if (res.status == 200) {
           if (res.data.code == 0) {
+            localStorage.setItem("unload","addEventListener.unload");
             console.log(res)
           } else {
             let message = res.data.message;
@@ -107,6 +101,7 @@ export default {
           ElMessage.error('服务器错误');
         }
       });
+      //localStorage.setItem("unload","addEventListener.unload");
     }
   },
 

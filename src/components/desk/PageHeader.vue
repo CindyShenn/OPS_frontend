@@ -1,5 +1,5 @@
 <template>
-  <el-page-header @back="goBack" :content="content" title="返回" style="line-height:35px;margin-bottom: 15px">
+  <el-page-header @back="goBack" :content="content" title="返回" style="line-height:35px">
   </el-page-header>
 </template>
 
@@ -16,8 +16,5 @@ export default {
 </script>
 
 <style scoped>
-.el-page-header__title {
-  font-size: 18px;
-  font-weight: 500;
-}
+
 </style>

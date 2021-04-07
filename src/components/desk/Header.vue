@@ -8,7 +8,7 @@
       <div id="user">
         <el-dropdown @command="userHandler">
   <span class="el-dropdown-link flex align-center">
-    <el-badge is-dot type="danger">
+    <el-badge is-dot type="danger" class="el-badge">
                         <el-avatar :src="$store.state.head"></el-avatar>
     </el-badge>
                         <i class="el-icon-arrow-down el-icon--right"></i>
@@ -119,6 +119,10 @@ export default {
   text-align: center;
   font-size: 20px;
   letter-spacing: 5px;
+}
+
+.el-badge /deep/ .el-badge__content{
+  border: 0px solid #FFF
 }
 
 </style>

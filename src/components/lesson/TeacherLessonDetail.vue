@@ -1,7 +1,6 @@
 <template>
   <PageHeader content="课程详情"></PageHeader>
   <div id="teacher-lesson-detail" class="flex justify-center">
-
     <div id="body">
       <el-tabs :tab-position="tabPosition" v-model="activeName" stretch style="height: auto;font-size: 30px">
         <el-tab-pane name="first">
@@ -441,7 +440,7 @@ export default {
 
     this.axios({
       method: "get",
-      url: "/web/course/recourse",
+      url: "/web/course/resource",
       params: {
         pageCurrent:1,
         pageSize:20,
@@ -716,6 +715,7 @@ export default {
 
 <style scoped>
 #teacher-lesson-detail {
+  margin-top: 15px;
   width: 100%;
   height: auto;
 }

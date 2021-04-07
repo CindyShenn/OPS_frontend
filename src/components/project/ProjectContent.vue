@@ -35,7 +35,6 @@ name: "ProjectContent",
   width: 100%;
   height: auto;
   background-color: #FFFFFF;
-  margin-top: 20px;
 }
 .title{
   text-align: left;

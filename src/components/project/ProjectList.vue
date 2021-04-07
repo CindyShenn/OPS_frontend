@@ -9,10 +9,49 @@
           <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
             <div class="project-detail flex align-center justify-center ">
               <div>
-                创建时间：{{Day(item.created_at)}} &emsp;截止日期：{{item.updated_at}} &emsp;<el-tag type="danger">{{item.is_finished == true ? '已完成':'未完成'}}</el-tag>
+                创建时间：{{ Day(item.created_at) }} &emsp;截止日期：{{ item.dead_line == null? "无": item.dead_line }} &emsp;<el-tag type="danger">
+                {{ item.is_finished == true ? '已完成' : '未完成' }}
+              </el-tag>
               </div>
             </div>
-            <el-button type="primary" style="margin-bottom: 10px" @click="redirectProject(item.lab_id)">进入实验</el-button>
+            <el-button type="primary" style="margin-bottom: 10px" @click="projectDetail(item)">进入实验</el-button>
+            <el-drawer
+                :title="current_title"
+                v-model="drawer"
+                :direction="direction"
+                size="40%">
+              <div class="drawer-content flex flex-column justify-between">
+                <div class="flex flex-column">
+                  <div class="my-title">实验描述</div>
+                  <span style="font-size: 15px;text-align: left;margin-top: 20px">&nbsp;&nbsp;{{ current_content }}</span>
+                </div>
+                <div class="flex justify-center align-center flex-column">
+                  <div id="enter-and-upload" class="flex flex-column">
+                    <div id="enter-project" class="flex flex-column">
+                      <div class="flex justify-center align-center flex-column" style="width: 100%">
+                        <div class="my-title">开始实验</div>
+                        <el-button type="primary" @click="enterIDE" style="margin-top: 40px">进入实验</el-button>
+                      </div>
+                    </div>
+                    <div id="upload-report" class="flex flex-column align-center justify-center">
+                      <div class="my-title">提交实验报告</div>
+                      <div class="flex justify-center align-center" style="margin-top: 45px">
+                        <UploadPdf v-on:getUrl = "getReportUploadUrl"></UploadPdf>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
+                  <div class="project-detail-drawer flex align-center justify-center ">
+                    <div class="flex align-center justify-center">
+                      创建时间：{{ Day(current_created_at) }} &emsp;截止日期：{{ current_dead_line == null? "无": current_dead_line }} &emsp;<el-tag type="danger">
+                      {{ current_is_finished == true ? '已完成' : '未完成' }}
+                    </el-tag>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </el-drawer>
           </div>
         </div>
       </div>
@@ -22,15 +61,77 @@
 
 <script>
 import {getDay} from "../../utils/utils.ts"
+import UploadPdf from "../common/UploadPdf.vue";
+import {ElMessage} from "element-plus";
+
 export default {
-name: "ProjectList",
-  props:["project_records",],
-  methods:{
-    Day(time){
+  name: "ProjectList",
+  components: {UploadPdf},
+  props: ["project_records",],
+  data() {
+    return {
+      drawer: false,
+      direction: 'rtl',
+      uploadUrl:'',
+      current_lab_id:'',
+      current_title:'',
+      current_content:'',
+      current_is_finished:'',
+      current_dead_line:'',
+      current_created_at:'',
+    }
+  },
+  methods: {
+    Day(time) {
       return getDay(time)
     },
-    redirectProject(id){
-      this.$router.push({ path:`/project_detail/${id}`})
+    redirectProject(id) {
+      this.$router.push({path: `/project_detail/${id}`})
+    },
+    getReportUploadUrl(url){
+      console.log(url)
+      this.uploadUrl = url;
+    },
+    projectDetail(item){
+      this.drawer = true;
+      this.current_lab_id = item.lab_id;
+      this.current_title = "实验："+item.title;
+      this.current_content = item.content;
+      this.current_is_finished = item.is_finished;
+      this.current_dead_line = item.dead_line;
+      this.current_created_at = item.created_at;
+    },
+    enterIDE(){
+      let that = this
+      this.axios({
+        method: "post",
+        url: "/web/ide",
+        data: {
+          labId: that.current_lab_id,
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            let url = "http://"+res.data.data.url
+            console.log(url)
+            let { href } = this.$router.resolve({
+              path: '/current_ide',
+              query: {
+                url:url,
+                labId: that.current_lab_id,
+              }
+            });
+            window.open(href,'_blank');
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
     },
   }
 }
@@ -47,11 +148,39 @@ name: "ProjectList",
   height: 150px;
   background: #FFFFFF;
 }
-#lesson-projects{
+
+#lesson-projects {
   padding: 0px 20px 20px 20px;
 }
-.project-detail{
+
+#upload-report{
+  margin-top: 20px;
+  height: 150px;
+}
+
+.project-detail {
   color: #606266;
   font-size: 15px;
+}
+
+.project-detail-drawer{
+  color: #606266;
+  font-size: 15px;
+  width: 100%;
+}
+
+#enter-and-upload{
+  width: 100%;
+  padding: 20px;
+}
+
+#enter-project{
+  width: 100%;
+  height: 150px;
+}
+
+.drawer-content{
+  height: 100%;
+  padding: 20px;
 }
 </style>

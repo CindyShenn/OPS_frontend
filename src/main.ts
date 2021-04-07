@@ -17,7 +17,7 @@ import { CalendarComponent,
 } from 'echarts/components';
 import { HeatmapChart } from 'echarts/charts';
 import api from "./api/index";
-
+import PageHeader from "./components/desk/PageHeader.vue";
 
 use([
     CanvasRenderer,
@@ -40,6 +40,9 @@ app.use(ElementPlus)
 app.use(router)
 app.use(store)
 app.component('v-chart', ECharts)
+app.component('PageHeader',PageHeader)
+
+
 
 axios.defaults.baseURL = 'http://118.178.253.239:8080';//后端开发环境地址
 //添加请求拦截器
@@ -58,6 +61,10 @@ axios.interceptors.request.use(
 //http response拦截器
 axios.interceptors.response.use(
     response =>{
+        if(response.data.code == 20001){
+            localStorage.removeItem('token');
+            router.push({path: 'login'});
+        }
         return response;
     },
     error=>{
