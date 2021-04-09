@@ -72,7 +72,7 @@
                           <template #footer>
     <span class="dialog-footer">
       <el-button @click="gradeDialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="gradeDialogVisible = false">确 定</el-button>
+      <el-button type="primary" @click="modifyGrade(scope.row.user_id)">确 定</el-button>
     </span>
                           </template>
                         </el-dialog>
@@ -327,6 +327,36 @@ export default {
         }
       });
     },
+
+    modifyGrade(userId){
+      let that = this
+      this.axios({
+        method: "put",
+        url: "/web/summit/score",
+        data: {
+          userId:id,
+          score:that.score,
+          labId:that.lab_id
+        },
+      }).then((res) => {
+        console.log(res)
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '成绩修改成功！',
+              type: 'success'
+            });
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
+    },
+
     deleteProject() {
       let that = this
       this.$confirm('此操作将永久删除该实验, 是否继续?', '提示', {
