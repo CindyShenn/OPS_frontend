@@ -5,18 +5,15 @@
       <div class="container">
         <div id="section" class="flex flex-column align-center justify-center">
           <ProjectContent
-            :title="title"
-            :dead_line="dead_line"
-            :attachment-url="attachmentUrl"
-            :description="description"
-            :created_at="created_at">
+              :title="title"
+              :dead_line="dead_line"
+              :attachment-url="attachmentUrl"
+              :description="description"
+              :created_at="created_at">
           </ProjectContent>
           <div id="user-operation">
             <div id="user-operation-content" style="padding: 10px 20px 20px">
-              <el-tabs v-model="activeName"  @tab-click="handleTabClick" stretch="true">
-                <el-tab-pane label="查看学生代码" name="student_code">
-
-                </el-tab-pane>
+              <el-tabs v-model="activeName" @tab-click="handleTabClick" stretch="true">
                 <el-tab-pane label="作业完成情况" name="finish_situation">
                   <el-table
                       :data="homework_records"
@@ -42,9 +39,43 @@
                         label="编码时长">
                     </el-table-column>
                     <el-table-column
+                        label="查看代码">
+                      <template #default="scope">
+                        <el-button :disabled="true ? scope.row.finish_stat == 0:false" size="small" type="primary" @click="checkCode(scope.row.user_id)">查看
+                        </el-button>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
                         label="实验报告">
                       <template #default="scope">
-                        <el-link :href="scope.row.report_url" target="_blank">{{scope.row.report_url}}</el-link>
+                        <el-button :disabled="true ? scope.row.report_url == '':false" size="small" type="primary">查看
+                        </el-button>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="实验评分">
+                      <template #default="scope">
+                        <el-tag>{{ scope.row.score }}</el-tag>
+                        <el-button type="text" style="margin-left: 10px" @click="gradeDialogVisible=true">修改</el-button>
+                        <el-dialog title="修改成绩" v-model="gradeDialogVisible">
+                          <el-form :model="grade_form" :rules="grade_rules">
+                            <el-form-item label="成绩：" :label-width="formLabelWidth" prop="grade">
+                              <el-input
+                                  type="text"
+                                  placeholder="请输入成绩"
+                                  v-model="grade"
+                                  maxlength="3"
+                                  clearable>
+                              </el-input>
+                            </el-form-item>
+                          </el-form>
+                          <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="gradeDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="gradeDialogVisible = false">确 定</el-button>
+    </span>
+                          </template>
+                        </el-dialog>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -89,7 +120,7 @@
                       <el-button icon="el-icon-refresh-right" @click="getLogs">刷新</el-button>
                     </div>
                     <div class="logs flex">
-                      {{logs}}
+                      {{ logs }}
                     </div>
                   </div>
                 </el-tab-pane>
@@ -101,17 +132,15 @@
                     <el-form-item label="实验描述" prop="content">
                       <el-input v-model="project_form.content" autocomplete="off" placeholder="请输入实验描述"></el-input>
                     </el-form-item>
-                    <el-form-item label="截止日期" prop="deadLine" >
+                    <el-form-item label="截止日期" prop="deadLine">
                       <el-input v-model="project_form.deadLine" autocomplete="off" placeholder="请输入实验截止日期"></el-input>
                     </el-form-item>
                     <el-form-item label="上传附件" prop="attachmentUrl" style="margin-top: 40px">
-                      <UploadRar v-on:getUrl = "getProjectUploadUrl"></UploadRar>
+                      <UploadRar v-on:getUrl="getProjectUploadUrl"></UploadRar>
                     </el-form-item>
                   </el-form>
-                  <el-button type="danger" @click="modify">确认修改</el-button>
-                </el-tab-pane>
-                <el-tab-pane label="删除实验" name="delete_project">
-                  <el-button type="danger" @click="deleteProject" style="margin-top: 10px">删除该实验</el-button>
+                  <el-button type="primary" @click="modify">确认修改</el-button>
+                  <el-button type="danger" @click="deleteProject" style="margin-left: 30px">删除该实验</el-button>
                 </el-tab-pane>
               </el-tabs>
             </div>
@@ -126,49 +155,66 @@
 import ProjectContent from "./ProjectContent.vue";
 import UploadRar from "../common/UploadRar.vue";
 import {ElMessage} from "element-plus";
+
 export default {
-name: "TeacherProjectDetail",
-  components:{ProjectContent,UploadRar},
-  data(){
-  return{
-    title:'',
-    dead_line:'',
-    attachmentUrl:'',
-    description:'',
-    created_at:'',
+  name: "TeacherProjectDetail",
+  components: {ProjectContent, UploadRar},
+  data() {
+    return {
+      title: '',
+      dead_line: '',
+      attachmentUrl: '',
+      description: '',
+      created_at: '',
 
-    lab_id:'',
+      lab_id: '',
 
-    logs:'no data',
+      logs: 'no data',
 
-    activeName:'student_code',
+      activeName: 'finish_situation',
 
-    project_form:{
-      title:'',
-      content: '',
-      attachmentUrl:'',
-      deadLine:'',
-    },
-    project_rules: {
-      title:[
-        { required: true, message: '请输入实验标题', trigger: 'blur' },
+      gradeDialogVisible: false,
+
+      formLabelWidth:'80px',
+
+      grade: '',
+
+      grade_form:{
+        grade:''
+      },
+
+      grade_rules: {
+        grade:[
+          { required: true, message: '请输入成绩', trigger: 'blur' },
+        ],
+      },
+
+      project_form: {
+        title: '',
+        content: '',
+        attachmentUrl: '',
+        deadLine: '',
+      },
+      project_rules: {
+        title: [
+          {required: true, message: '请输入实验标题', trigger: 'blur'},
+        ],
+        content: [
+          {required: true, message: '请输入实验描述', trigger: 'blur'},
+        ],
+      },
+
+      homework_records: [
+        {
+          user_id: '001',
+          real_name: '王小明',
+          num: '123',
+          report_url: 'http://www.baidu.com',
+          finish_stat: 0,
+          coding_time: 123,
+        }
       ],
-      content:[
-        { required: true, message: '请输入实验描述', trigger: 'blur' },
-      ],
-    },
-
-    homework_records:[
-      {
-        user_id:'001',
-        real_name:'王小明',
-        num:'123',
-        report_url:'http://www.baidu.com',
-        finish_stat:0,
-        coding_time:123,
-      }
-    ],
-    plagiarism_records:[],
+      plagiarism_records: [],
 
     }
   },
@@ -179,7 +225,7 @@ name: "TeacherProjectDetail",
     // 获取实验详情
     this.axios({
       method: "get",
-      url: "/web/lab/"+this.lab_id,
+      url: "/web/lab/" + this.lab_id,
       params: {},
     }).then((res) => {
       console.log(res)
@@ -194,67 +240,74 @@ name: "TeacherProjectDetail",
       this.project_form.attachmentUrl = this.attachmentUrl;
     });
 
-    // 代码抄袭
-    this.axios({
-      method: "get",
-      url: "/web/summit/plagiarism/"+ this.lab_id,
-      params: {
-      },
-    }).then((res) => {
-      console.log(res)
-      this.plagiarism_records = res.data.data.records;
-    });
-
     // 作业完成情况
     this.axios({
       method: "get",
       url: "/web/summit/" + this.lab_id,
-      params: {
-      },
+      params: {},
     }).then((res) => {
       console.log(res)
       this.homework_records = res.data.data.records;
     });
 
   },
-  methods:{
-    getProjectUploadUrl(url){
+  methods: {
+    getProjectUploadUrl(url) {
       this.project_form.attachmentUrl = url;
     },
 
-    getLogs(){
+    checkCode(id){
+
+    },
+
+    getLogs() {
       // 编译失败日志收集
       this.axios({
         method: "get",
         url: "/web/summit/compile_error_log/" + this.lab_id,
-        params: {
-        },
+        params: {},
       }).then((res) => {
         console.log(res)
-        if (res.data.data.compiler_error_log != ''){
-          console.log("hi", res.data.data.compiler_error_log)
+        if (res.data.data.compiler_error_log != '') {
           this.logs = res.data.data.records;
         }
       });
     },
 
-    handleTabClick() {
-      if (this.activeName=='compile_error_log'){
-        this.getLogs()
-      }
+    getPlagiarism(){
+      // 代码抄袭
+      // 代码抄袭
+      this.axios({
+        method: "get",
+        url: "/web/summit/plagiarism/" + this.lab_id,
+        params: {},
+      }).then((res) => {
+        console.log(res)
+        this.plagiarism_records = res.data.data.records;
+      });
     },
 
-    modify(){
+    handleTabClick() {
+      if (this.activeName == 'compile_error_log') {
+        this.getLogs()
+      }
+      if (this.activeName == 'code_plagiarism') {
+        this.getPlagiarism()
+      }
+
+    },
+
+    modify() {
       let that = this
       this.axios({
         method: "put",
         url: "/web/lab",
         data: {
-          labId:that.lab_id,
-          title:that.project_form.title,
-          content:that.project_form.content,
-          attachmentUrl:that.project_form.attachmentUrl,
-          deadLine:that.project_form.deadLine,
+          labId: that.lab_id,
+          title: that.project_form.title,
+          content: that.project_form.content,
+          attachmentUrl: that.project_form.attachmentUrl,
+          deadLine: that.project_form.deadLine,
         },
       }).then((res) => {
         console.log(res)
@@ -274,7 +327,7 @@ name: "TeacherProjectDetail",
         }
       });
     },
-    deleteProject(){
+    deleteProject() {
       let that = this
       this.$confirm('此操作将永久删除该实验, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -285,7 +338,7 @@ name: "TeacherProjectDetail",
           method: "delete",
           url: "/web/lab",
           data: {
-            lab:that.lab_id,
+            lab: that.lab_id,
           },
         }).then((res) => {
           console.log(res)
@@ -331,7 +384,7 @@ name: "TeacherProjectDetail",
   background-color: #FFFFFF;
 }
 
-.logs{
+.logs {
   background-color: #504d5f;
   font-size: 10px;
   color: #FFFFFF;

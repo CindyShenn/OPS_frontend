@@ -45,6 +45,7 @@ app.component('PageHeader',PageHeader)
 
 
 axios.defaults.baseURL = 'http://118.178.253.239:8080';//后端开发环境地址
+axios.defaults.timeout = 50000;
 //添加请求拦截器
 axios.interceptors.request.use(
     config =>{

@@ -42,7 +42,7 @@
                 <el-tab-pane label="我的课程" name="first">
                   <div id="my-lesson">
                     <div class="flex justify-between">
-                      <el-button icon="el-icon-plus" type="primary" @click="dialogFormVisible = true">创建课程</el-button>
+                      <el-button icon="el-icon-plus" @click="dialogFormVisible = true">创建课程</el-button>
                       <el-dialog title="创建课程" v-model="dialogFormVisible" append-to-body="true" lock-scroll="true" modal="true">
                         <el-form :model="form">
                           <el-form-item label="课程名称" :label-width="formLabelWidth">
@@ -119,7 +119,7 @@
                 <el-tab-pane label="我的班级" name="third">
                   <div id="my-class">
                     <div class="flex justify-between" style="margin-bottom: 15px">
-                      <el-button icon="el-icon-plus" type="primary" @click="newClassFormVisible = true">创建班级</el-button>
+                      <el-button icon="el-icon-plus" @click="newClassFormVisible = true">创建班级</el-button>
                       <el-dialog title="创建班级" v-model="newClassFormVisible">
                         <el-form :model="new_class_form">
                           <el-form-item label="班级名称" :label-width="formLabelWidth">

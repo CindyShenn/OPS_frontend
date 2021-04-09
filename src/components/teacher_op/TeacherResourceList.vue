@@ -8,7 +8,8 @@
         <div class="resource-content" style="text-align: left;margin-top: 20px;font-size: 15px">
           {{item.content}}
         </div>
-        <div v-if="item.attachment_url" style="text-align: left;margin-top: 20px">资源链接：<el-link :href="item.attachment_url" target="_blank">{{item.attachment_url}}</el-link></div>
+        <div v-if="item.attachment_url" style="text-align: left;margin-top: 20px">资源链接：
+          <el-button type="primary" @click="downloadResource(item.attachment_url)">下载</el-button></div>
         <div class="date-and-op flex flex-row justify-between">
           <div class="resource-date info" style="margin-top: 20px;font-size: 15px">
             公告时间： {{item.created_at}}
@@ -80,6 +81,10 @@ name: "TeacherResourceList",
     getResourceUploadUrl(url){
       console.log(url)
       this.resource_form.attachmentUrl = url;
+    },
+
+    downloadResource(url){
+      window.open(url, '_blank')
     },
 
     handleModify(id){

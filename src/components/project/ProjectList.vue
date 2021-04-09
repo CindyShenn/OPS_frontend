@@ -102,36 +102,14 @@ export default {
       this.current_created_at = item.created_at;
     },
     enterIDE(){
-      let that = this
-      this.axios({
-        method: "post",
-        url: "/web/ide",
-        data: {
+      let that = this;
+      let {href} = this.$router.resolve({
+        path: '/current_ide',
+        query: {
           labId: that.current_lab_id,
-        },
-      }).then((res) => {
-        console.log(res);
-        if (res.status == 200) {
-          if (res.data.code == 0) {
-            let url = "http://"+res.data.data.url
-            console.log(url)
-            let { href } = this.$router.resolve({
-              path: '/current_ide',
-              query: {
-                url:url,
-                labId: that.current_lab_id,
-              }
-            });
-            window.open(href,'_blank');
-          } else {
-            let message = res.data.message;
-            console.log(message)
-            ElMessage.error(message);
-          }
-        } else {
-          ElMessage.error('服务器错误');
         }
       });
+      window.open(href, '_blank');
     },
   }
 }

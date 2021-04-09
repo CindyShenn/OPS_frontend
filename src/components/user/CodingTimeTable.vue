@@ -26,7 +26,7 @@ name: "CodingTimeTable",
         visualMap: {
           type: 'piecewise',
           min: 0,
-          max: 7200,
+          max: 360,
           orient: "horizontal",
           left: "center",
           inRange: {

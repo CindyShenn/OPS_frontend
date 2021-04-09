@@ -27,7 +27,7 @@
                   <div class="my-title">任课教师</div>
                   <div class="flex justify-center align-center flex-column" style="height: 100%;width: 100%">
                     <div>
-                      <el-image :src="src" style="width: 100px; height: 100px; margin-top: 20px" fit="cover">
+                      <el-image :src="src" style="width: 80px; height: 80px; margin-top: 20px" fit="cover">
                         <template #placeholder>
                           <div class="image-slot">
                             加载中<span class="dot">...</span>
@@ -193,7 +193,8 @@ export default {
       this.$router.push({name: 'LessonResource', params: { id: id,courseId:this.course_id }})
     },
     redirectEnterAllResource(id) {
-      this.$router.push({path: `/lesson_resource_all/${id}`})
+      //this.$router.push({path: `/lesson_resource_all/${id}`})
+      this.$store.commit('$_setStorageClose',this.$store.state.close+'1');
     },
     replyDialog(id) {
       this.dialogFormVisible = true;
@@ -222,11 +223,11 @@ export default {
   height: auto;
   background: #FFFFFF;
   padding: 25px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 #enter-lesson {
-  margin-top: 10px;
+  margin-top: 20px;
   height: auto;
   background: #FFFFFF;
   padding: 25px;
@@ -234,7 +235,7 @@ export default {
 #teacher-detail{
   height: auto;
   background: #FFFFFF;
-  padding: 25px;
+  padding: 17px;
 }
 .teacher-info{
   margin-top: 10px;

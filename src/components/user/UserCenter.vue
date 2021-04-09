@@ -22,7 +22,8 @@
                       {{ real_name }}
                     </div>
                     <div style="margin-left: 20px;" class="flex align-center">
-                      <el-button type="text" icon="el-icon-edit-outline" style="font-size: 15px;padding: 0px" @click="redirect('user_info')">编辑个人信息
+                      <el-button type="text" icon="el-icon-edit-outline" style="font-size: 15px;padding: 0px"
+                                 @click="redirect('user_info')">编辑个人信息
                       </el-button>
                     </div>
                   </div>
@@ -44,11 +45,13 @@
           </div>
           <div id="user-operation">
             <div id="user-operation-content" style="padding: 10px 20px 20px">
-              <el-tabs v-model="activeName"  @tab-click="handleClick">
+              <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="我的课程" name="first">
-                  <div id="lesson-list"  style="width: 100%">
-                    <div v-for="(item, index) in lessons" class="flex flex-column align-center justify-center line" style="width: 100%;margin: 0px">
-                      <div class="each-lesson flex flex-row" v-on:click="redirectLesson(item.course_id)" style="cursor:pointer">
+                  <div id="lesson-list" style="width: 100%">
+                    <div v-for="(item, index) in lessons" class="flex flex-column align-center justify-center line"
+                         style="width: 100%;margin: 0px">
+                      <div class="each-lesson flex flex-row" v-on:click="redirectLesson(item.course_id)"
+                           style="cursor:pointer">
                         <div class="each-lesson-img">
                           <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
                             <template #placeholder>
@@ -60,14 +63,15 @@
                         </div>
                         <div class="each-lesson-info flex flex-column">
                           <div class="lesson-title flex flex-row align-center" style="height: 30%">
-                            <div style="text-align: left;font-size: 30px;font-weight: 600;">{{item.course_name}}</div>
+                            <div style="text-align: left;font-size: 30px;font-weight: 600;">{{ item.course_name }}</div>
                           </div>
-                          <div class="lesson-description" style="text-align: left;color: #504d5f;font-size: 15px;height: 40%;margin-top: 10px">
+                          <div class="lesson-description"
+                               style="text-align: left;color: #504d5f;font-size: 15px;height: 40%;margin-top: 10px">
                             任课教师：{{ item.teacher_name }}
                           </div>
                           <div class="lesson-detail flex flex-row align-end justify-between" style="height: 30%">
-                            <div class="lesson-detail-content">开课时间：{{Day(item.created_at)}}</div>
-                            <div class="lesson-detail-content">是否结课：{{isClosed(item.is_close)}}</div>
+                            <div class="lesson-detail-content">开课时间：{{ Day(item.created_at) }}</div>
+                            <div class="lesson-detail-content">是否结课：{{ isClosed(item.is_close) }}</div>
                           </div>
                         </div>
                       </div>
@@ -95,7 +99,7 @@ import CodingTimeTable from "./CodingTimeTable.vue";
 
 export default {
   name: "UserCenter",
-  components:{
+  components: {
     ProjectList,
     CodingTimeTable,
   },
@@ -106,11 +110,12 @@ export default {
       id: '',
       create_time: '',
       activeName: 'first',
-      lessons:[],
-      project_records:[],
-      table_data:[],
+      lessons: [],
+      project_records: [],
+      table_data: [],
     }
   },
+
   mounted() {
     this.axios({
       method: "get",
@@ -119,7 +124,7 @@ export default {
     }).then((res) => {
       let data = res.data.data;
       this.id = data.num;
-      if(data.avatar_url != ''){
+      if (data.avatar_url != '') {
         this.src = data.avatar_url;
       }
       this.$store.commit('$_setStorageHead', this.src);
@@ -132,20 +137,20 @@ export default {
       method: "get",
       url: "/web/course/study",
       data: {
-        pageCurrent:1,
-        pageSize:20,
+        pageCurrent: 1,
+        pageSize: 20,
       },
     }).then((res) => {
       console.log(res)
-      this.lessons=res.data.data.records
+      this.lessons = res.data.data.records
       console.log(res.data.data.records)
     });
     this.axios({
       method: "get",
       url: "/web/lab/student",
       params: {
-        pageCurrent:1,
-        pageSize:20,
+        pageCurrent: 1,
+        pageSize: 20,
       },
     }).then((res) => {
       console.log(res)
@@ -163,29 +168,29 @@ export default {
       console.log(res);
     });
   },
-  methods:{
-    Day(time){
+  methods: {
+    Day(time) {
       return getDay(time)
     },
-    redirectProject(id){
-      this.$router.push({ path:`/project_detail/${id}`})
+    redirectProject(id) {
+      this.$router.push({path: `/project_detail/${id}`})
     },
-    redirect(url){
-      this.$router.push({ path:url})
+    redirect(url) {
+      this.$router.push({path: url})
     },
-    redirectLesson(id){
-      this.$router.push({ path:`/lesson_detail/${id}`})
+    redirectLesson(id) {
+      this.$router.push({path: `/lesson_detail/${id}`})
     },
-    logout(){
+    logout() {
       this.$store.commit('$_removeStorage');
       this.$store.commit('$_removeStorageRole')
-      this.$router.push({ path:'login'})
+      this.$router.push({path: 'login'})
     },
-    isClosed(value){
-      return value=='2' ? '是' : '否'
+    isClosed(value) {
+      return value == '2' ? '是' : '否'
     },
-    isFinished(value){
-      return value=='2' ? '是' : '否'
+    isFinished(value) {
+      return value == '2' ? '是' : '否'
     }
   },
 }
@@ -208,7 +213,7 @@ export default {
 
 }
 
-#user-coding-time{
+#user-coding-time {
   margin-top: 20px;
   height: auto;
   width: 100%;
@@ -240,6 +245,7 @@ export default {
   font-size: 15px;
   margin-top: 10px;
 }
+
 .each-lesson {
   height: 150px;
   width: 80%;
@@ -254,11 +260,11 @@ export default {
 
 .each-lesson-info {
   height: 150px;
-  width:calc(100% - 180px);
+  width: calc(100% - 180px);
   margin-left: 30px;
 }
 
-.lesson-detail-content{
+.lesson-detail-content {
   width: 30%;
   text-align: left;
 }

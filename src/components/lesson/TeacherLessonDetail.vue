@@ -61,13 +61,13 @@
               <el-dialog title="新建签到" v-model="newCheckInFormVisible" append-to-body="true" lock-scroll="true" modal="true">
                 <el-form :model="check_in_form">
                   <el-form-item label="签到名称" :label-width="formLabelWidth">
-                    <el-input v-model="check_in_form.name" autocomplete="off" placeholder="请输入签到名称"></el-input>
+                    <el-input v-model="check_in_form.name" placeholder="请输入签到名称"></el-input>
                   </el-form-item>
-                  <el-form-item label="签到时长" :label-width="formLabelWidth">
-                    <el-input v-model="check_in_form.duration" autocomplete="off" placeholder="请输入签到时长"></el-input>
+                  <el-form-item label="签到时长(秒)" :label-width="formLabelWidth">
+                    <el-input v-model="check_in_form.duration" placeholder="请输入签到时长"></el-input>
                   </el-form-item>
                   <el-form-item label="签到密码" :label-width="formLabelWidth">
-                    <el-input v-model="check_in_form.secretKey" autocomplete="off" placeholder="请输入签到密码"></el-input>
+                    <el-input v-model="check_in_form.secretKey"  placeholder="请输入签到密码"></el-input>
                   </el-form-item>
                 </el-form>
                 <template #footer>
@@ -130,7 +130,11 @@
                     <el-input v-model="project_form.content" autocomplete="off" placeholder="请输入实验描述"></el-input>
                   </el-form-item>
                   <el-form-item label="截止日期" :label-width="formLabelWidth" prop="deadLine" >
-                    <el-input v-model="project_form.deadLine" autocomplete="off" placeholder="请输入实验截止日期"></el-input>
+                    <el-date-picker
+                        v-model="project_form.deadLine"
+                        type="datetime"
+                        placeholder="请选择截止时间">
+                    </el-date-picker>
                   </el-form-item>
                   <el-form-item label="上传附件" :label-width="formLabelWidth" prop="attachmentUrl" style="margin-top: 40px">
                     <UploadRar v-on:getUrl = "getProjectUploadUrl"></UploadRar>
@@ -390,7 +394,7 @@ export default {
         attachmentUrl:'',
       },
 
-      formLabelWidth: '80px',
+      formLabelWidth: '100px',
       project_rules: {
         title:[
           { required: true, message: '请输入实验标题', trigger: 'blur' },
@@ -582,7 +586,7 @@ export default {
         if (res.status == 200) {
           if (res.data.code == 0) {
             ElMessage.success({
-              message: '创建成功！',
+              message: '新建签到成功！',
               type: 'success'
             });
             this.reload()

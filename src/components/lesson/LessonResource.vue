@@ -18,8 +18,8 @@
               <div class="resource-content" style="text-align: left;margin-top: 20px">
                 {{ content }}
               </div>
-              <div v-if="attachment_url" style="text-align: left;margin-top: 20px">资源链接：
-                <el-link :href="attachment_url" target="_blank">{{ attachment_url }}</el-link>
+              <div v-if="attachment_url" style="text-align: left;margin-top: 20px">下载资源：
+                <el-button type="primary" @click="downloadResource()">下载</el-button>
               </div>
               <div class="resource-date info" style="margin-top: 20px">
                 公告时间： {{ resource_created_at }}
@@ -55,6 +55,11 @@ export default {
       date: '',
       attachment_url: '',
       resource_records: [],
+    }
+  },
+  methods:{
+    downloadResource(){
+      window.open(this.attachment_url, '_blank')
     }
   },
   mounted() {

@@ -136,7 +136,7 @@ name: "StudentEnterLesson",
         if (res.status == 200) {
           if (res.data.code == 0) {
             ElMessage.success({
-                message: '签到成功！',
+                message: '签到成功！请勿重复点击，签到信息60秒后才会更新~',
               type: 'success'
             });
           } else {
