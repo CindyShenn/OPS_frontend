@@ -79,6 +79,9 @@ export default {
       current_is_finished:'',
       current_dead_line:'',
       current_created_at:'',
+
+      url:'',
+      usrId:'',
     }
   },
   methods: {
@@ -101,15 +104,53 @@ export default {
       this.current_dead_line = item.dead_line;
       this.current_created_at = item.created_at;
     },
+
     enterIDE(){
       let that = this;
-      let {href} = this.$router.resolve({
-        path: '/current_ide',
-        query: {
+
+      // 获取ide url
+      this.axios({
+        method: "post",
+        url: "/web/ide",
+        data: {
           labId: that.current_lab_id,
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            let url = "http://" + res.data.data.url
+            console.log(url)
+            that.url = url;
+            // 获取用户id
+            this.axios({
+              method: "get",
+              url: "/web/user",
+              data: {},
+            }).then((res) => {
+              console.log(res)
+              that.usrId = res.data.data.user_id
+              console.log(this.usrId)
+              // 跳转
+              let {href} = this.$router.resolve({
+                path: '/current_ide',
+                query: {
+                  labId: that.current_lab_id,
+                  url: that.url,
+                  usrId:that.usrId,
+                }
+              });
+              window.open(href, '_blank');
+            });
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
         }
       });
-      window.open(href, '_blank');
     },
   }
 }

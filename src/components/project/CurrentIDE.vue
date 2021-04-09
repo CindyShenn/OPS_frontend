@@ -43,40 +43,45 @@ export default {
 
   mounted() {
     this.labId = this.$route.query.labId;
+    this.usrId = this.$route.query.usrId;
+    this.url = this.$route.query.url;
+
+    console.log(this.usrId)
+
     let that = this;
 
-    this.axios({
-      method: "post",
-      url: "/web/ide",
-      data: {
-        labId: that.labId,
-      },
-    }).then((res) => {
-      console.log(res);
-      if (res.status == 200) {
-        if (res.data.code == 0) {
-          let url = "http://" + res.data.data.url
-          console.log(url)
-          this.url = url;
-        } else {
-          let message = res.data.message;
-          console.log(message)
-          ElMessage.error(message);
-        }
-      } else {
-        ElMessage.error('服务器错误');
-      }
-    });
-
-    this.axios({
-      method: "get",
-      url: "/web/user",
-      data: {},
-    }).then((res) => {
-      console.log(res)
-      this.usrId = res.data.data.user_id
-      console.log(this.usrId)
-    });
+    // this.axios({
+    //   method: "post",
+    //   url: "/web/ide",
+    //   data: {
+    //     labId: that.labId,
+    //   },
+    // }).then((res) => {
+    //   console.log(res);
+    //   if (res.status == 200) {
+    //     if (res.data.code == 0) {
+    //       let url = "http://" + res.data.data.url
+    //       console.log(url)
+    //       this.url = url;
+    //     } else {
+    //       let message = res.data.message;
+    //       console.log(message)
+    //       ElMessage.error(message);
+    //     }
+    //   } else {
+    //     ElMessage.error('服务器错误');
+    //   }
+    // });
+    //
+    // this.axios({
+    //   method: "get",
+    //   url: "/web/user",
+    //   data: {},
+    // }).then((res) => {
+    //   console.log(res)
+    //   this.usrId = res.data.data.user_id
+    //   console.log(this.usrId)
+    // });
 
     // window.addEventListener('beforeunload', (e) => {
     //   if (that.$route.name == "CurrentIDE") {
@@ -189,6 +194,7 @@ export default {
     },
     websocketSend(Data) {//数据发送
       this.websocket.send(Data);
+      console.log(Data)
     },
     websocketClose(e) {  //关闭
       console.log('断开连接', e);

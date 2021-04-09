@@ -36,12 +36,12 @@
                     </el-table-column>
                     <el-table-column
                         prop="coding_time"
-                        label="编码时长">
+                        label="编码时长(min)">
                     </el-table-column>
                     <el-table-column
                         label="查看代码">
                       <template #default="scope">
-                        <el-button :disabled="true ? scope.row.finish_stat == 0:false" size="small" type="primary" @click="checkCode(scope.row.user_id)">查看
+                        <el-button :disabled="true ? scope.row.finish_stat == 0:false" size="small" type="primary" @click="checkCode(scope.row.stu_id)">查看
                         </el-button>
                       </template>
                     </el-table-column>
@@ -72,7 +72,7 @@
                           <template #footer>
     <span class="dialog-footer">
       <el-button @click="gradeDialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="modifyGrade(scope.row.user_id)">确 定</el-button>
+      <el-button type="primary" @click="modifyGrade(scope.row.stu_id)">确 定</el-button>
     </span>
                           </template>
                         </el-dialog>
@@ -171,6 +171,8 @@ export default {
 
       logs: 'no data',
 
+      ideUrl:'',
+
       activeName: 'finish_situation',
 
       gradeDialogVisible: false,
@@ -257,7 +259,43 @@ export default {
     },
 
     checkCode(id){
+      let that = this
+      // 获取ide url
+      this.axios({
+        method: "post",
+        url: "/web/ide/checkCode",
+        data: {
+          labId: that.lab_id,
+          stuId: id
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            let url = "http://" + res.data.data.url
+            console.log(url)
+            that.ideUrl = url;
 
+            // 跳转
+            let {href} = this.$router.resolve({
+              path: '/current_ide',
+              query: {
+                labId: that.lab_id,
+                url: that.ideUrl,
+                usrId:id
+              }
+            });
+            window.open(href, '_blank');
+
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
     },
 
     getLogs() {
