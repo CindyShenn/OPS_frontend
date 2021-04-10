@@ -53,6 +53,26 @@
                       </el-dialog>
                     </div>
                     <div id="check-in-record">
+                      <div class="my-title">我的签到记录</div>
+                      <el-table
+                          :data="check_in_records"
+                          style="width: 100%;margin-top: 20px">
+                        <el-table-column
+                            prop="name"
+                            label="签到名称">
+                        </el-table-column>
+                        <el-table-column
+                            prop="created_at"
+                            label="签到时间">
+                        </el-table-column>
+                        <el-table-column
+                            label="是否参与本次签到">
+                          <template #default="scope">
+                            <el-tag v-if="scope.row.is_checkin == true" type="success">是</el-tag>
+                            <el-tag v-if="scope.row.is_checkin == false" type="danger">否</el-tag>
+                          </template>
+                        </el-table-column>
+                      </el-table>
                     </div>
                   </div>
                 </el-tab-pane>
@@ -111,6 +131,7 @@ name: "StudentEnterLesson",
     records:[],
     resource_records:[],
     project_records:[],
+    check_in_records:[],
     dialogFormVisible: false,
     pwd:'',
   }
@@ -179,7 +200,19 @@ name: "StudentEnterLesson",
     }).then((res) => {
       console.log(res)
       this.resource_records = res.data.data.records
-      console.log(this.records)
+    });
+
+    this.axios({
+      method: "get",
+      url: "/web/checkin/record/user",
+      params: {
+        pageCurrent:1,
+        pageSize:20,
+        courseId:this.course_id
+      },
+    }).then((res) => {
+      console.log(res)
+      this.check_in_records = res.data.data.records
     });
 
     //this.project_records = getLabByCourseId(this.course_id)
@@ -278,5 +311,8 @@ name: "StudentEnterLesson",
 #check-in{
   width: 100%;
   padding: 25px;
+}
+#check-in-record{
+  margin-top: 20px;
 }
 </style>

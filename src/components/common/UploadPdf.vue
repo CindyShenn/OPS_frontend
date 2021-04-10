@@ -1,29 +1,32 @@
 <template>
-  <div class="flex justify-left align-center" style="height: 100%;width: 100%">
-    <el-upload
-        class="upload-demo"
-        ref="upload"
-        :action="uploadUrl"
-        :headers="headers"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :limit="1"
-        :on-exceed="handleExceed"
-        :file-list="fileList"
-        :before-upload="beforeUpload"
-        :on-success="handleSuccess"
-        :auto-upload="false"
-        name="attachment"
-        multiple
-    >
-      <template #trigger>
-        <el-button type="primary">选择文件</el-button>
-      </template>
-      <el-button style="margin-left: 20px;" type="success" @click="submitUpload">确认上传</el-button>
-      <template #tip>
-        <div class="el-upload__tip">只能上传 pdf 文件，且不超过 2M</div>
-      </template>
-    </el-upload>
+  <div class="flex flex-column">
+    <div class="flex justify-left align-center" style="height: 100%;width: 100%">
+      <el-upload
+          class="upload-demo"
+          ref="upload"
+          :action="uploadUrl"
+          :headers="headers"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :limit="1"
+          :on-exceed="handleExceed"
+          :file-list="fileList"
+          :before-upload="beforeUpload"
+          :on-success="handleSuccess"
+          :auto-upload="false"
+          name="attachment"
+          multiple
+      >
+        <template #trigger>
+          <el-button type="primary">选择文件</el-button>
+        </template>
+        <el-button style="margin-left: 20px;" type="success" @click="submitUpload">确认上传</el-button>
+        <template #tip>
+          <div class="el-upload__tip">只能上传 pdf 文件，且不超过 2M</div>
+        </template>
+      </el-upload>
+    </div>
+    <el-button v-if="fileUrl != ''" type="primary" style="margin-top: 20px" @click="checkUploaded">查看已上传文件</el-button>
   </div>
 </template>
 
@@ -74,6 +77,9 @@ name: "UploadPdf",
         this.$message.error('上传附件大小不能超过 2MB!');
       }
       return isPDF && isLt2M;
+    },
+    checkUploaded(){
+      window.location.href="http://"+this.fileUrl;
     },
   },
   computed: {

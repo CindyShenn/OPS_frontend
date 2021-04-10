@@ -103,7 +103,7 @@ name: "TeacherResourceList",
           method: "delete",
           url: "/web/course/resource",
           data: {
-            courseResourceId:that.courseResourceId,
+            courseResourceId:id,
           },
         }).then((res) => {
           console.log(res)

@@ -58,6 +58,7 @@
           <div class="check-in">
             <div id="new-check-in" class="flex">
               <el-button plain icon="el-icon-plus" @click="newCheckInFormVisible = true">新建签到</el-button>
+              <el-button plain icon="el-icon-download" @click="exportCheckInTable" style="margin-left: 20px">导出签到表</el-button>
               <el-dialog title="新建签到" v-model="newCheckInFormVisible" append-to-body="true" lock-scroll="true" modal="true">
                 <el-form :model="check_in_form">
                   <el-form-item label="签到名称" :label-width="formLabelWidth">
@@ -248,12 +249,6 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane name="sixth">
-          <template #label>
-            <span style="font-size: 15px">课程资源</span>
-          </template>
-
-        </el-tab-pane>
         <el-tab-pane name="seventh">
           <template #label>
             <span style="font-size: 15px">课程问答</span>
@@ -440,6 +435,20 @@ export default {
       this.comments_records = res.data.data.records;
       this.comments_total = res.data.data.page_info.total;
       console.log(this.comments_records)
+    });
+
+    // 查询签到记录
+    this.axios({
+      method: "get",
+      url: "/web/checkin/records",
+      params: {
+        pageCurrent:1,
+        pageSize:20,
+        courseId:this.course_id
+      },
+    }).then((res) => {
+      console.log(res)
+      this.check_in_records = res.data.data.records;
     });
 
     this.axios({
@@ -663,6 +672,18 @@ export default {
         }
       });
     },
+
+    exportCheckInTable(){
+      this.axios({
+        method: "get",
+        url: "/web/export/"+this.course_id,
+        params: {
+        },
+      }).then((res) => {
+        console.log(res)
+      });
+    },
+
     deleteCheckIn(id){
       this.$confirm('此操作将永久删除该签到记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
