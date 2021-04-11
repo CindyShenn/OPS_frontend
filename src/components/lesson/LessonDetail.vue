@@ -58,7 +58,27 @@
                 </div>
                 <div id="enter-lesson" class="flex flex-column">
                   <div class="flex justify-center align-center" style="height: 100%;width: 100%">
-                    <el-button type="primary" @click="redirectEnterLesson(course_id)">进入课程</el-button>
+                    <el-button v-if="is_enroll==true" type="primary" @click="redirectEnterLesson(course_id)">进入课程</el-button>
+                    <el-button v-if="is_enroll==false" type="primary" @click="enrollLessonDialogFormVisible = true">加入课程</el-button>
+                    <el-dialog title="加入课程" v-model="enrollLessonDialogFormVisible">
+                      <el-form :rules="enroll_rules">
+                        <el-form-item label="选课密码：" prop="password">
+                          <el-input
+                              type="text"
+                              placeholder="请输入6位选课密码"
+                              v-model="password"
+                              maxlength="6"
+                              clearable>
+                          </el-input>
+                        </el-form-item>
+                      </el-form>
+                      <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="modifyCheckInDialogFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="enRollLesson">确 定</el-button>
+    </span>
+                      </template>
+                    </el-dialog>
                   </div>
                 </div>
               </el-affix>
@@ -74,6 +94,7 @@
 
 import LessonContent from "./LessonContent.vue"
 import LessonQA from "./LessonQA.vue";
+import {ElMessage} from "element-plus";
 
 export default {
   components: {LessonContent, LessonQA},
@@ -86,6 +107,7 @@ export default {
       teacher_id:'',
       created_at: '',
       is_closed: '是',
+      is_enroll:'',
       description: '',
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       total: 0,
@@ -104,7 +126,14 @@ export default {
       teacher_real_name:'',
       teacher_avatar_url:'',
 
-
+      enrollLessonDialogFormVisible:false,
+      password:'',
+      enroll_rules: {
+        password:[
+          { required: true, message: '请输入选课密码', trigger: 'blur' },
+          { min: 6, max: 6, message: '请输入6位密码', trigger: 'blur' }
+        ],
+      },
     }
   },
   mounted() {
@@ -123,6 +152,7 @@ export default {
       this.created_at = res.data.data.created_at;
       this.is_closed = res.data.data.is_closed == '2' ? '已结课' : '未结课';
       this.description = res.data.data.course_des;
+      this.is_enroll = res.data.data.is_enroll;
       if (res.data.data.pic_url != null) {
         this.src = res.data.data.pic_url
       }
@@ -210,7 +240,37 @@ export default {
     },
     getCommentPage(page){
       this.getComments(page)
-    }
+    },
+    enRollLesson(){
+      this.enrollLessonDialogFormVisible = false;
+      let that = this
+      this.axios({
+        method: "post",
+        url: "/web/course/attend",
+        data: {
+          courseId:that.course_id,
+          secretKey:that.password,
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '加入成功！',
+              type: 'success'
+            });
+            this.reload();
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
+
+    },
   }
 }
 </script>

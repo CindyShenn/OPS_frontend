@@ -8,7 +8,7 @@
             <div class="flex justify-between" style="margin: 20px">
               <div class="flex">
                 <div class="user-img">
-                  <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
+                  <el-image :src="ava_src" style="width: 100%; height: 100%" fit="cover">
                     <template #placeholder>
                       <div class="image-slot">
                         加载中<span class="dot">...</span>
@@ -44,17 +44,17 @@
                     <div class="flex justify-between">
                       <el-button icon="el-icon-plus" @click="dialogFormVisible = true">创建课程</el-button>
                       <el-dialog title="创建课程" v-model="dialogFormVisible" append-to-body="true" lock-scroll="true" modal="true">
-                        <el-form :model="form">
-                          <el-form-item label="课程名称" :label-width="formLabelWidth">
+                        <el-form :model="form" :rules="lesson_rules">
+                          <el-form-item label="课程名称" :label-width="formLabelWidth" prop="name">
                             <el-input v-model="form.name" autocomplete="off" placeholder="请输入课程名称"></el-input>
                           </el-form-item>
-                          <el-form-item label="课程描述" :label-width="formLabelWidth">
-                            <el-input v-model="form.description" type="textarea"
-                                      placeholder="请输入课程描述" autocomplete="off" maxlength="30"
+                          <el-form-item label="课程描述" :label-width="formLabelWidth" prop="description">
+                            <el-input v-model="form.description" type="textarea" autosize
+                                      placeholder="请输入课程描述" autocomplete="off" maxlength="200"
                                       show-word-limit></el-input>
                           </el-form-item>
-                          <el-form-item label="加入密码" :label-width="formLabelWidth">
-                            <el-input v-model="form.password" autocomplete="off" placeholder="请输入班级加入密码"></el-input>
+                          <el-form-item label="加入密码" :label-width="formLabelWidth" prop="password">
+                            <el-input v-model="form.password" autocomplete="off" placeholder="请输入课程加入密码（6位）"></el-input>
                           </el-form-item>
                           <el-form-item label="课程封面" :label-width="formLabelWidth">
                             <el-upload
@@ -69,6 +69,14 @@
                               <img v-if="imageUrl" :src="imageUrl" class="avatar">
                               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                             </el-upload>
+                          </el-form-item>
+                          <el-form-item label="课程语言" :label-width="formLabelWidth">
+                            <el-radio-group v-model="language_radio">
+                              <el-radio :label="1">cpp</el-radio>
+                              <el-radio :label="2">java</el-radio>
+                              <el-radio :label="3">python</el-radio>
+                              <el-radio :label="4">js/ts</el-radio>
+                            </el-radio-group>
                           </el-form-item>
                         </el-form>
                         <template #footer>
@@ -122,16 +130,16 @@
                       <el-button icon="el-icon-plus" @click="newClassFormVisible = true">创建班级</el-button>
                       <el-dialog title="创建班级" v-model="newClassFormVisible">
                         <el-form :model="new_class_form">
-                          <el-form-item label="班级名称" :label-width="formLabelWidth">
+                          <el-form-item label="班级名称" :label-width="formLabelWidth" prop="name">
                             <el-input v-model="new_class_form.name" autocomplete="off" placeholder="请输入班级名称"></el-input>
                           </el-form-item>
-                          <el-form-item label="班级描述" :label-width="formLabelWidth">
+                          <el-form-item label="班级描述" :label-width="formLabelWidth" prop="description">
                             <el-input v-model="new_class_form.description" type="textarea"
-                                      placeholder="请输入班级描述" autocomplete="off" maxlength="30"
+                                      placeholder="请输入班级描述" autocomplete="off" maxlength="200"
                                       show-word-limit></el-input>
                           </el-form-item>
-                          <el-form-item label="加入密码" :label-width="formLabelWidth">
-                            <el-input v-model="new_class_form.password" autocomplete="off" placeholder="请输入班级加入密码"></el-input>
+                          <el-form-item label="加入密码" :label-width="formLabelWidth" prop="password">
+                            <el-input v-model="new_class_form.password" autocomplete="off" placeholder="请输入班级加入密码(6位)"></el-input>
                           </el-form-item>
                         </el-form>
                         <template #footer>
@@ -237,6 +245,7 @@ name: "TeacherUserCenter",
   data() {
     return {
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
+      ava_src:'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
       real_name: '',
       id: '',
       create_time: '',
@@ -280,6 +289,20 @@ name: "TeacherUserCenter",
         password:'',
       },
       search: '',
+      language_radio:1,
+
+      lesson_rules: {
+        name:[
+          { required: true, message: '请输入课程名称', trigger: 'blur' },
+        ],
+        description:[
+          { required: true, message: '请输入实验描述', trigger: 'blur' },
+        ],
+        password:[
+          { required: true, message: '请输入加入密码', trigger: 'blur' },
+          { min: 6, max: 6, message: '请输入6位密码', trigger: 'blur' }
+        ]
+      },
     }
   },
   mounted() {
@@ -291,9 +314,9 @@ name: "TeacherUserCenter",
       let data = res.data.data;
       this.id = data.num;
       if(data.avatar_url != ''){
-        this.src = data.avatar_url;
+        this.ava_src = data.avatar_url;
       }
-      this.$store.commit('$_setStorageHead', this.src);
+      this.$store.commit('$_setStorageHead', this.ava_src);
       this.create_time = data.created_at;
       this.real_name = data.real_name;
       console.log(res);
@@ -360,6 +383,7 @@ name: "TeacherUserCenter",
           secretkey: that.form.secretkey,
           courseName:that.form.name,
           picUrl:that.imageUrl,
+          language:that.language_radio,
         },
       }).then((res) => {
         console.log(res);

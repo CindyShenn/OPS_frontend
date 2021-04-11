@@ -7,16 +7,20 @@
     <div id="add-comment">
       <div style="padding: 20px">
         <div style="text-align: left;font-size: 20px">我也提个问题</div>
-        <el-input
-            type="textarea"
-            placeholder="请输入内容"
-            v-model="commentText"
-            maxlength="150"
-            show-word-limit
-            rows="5"
-            style="margin-top: 10px"
-        >
-        </el-input>
+        <el-form :rules="QA_rules">
+        <el-form-item prop="content">
+          <el-input
+              type="textarea"
+              placeholder="请输入内容"
+              v-model="commentText"
+              maxlength="150"
+              show-word-limit
+              rows="5"
+              style="margin-top: 10px"
+          >
+          </el-input>
+        </el-form-item>
+      </el-form>
         <div class="flex justify-flex-end">
           <el-button type="primary" style="margin-top: 10px" @click="makeComment">提交</el-button>
         </div>
@@ -148,6 +152,11 @@ name: "LessonQA",
       currentReply:'',
       src:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       dialogFormVisible: false,
+      A_rules: {
+        content:[
+          { required: true, message: '请输入提问内容', trigger: 'blur' },
+        ],
+      },
     }
   },
   methods:{

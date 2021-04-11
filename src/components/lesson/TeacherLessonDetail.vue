@@ -29,11 +29,6 @@
                   </el-image>
                 </div>
               </el-upload>
-              <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程ID</span>
-              <el-input
-                  v-model="course_id"
-                  :disabled="true">
-              </el-input>
               <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程名</span>
               <el-input placeholder="请输入课程名" v-model="course_name"/>
               <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程描述</span>
@@ -45,9 +40,14 @@
                 <el-radio :label=1>是</el-radio>
                 <el-radio :label=2>否</el-radio>
               </el-radio-group>
-              <el-button type="primary" style="width: 100%;margin-top: 30px;height: 50px;margin-bottom: 30px"
-                         @click="modify()">确认修改
-              </el-button>
+              <div class="flex justify-between" style="margin-top: 20px">
+                <el-button type="primary" style=""
+                           @click="modify()">确认修改
+                </el-button>
+                <el-button type="danger" style="margin-left: 200px"
+                           @click="deleteLesson()">删除课程
+                </el-button>
+              </div>
             </div>
           </div>
         </el-tab-pane>
@@ -128,7 +128,7 @@
                     <el-input v-model="project_form.title" autocomplete="off" placeholder="请输入实验标题"></el-input>
                   </el-form-item>
                   <el-form-item label="实验描述" :label-width="formLabelWidth" prop="content">
-                    <el-input v-model="project_form.content" autocomplete="off" placeholder="请输入实验描述"></el-input>
+                    <el-input v-model="project_form.content" autocomplete="off" placeholder="请输入实验描述"  maxlength="200" autosize show-word-limit></el-input>
                   </el-form-item>
                   <el-form-item label="截止日期" :label-width="formLabelWidth" prop="deadLine" >
                     <el-date-picker
@@ -227,8 +227,8 @@
                   <el-form-item label="公告标题" :label-width="formLabelWidth" prop="title">
                     <el-input v-model="resource_form.title" autocomplete="off" placeholder="请输入公告标题"></el-input>
                   </el-form-item>
-                  <el-form-item label="公告详情" :label-width="formLabelWidth" prop="content">
-                    <el-input v-model="resource_form.content" autocomplete="off" placeholder="请输入公告详情"></el-input>
+                  <el-form-item label="公告详情" :label-width="formLabelWidth">
+                    <el-input v-model="resource_form.content" placeholder="请输入公告详情" show-word-limit prop="content" maxlength="200" autosize></el-input>
                   </el-form-item>
                   <el-form-item label="上传附件" :label-width="formLabelWidth" prop="attachmentUrl" style="margin-top: 40px">
                     <UploadRar v-on:getUrl = "getResourceUploadUrl"></UploadRar>
@@ -723,6 +723,43 @@ export default {
     },
     getResourceUploadUrl(url){
       this.resource_form.attachmentUrl = url;
+    },
+    deleteLesson() {
+      let that = this
+      this.$confirm('此操作将永久删除该课程, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios({
+          method: "delete",
+          url: "/web/course",
+          data: {
+            courseId: that.course_id,
+          },
+        }).then((res) => {
+          console.log(res)
+          if (res.status == 200) {
+            if (res.data.code == 0) {
+              ElMessage.success({
+                message: '删除成功！',
+                type: 'success'
+              });
+            } else {
+              let message = res.data.message;
+              console.log(message)
+              ElMessage.error(message);
+            }
+          } else {
+            ElMessage.error('服务器错误');
+          }
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
   },
   computed: {

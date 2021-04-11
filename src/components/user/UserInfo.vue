@@ -68,7 +68,7 @@ export default {
       major: '',
       num: '',
       email:'',
-      avatar_url:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
+      avatar_url:'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
       uploadData: {
         width:'256'
       },

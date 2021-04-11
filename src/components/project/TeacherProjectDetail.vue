@@ -81,6 +81,10 @@
                   </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="代码抄袭情况" name="code_plagiarism">
+                  <div class="flex justify-between">
+                    <div style="text-align: center;color: #dd6161;font-size: 15px">* 请勿频繁刷新代码抄袭情况！</div>
+                    <el-button icon="el-icon-refresh-right" @click="getPlagiarism">刷新</el-button>
+                  </div>
                   <div id="plagiarism">
                     <el-table
                         :data="plagiarism_records"
@@ -313,7 +317,6 @@ export default {
     },
 
     getPlagiarism(){
-      // 代码抄袭
       // 代码抄袭
       this.axios({
         method: "get",

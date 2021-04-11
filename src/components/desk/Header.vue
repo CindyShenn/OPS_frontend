@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import store from "../../store";
+
 export default {
   name: "Header.vue",
   data() {
@@ -52,7 +54,11 @@ export default {
           this.logout()
           break;
         case "userManage":
-          this.$router.push('/')
+          let role = this.$store.state.role
+          if (role ==1){
+            this.redirect('teacher_user_center')
+          }
+          else this.redirect('user_center')
           break
       }
     },

@@ -1,11 +1,11 @@
 <template>
   <div id="lesson-list" style="width: 100%">
-    <div v-for="(item, index) in lessons" class="flex flex-column align-center justify-center line"
+    <div v-for="(item, index) in lessons" class="flex flex-column align-start justify-start line"
          style="width: 100%;margin: 0px">
       <div class="each-lesson flex flex-row" v-on:click="redirectLesson(item.course_id)"
            style="cursor:pointer">
         <div class="each-lesson-img">
-          <el-image :src="item.pic_url ? item.pic_url != null :src" style="width: 100%; height: 100%" fit="cover">
+          <el-image :src="item.pic_url == null ? src: item.pic_url" style="width: 100%; height: 100%" fit="cover">
             <template #placeholder>
               <div class="image-slot">
                 加载中<span class="dot">...</span>
@@ -16,14 +16,15 @@
         <div class="each-lesson-info flex flex-column">
           <div class="lesson-title flex flex-row align-center" style="height: 30%">
             <div style="text-align: left;font-size: 30px;font-weight: 600;">{{ item.course_name }}</div>
+            <el-tag v-if="item.is_close == 1" type="danger" style="margin-left: 20px">{{ isClosed(item.is_close) }}</el-tag>
+            <el-tag v-if="item.is_close == 2" type="success" style="margin-left: 20px">{{ isClosed(item.is_close) }}</el-tag>
           </div>
           <div class="lesson-description"
                style="text-align: left;color: #504d5f;font-size: 15px;height: 40%;margin-top: 10px">
-            任课教师：{{ item.teacher_name }}
+            {{ item.course_des }}
           </div>
           <div class="lesson-detail flex flex-row align-end justify-between" style="height: 30%">
             <div class="lesson-detail-content">开课时间：{{ Day(item.created_at) }}</div>
-            <div class="lesson-detail-content">是否结课：{{ isClosed(item.is_close) }}</div>
           </div>
         </div>
       </div>
@@ -49,7 +50,7 @@ name: "LessonList",
       this.$router.push({path: `/lesson_detail/${id}`})
     },
     isClosed(value) {
-      return value == '2' ? '是' : '否'
+      return value == '2' ? '未结课' : '已结课'
     },
   },
 }

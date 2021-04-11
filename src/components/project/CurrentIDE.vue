@@ -42,9 +42,11 @@ export default {
   },
 
   mounted() {
-    this.labId = this.$route.query.labId;
-    this.usrId = this.$route.query.usrId;
-    this.url = this.$route.query.url;
+    let init
+    init = setTimeout(this.iniIDE,5000)
+    // this.labId = this.$route.query.labId;
+    // this.usrId = this.$route.query.usrId;
+    // this.url = this.$route.query.url;
 
     console.log(this.usrId)
 
@@ -170,6 +172,12 @@ export default {
       // });
 
 
+    },
+    iniIDE(){
+      this.labId = this.$route.query.labId;
+      this.usrId = this.$route.query.usrId;
+      this.url = this.$route.query.url;
+      console.log('初始化完成')
     },
     initWebSocket() { //初始化websocket
       const wsUri = "ws://118.178.253.239:8080/web/ide/connect";

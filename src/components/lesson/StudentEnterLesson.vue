@@ -34,7 +34,8 @@
                 <el-tab-pane label="课程实验" name="first">
                   <div id="lesson-projects">
                     <ProjectList
-                      :project_records="project_records">
+                      :project_records="project_records"
+                      v-on:reload = "reloadProject">
                   </ProjectList>
                     <Pagination
                         :total="total_project"
@@ -159,6 +160,10 @@ name: "StudentEnterLesson",
         that.project_records = res.data.data.records;
         that.total_project = res.data.data.page_info.total
       });
+    },
+
+    reloadProject(){
+      this.getProject(1)
     },
 
     getProjectPage(page){

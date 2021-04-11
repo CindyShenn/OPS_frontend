@@ -4,15 +4,26 @@
       <div id="single-project" class="flex flex-column align-start">
         <div class="flex flex-column align-start justify-between"
              style="margin-top: 15px;margin-left: 15px;height: 100%;width: 90%">
-          <span style="font-size: 25px;font-weight:600">{{ item.title }}</span>
+          <div class="flex"><span style="font-size: 25px;font-weight:600">{{ item.title }}</span>
+          </div>
+
           <span style="font-size: 15px;text-align: left">{{ item.content }}</span>
           <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
             <div class="project-detail flex align-center justify-center ">
-              <div>
-                创建时间：{{ Day(item.created_at) }} &emsp;截止日期：{{ item.dead_line == null? "无": item.dead_line }} &emsp;<el-tag type="danger">
-                {{ item.is_finished == true ? '已完成' : '未完成' }}
-              </el-tag>
+              <div >
+                创建时间：{{ Day(item.created_at) }} &emsp;截止日期：{{ item.dead_line == null? "无": item.dead_line }}  &emsp;所属课程：{{item.course_name}}
               </div>
+              <el-switch
+                  style="display: block; margin-left: 20px"
+                  :value="item.is_finish"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  active-text="已完成"
+                  inactive-text="未完成"
+                  @change="switchChange(item.lab_id,item.is_finish)"
+
+              >
+              </el-switch>
             </div>
             <el-button type="primary" style="margin-bottom: 10px" @click="projectDetail(item)">进入实验</el-button>
             <el-drawer
@@ -82,6 +93,8 @@ export default {
 
       url:'',
       usrId:'',
+
+      reload:'',
     }
   },
   methods: {
@@ -94,6 +107,40 @@ export default {
     getReportUploadUrl(url){
       console.log(url)
       this.uploadUrl = url;
+    },
+    switchChange(id,finish){
+      console.log(id)
+      let that = this
+      this.$confirm('是否确认修改代码完成情况?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.axios({
+          method: "post",
+          url: "/web/summit/code",
+          data: {
+            isFinish: !finish,
+            labId:id
+          },
+        }).then((res) => {
+          console.log(res)
+          if (res.status == 200) {
+              ElMessage.success({
+                message: '修改成功！',
+                type: 'success'
+              });
+            this.$emit('reload',!this.reload)
+          } else {
+            ElMessage.error('服务器错误');
+          }
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
     projectDetail(item){
       this.drawer = true;
