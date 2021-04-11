@@ -47,41 +47,22 @@
             <div id="user-operation-content" style="padding: 10px 20px 20px">
               <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="我的课程" name="first">
-                  <div id="lesson-list" style="width: 100%">
-                    <div v-for="(item, index) in lessons" class="flex flex-column align-center justify-center line"
-                         style="width: 100%;margin: 0px">
-                      <div class="each-lesson flex flex-row" v-on:click="redirectLesson(item.course_id)"
-                           style="cursor:pointer">
-                        <div class="each-lesson-img">
-                          <el-image :src="src" style="width: 100%; height: 100%" fit="cover">
-                            <template #placeholder>
-                              <div class="image-slot">
-                                加载中<span class="dot">...</span>
-                              </div>
-                            </template>
-                          </el-image>
-                        </div>
-                        <div class="each-lesson-info flex flex-column">
-                          <div class="lesson-title flex flex-row align-center" style="height: 30%">
-                            <div style="text-align: left;font-size: 30px;font-weight: 600;">{{ item.course_name }}</div>
-                          </div>
-                          <div class="lesson-description"
-                               style="text-align: left;color: #504d5f;font-size: 15px;height: 40%;margin-top: 10px">
-                            任课教师：{{ item.teacher_name }}
-                          </div>
-                          <div class="lesson-detail flex flex-row align-end justify-between" style="height: 30%">
-                            <div class="lesson-detail-content">开课时间：{{ Day(item.created_at) }}</div>
-                            <div class="lesson-detail-content">是否结课：{{ isClosed(item.is_close) }}</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <LessonList
+                    :lessons="lessons">
+                  </LessonList>
+                    <Pagination
+                      :total="total_lesson"
+                      v-on:page = "getLessonPage">
+                    </Pagination>
                 </el-tab-pane>
                 <el-tab-pane label="我的实验" name="second">
                   <ProjectList
                       :project_records="project_records">
                   </ProjectList>
+                  <Pagination
+                      :total="total_project"
+                      v-on:page = "getProjectPage">
+                  </Pagination>
                 </el-tab-pane>
               </el-tabs>
             </div>
@@ -96,12 +77,14 @@
 import {getDay} from "../../utils/utils.ts"
 import ProjectList from "../project/ProjectList.vue";
 import CodingTimeTable from "./CodingTimeTable.vue";
+import LessonList from "../lesson/LessonList.vue";
 
 export default {
   name: "UserCenter",
   components: {
     ProjectList,
     CodingTimeTable,
+    LessonList
   },
   data() {
     return {
@@ -113,6 +96,10 @@ export default {
       lessons: [],
       project_records: [],
       table_data: [],
+
+      total_lesson:'',
+      total_project:'',
+
     }
   },
 
@@ -133,18 +120,10 @@ export default {
       console.log(res);
       console.log(data.gender)
     });
-    this.axios({
-      method: "get",
-      url: "/web/course/study",
-      data: {
-        pageCurrent: 1,
-        pageSize: 20,
-      },
-    }).then((res) => {
-      console.log(res)
-      this.lessons = res.data.data.records
-      console.log(res.data.data.records)
-    });
+
+    this.getLessons(1);
+    this.getProject(1);
+
     this.axios({
       method: "get",
       url: "/web/lab/student",
@@ -172,26 +151,61 @@ export default {
     Day(time) {
       return getDay(time)
     },
-    redirectProject(id) {
-      this.$router.push({path: `/project_detail/${id}`})
-    },
+
     redirect(url) {
       this.$router.push({path: url})
     },
-    redirectLesson(id) {
-      this.$router.push({path: `/lesson_detail/${id}`})
-    },
+
     logout() {
       this.$store.commit('$_removeStorage');
       this.$store.commit('$_removeStorageRole')
       this.$router.push({path: 'login'})
     },
-    isClosed(value) {
-      return value == '2' ? '是' : '否'
+
+    getLessonPage(page){
+      //console.log(page)
+      this.getLessons(page)
     },
-    isFinished(value) {
-      return value == '2' ? '是' : '否'
-    }
+
+    getProjectPage(page){
+      this.getProject(page)
+    },
+
+    // 获取课程列表
+    getLessons(pageCurrent){
+      let that = this
+      this.axios({
+        method: "get",
+        url: "/web/course/study",
+        data: {
+          pageCurrent: pageCurrent,
+          pageSize: 20,
+        },
+      }).then((res) => {
+        console.log(res)
+        that.lessons = res.data.data.records
+        that.total_lesson = res.data.data.page_info.total;
+      });
+    },
+
+    // 获取实验列表
+    getProject(pageCurrent){
+      let that = this
+      this.axios({
+        method: "get",
+        url: "/web/lab/student",
+        params: {
+          pageCurrent: pageCurrent,
+          pageSize: 20,
+        },
+      }).then((res) => {
+        console.log(res)
+        that.project_records = res.data.data.records;
+        that.total_project = res.data.data.page_info.total
+      });
+    },
+
+
   },
 }
 </script>
@@ -244,29 +258,6 @@ export default {
   color: #606266;
   font-size: 15px;
   margin-top: 10px;
-}
-
-.each-lesson {
-  height: 150px;
-  width: 80%;
-  padding: 25px;
-}
-
-.each-lesson-img {
-  height: 150px;
-  width: 150px;
-  background: #002d54;
-}
-
-.each-lesson-info {
-  height: 150px;
-  width: calc(100% - 180px);
-  margin-left: 30px;
-}
-
-.lesson-detail-content {
-  width: 30%;
-  text-align: left;
 }
 
 </style>

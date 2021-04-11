@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus';
+import 'dayjs/locale/zh-cn'
+import locale from 'element-plus/lib/locale/lang/zh-cn'
 import './themes/index.css';
 import './components/common/global.css'
 import App from './App.vue'
@@ -18,6 +20,7 @@ import { CalendarComponent,
 import { HeatmapChart } from 'echarts/charts';
 import api from "./api/index";
 import PageHeader from "./components/desk/PageHeader.vue";
+import Pagination from "./components/common/Pagination.vue"
 
 use([
     CanvasRenderer,
@@ -36,11 +39,12 @@ const app = createApp(App)
 app.config.globalProperties.$api = api;
 
 app.use(VueAxios, axios)
-app.use(ElementPlus)
+app.use(ElementPlus, { locale })
 app.use(router)
 app.use(store)
 app.component('v-chart', ECharts)
 app.component('PageHeader',PageHeader)
+app.component('Pagination',Pagination)
 
 
 

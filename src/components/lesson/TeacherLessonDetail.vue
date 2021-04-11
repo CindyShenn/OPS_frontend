@@ -465,18 +465,8 @@ export default {
       console.log(this.comments_records)
     });
 
-    this.axios({
-      method: "get",
-      url: "web/course/student/"+this.$route.params.id,
-      params: {
-      },
-    }).then((res) => {
-      console.log(res)
-      this.student_record = res.data.data.records;
-      this.total = res.data.data.page_info.total;
-      console.log(this.total)
-      console.log(this.student_record)
-    });
+    // 选课学生
+    this.getStudents()
 
     //课程实验
     this.axios({
@@ -506,6 +496,22 @@ export default {
     });
   },
   methods:{
+
+    getStudents(){
+      let that = this
+      // 选课学生
+      this.axios({
+        method: "get",
+        url: "web/course/student/"+this.$route.params.id,
+        params: {
+        },
+      }).then((res) => {
+        console.log(res)
+        this.student_record = res.data.data.records;
+        this.total = res.data.data.page_info.total;
+      });
+    },
+
     handleAvatarSuccess(res) {
       console.log(res)
       this.src = 'http://'+res.data.url;
@@ -676,7 +682,7 @@ export default {
     exportCheckInTable(){
       this.axios({
         method: "get",
-        url: "/web/export/"+this.course_id,
+        url: "/web/checkin/export/"+this.course_id,
         params: {
         },
       }).then((res) => {

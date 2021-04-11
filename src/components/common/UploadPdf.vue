@@ -14,7 +14,7 @@
           :before-upload="beforeUpload"
           :on-success="handleSuccess"
           :auto-upload="false"
-          name="attachment"
+          name="pdf"
           multiple
       >
         <template #trigger>
@@ -70,6 +70,7 @@ name: "UploadPdf",
     beforeUpload(file) {
       const isPDF = file.type === 'application/pdf';
       const isLt2M = file.size / 1024 / 1024 < 2;
+      console.log(file.type)
       if (!isPDF) {
         this.$message.error('只能上传pdf格式!');
       }
@@ -79,7 +80,7 @@ name: "UploadPdf",
       return isPDF && isLt2M;
     },
     checkUploaded(){
-      window.location.href="http://"+this.fileUrl;
+      window.open(this.fileUrl);
     },
   },
   computed: {

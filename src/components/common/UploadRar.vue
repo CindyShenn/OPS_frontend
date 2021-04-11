@@ -66,11 +66,12 @@ name: "UploadRar",
       this.$emit('getUrl',this.fileUrl)
     },
     beforeUpload(file) {
-      const isPDF = file.type === 'application/x-rar-compressed';
+      const isPDF = file.type === 'application/ocelet-stream';
+      console.log(file.type)
       const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isPDF) {
-        this.$message.error('只能上传rar格式!');
-      }
+      // if (!isPDF) {
+      //   this.$message.error('只能上传rar格式!');
+      // }
       if (!isLt2M) {
         this.$message.error('上传附件大小不能超过 2MB!');
       }

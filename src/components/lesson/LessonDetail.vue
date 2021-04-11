@@ -20,6 +20,10 @@
                   :courseId="course_id"
                   :total="total">
               </LessonQA>
+              <Pagination
+                  :total="total"
+                  v-on:page = "getCommentPage">
+              </Pagination>
             </div>
             <div id="resource-and-enter" class="flex flex-column justify-between left-side">
               <el-affix :offset="130" style="width: 100%">
@@ -99,6 +103,8 @@ export default {
       teacher_organization:'',
       teacher_real_name:'',
       teacher_avatar_url:'',
+
+
     }
   },
   mounted() {
@@ -154,21 +160,7 @@ export default {
       console.log(res.data.data.records)
     });
 
-    this.axios({
-      method: "get",
-      url: "/web/comment/course",
-      params: {
-        pageCurrent: 1,
-        pageSize: 20,
-        courseId: this.$route.params.id
-      },
-    }).then((res) => {
-      console.log(res)
-      this.records = res.data.data.records;
-      this.total = res.data.data.page_info.total;
-      console.log(this.total)
-      console.log(this.records)
-    });
+    this.getComments(1);
 
     this.axios({
       method: "get",
@@ -200,6 +192,25 @@ export default {
       this.dialogFormVisible = true;
       this.currentReply = id;
     },
+    getComments(pageCurrent){
+      let that = this
+      this.axios({
+        method: "get",
+        url: "/web/comment/course",
+        params: {
+          pageCurrent: pageCurrent,
+          pageSize: 20,
+          courseId: that.$route.params.id
+        },
+      }).then((res) => {
+        console.log(res)
+        that.records = res.data.data.records;
+        that.total = res.data.data.page_info.total;
+      });
+    },
+    getCommentPage(page){
+      this.getComments(page)
+    }
   }
 }
 </script>

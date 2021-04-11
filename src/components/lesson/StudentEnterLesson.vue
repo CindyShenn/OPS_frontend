@@ -36,6 +36,10 @@
                     <ProjectList
                       :project_records="project_records">
                   </ProjectList>
+                    <Pagination
+                        :total="total_project"
+                        v-on:page = "getProjectPage">
+                    </Pagination>
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="课程签到" name="second">
@@ -134,13 +138,33 @@ name: "StudentEnterLesson",
     check_in_records:[],
     dialogFormVisible: false,
     pwd:'',
+
+    total_project:'',
   }
   },
 
   methods:{
-    redirectProject(id){
-      this.$router.push({ path:`/project_detail/${id}`})
+    // 获取实验列表
+    getProject(pageCurrent){
+      let that = this
+      this.axios({
+        method: "get",
+        url: "/web/lab/student",
+        params: {
+          pageCurrent: pageCurrent,
+          pageSize: 20,
+        },
+      }).then((res) => {
+        console.log(res)
+        that.project_records = res.data.data.records;
+        that.total_project = res.data.data.page_info.total
+      });
     },
+
+    getProjectPage(page){
+      this.getProject(page)
+    },
+
     check(){
       let that = this
       that.dialogFormVisible = false;
@@ -215,20 +239,7 @@ name: "StudentEnterLesson",
       this.check_in_records = res.data.data.records
     });
 
-    //this.project_records = getLabByCourseId(this.course_id)
-
-    this.axios({
-      method: "get",
-      url: "/web/lab",
-      params: {
-        pageCurrent:1,
-        pageSize:20,
-        courseId:this.course_id
-      },
-    }).then((res) => {
-      console.log(res)
-      this.project_records = res.data.data.records
-    });
+    this.getProject(1);
   }
 }
 </script>
