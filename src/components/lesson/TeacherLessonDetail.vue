@@ -294,6 +294,14 @@
             </el-table>
           </div>
         </el-tab-pane>
+        <el-tab-pane name="grade">
+          <template #label>
+            <span style="font-size: 15px">学生成绩</span>
+          </template>
+          <div class="flex justify-start">
+            <el-button plain icon="el-icon-plus" @click="exportGrade">导出成绩</el-button>
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -496,6 +504,19 @@ export default {
     });
   },
   methods:{
+
+    exportGrade(){
+      let that = this
+      // 导出成绩
+      this.axios({
+        method: "get",
+        url: "/web/course/score/export/"+this.$route.params.id,
+        params: {
+        },
+      }).then((res) => {
+        console.log(res)
+      });
+    },
 
     getStudents(){
       let that = this
