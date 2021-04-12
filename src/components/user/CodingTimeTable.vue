@@ -4,10 +4,16 @@
   </div>
 </template>
 
+
 <script>
+import VueECharts from 'vue-echarts';
+
 export default {
 name: "CodingTimeTable",
   props:['table_data'],
+  components: {
+    'v-chart': VueECharts
+  },
   data(){
   return {
     option:'',
@@ -38,6 +44,12 @@ name: "CodingTimeTable",
           range: '2021',
           yearLabel: {
             show: false
+          },
+          dayLabel: {
+            nameMap: 'cn' // 从周一开始
+          },
+          monthLabel: {
+            nameMap: 'cn' // 从周一开始
           },
           top: 30,
           left: 30,

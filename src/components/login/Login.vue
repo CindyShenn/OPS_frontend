@@ -1,6 +1,11 @@
 <template>
   <div id="login">
-    <div id="body" class="flex align-center justify-center">
+    <div id="body" class="flex align-center justify-center flex-column">
+      <div class="flex flex-column" style="margin-bottom: 20px;color: #FFFFFF">
+        <span style="font-size: 25px">华南师范大学</span>
+        <span style="font-size: 30px">在线编程教学平台</span>
+      </div>
+
       <div id="login-card" class="flex flex-column">
         <span style="margin-top: 25px;font-size: 32px;text-align: center">请登录您的账号</span>
         <div style="margin:40px 46px 0px 46px">

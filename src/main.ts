@@ -9,7 +9,7 @@ import router from  './components/router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from "./store";
-import ECharts from 'vue-echarts'
+
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { CalendarComponent,
@@ -42,7 +42,6 @@ app.use(VueAxios, axios)
 app.use(ElementPlus, { locale })
 app.use(router)
 app.use(store)
-app.component('v-chart', ECharts)
 app.component('PageHeader',PageHeader)
 app.component('Pagination',Pagination)
 

@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
@@ -11,5 +12,9 @@ export default defineConfig({
   resolve: {
     extensions: ['.js', '.ts', '.vue', '.json']
   },
+
+  // optimizeDeps: {
+  //   include: ["echarts", "axios", "vue-echarts", "vite"]
+  // },
 
 })

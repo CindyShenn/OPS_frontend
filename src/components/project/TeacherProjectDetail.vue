@@ -80,7 +80,7 @@
                     </el-table-column>
                   </el-table>
                 </el-tab-pane>
-                <el-tab-pane label="代码抄袭情况" name="code_plagiarism">
+                <el-tab-pane label="代码查重" name="code_plagiarism">
                   <div class="flex justify-between">
                     <div style="text-align: center;color: #dd6161;font-size: 15px">* 请勿频繁刷新代码抄袭情况！</div>
                     <el-button icon="el-icon-refresh-right" @click="getPlagiarism">刷新</el-button>

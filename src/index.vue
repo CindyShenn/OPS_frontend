@@ -2,7 +2,10 @@
 <div id="index">
   <el-container>
     <el-header style="background-color: #002d54"><Header></Header></el-header>
-      <el-main><router-view v-if="isRouterAlive"></router-view></el-main>
+      <el-main id="main"><router-view v-if="isRouterAlive"></router-view></el-main>
+      <div id="footer" class="flex flex-column">
+        <span>华南师范大学 版权所有 |Copyright © 2021 South China Normal University. All Rights Reserved</span>
+      </div>
   </el-container>
 </div>
 </template>
@@ -74,4 +77,12 @@ export default {
     left: 0px;
     bottom: 0px;
   }
+
+  #footer{
+    background-color: #002d54;
+    color: #FFFFFF;
+    padding: 2px;
+    font-size: 10px;
+  }
+
 </style>

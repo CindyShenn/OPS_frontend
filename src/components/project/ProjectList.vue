@@ -179,7 +179,7 @@ export default {
               that.usrId = res.data.data.user_id
               console.log(this.usrId)
               // 跳转
-              let {href} = this.$router.resolve({
+               this.$router.push({
                 path: '/current_ide',
                 query: {
                   labId: that.current_lab_id,
@@ -187,7 +187,7 @@ export default {
                   usrId:that.usrId,
                 }
               });
-              window.open(href, '_blank');
+              // window.open(href, '_blank');
             });
           } else {
             let message = res.data.message;

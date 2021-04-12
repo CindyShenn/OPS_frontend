@@ -1,6 +1,10 @@
 <template>
   <div id="register">
-    <div id="body" class="flex align-center justify-center">
+    <div id="body" class="flex align-center justify-center flex-column">
+      <div class="flex flex-column" style="margin-top: 20px;color: #FFFFFF">
+        <span style="font-size: 25px">华南师范大学</span>
+        <span style="font-size: 30px">在线编程教学平台</span>
+      </div>
       <div id="register-card" class="flex flex-column">
         <el-button type="text" style="font-size: 20px;margin-left: 20px" icon="el-icon-d-arrow-left" class="flex justify-start" @click="redirect('login')">返回</el-button>
         <span style="margin-top: 40px;margin-bottom: 9px;font-size: 32px;text-align: center">用户注册</span>
