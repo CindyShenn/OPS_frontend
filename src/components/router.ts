@@ -1,28 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from './login/Login.vue'
-import LoginByCode from './login/LoginByCode.vue'
-import Register from './login/Register.vue'
-import UserInfo from './user/UserInfo.vue'
-import Home from './Home.vue'
-import ChangePwd from './login/ChangePwd.vue'
-import Project from './project/Project.vue'
-import TeacherClass from './class/TeacherClass.vue'
-import StudentStatus from './class/StudentStatus.vue'
-import TeacherLesson from './lesson/TeacherLesson.vue'
-import TeacherLessonDetail from './lesson/TeacherLessonDetail.vue'
-import StudentLesson from './lesson/StudentLesson.vue'
-import LessonDetail from './lesson/LessonDetail.vue'
-import Test from './test.vue'
-import UserCenter from './user/UserCenter.vue'
-import LessonResource from './lesson/LessonResource.vue'
-import StudentEnterLesson from './lesson/StudentEnterLesson.vue'
-import ProjectDetail from './project/ProjectDetail.vue'
-import CurrentIDE from './project/CurrentIDE.vue'
-import TeacherUserCenter from './user/TeacherUserCenter.vue'
-import CheckInDetail from './teacher_op/CheckInDetail.vue'
-import TeacherProjectDetail from './project/TeacherProjectDetail.vue'
-import LessonResourceAll from './lesson/LessonResourceAll.vue'
-
 
 const routerHistory = createWebHistory()
 
@@ -31,102 +7,98 @@ const router = createRouter({
     routes: [
         {
             path:'/login',
-            component: Login,
+            component: () => import( './login/Login.vue'),
         },
         {
             path:'/login_by_code',
-            component: LoginByCode,
+            component: () => import( './login/LoginByCode.vue'),
         },
         {
             path:'/register',
-            component: Register,
+            component: () => import( './login/Register.vue'),
         },
         {
             path:'/change_pwd',
-            component: ChangePwd,
+            component: () => import( './login/ChangePwd.vue'),
         },
         {
             path:'/current_ide',
             name:'CurrentIDE',
-            component:CurrentIDE,
+            component:() => import( './project/CurrentIDE.vue'),
         },
         {
             path:'/',
-            component: () => import(/* webpackChunkName: "about" */ '../index.vue'),
+            component: () => import( '../index.vue'),
             children:[
                 {
                     path:'/user_info',
-                    component: UserInfo,
-                },
-                {
-                    path:'/home',
-                    component: Home,
+                    component: () => import( './user/UserInfo.vue'),
                 },
                 {
                     path:'/project',
-                    component: Project,
+                    component: () => import( './project/Project.vue'),
                 },
                 {
                     path:'/teacher_class',
-                    component: TeacherClass,
+                    component: () => import( './class/TeacherClass.vue'),
                 },
                 {
                     path:'/student_status',
-                    component: StudentStatus,
+                    component: () => import( './class/StudentStatus.vue'),
                 },
                 {
                     path:'/teacher_lesson',
-                    component: TeacherLesson,
+                    component: () => import( './lesson/TeacherLesson.vue'),
                 },
                 {
                     path:'/teacher_lesson_detail/:id',
-                    component: TeacherLessonDetail,
+                    component: () => import( './lesson/TeacherLessonDetail.vue'),
                 },
                 {
                     path:'/student_lesson',
-                    component:StudentLesson,
+                    component:() => import( './lesson/StudentLesson.vue'),
                 },
                 {
                     path:'/lesson_detail/:id',
-                    component:LessonDetail,
+                    component:() => import( './lesson/LessonDetail.vue'),
                 },
                 {
                     path:'/test',
-                    component:Test,
+                    component:() => import( './test.vue'),
                 },
                 {
                     name:'UserCenter',
                     path:'/user_center',
-                    component:UserCenter,
+                    component:() => import( './user/UserCenter.vue'),
                 },
                 {
                     name:'LessonResource',
                     path:'/lesson_resource/:id',
-                    component:LessonResource,
+                    component:() => import( './lesson/LessonResource.vue'),
                 },
                 {
                     path:'/student_enter_lesson/:id',
-                    component:StudentEnterLesson,
+                    component:() => import( './lesson/StudentEnterLesson.vue'),
                 },
                 {
                     path:'/project_detail/:id',
-                    component:ProjectDetail,
+                    component:() => import( './project/ProjectDetail.vue'),
                 },
                 {
                     path:'/teacher_user_center',
-                    component:TeacherUserCenter,
+                    component:() => import( './user/TeacherUserCenter.vue'),
                 },
                 {
                     path:'/check_in_detail/:id',
-                    component:CheckInDetail,
+                    component:() => import( './teacher_op/CheckInDetail.vue'),
                 },
                 {
                     path:'/teacher_project_detail/:id',
-                    component:TeacherProjectDetail,
+                    component:() => import( './project/TeacherProjectDetail.vue'),
                 },
                 {
                     path:'/lesson_resource_all/:id',
-                    component:LessonResourceAll,
+                    component:() => import( './lesson/LessonResourceAll.vue'),
                 }
             ],
         }

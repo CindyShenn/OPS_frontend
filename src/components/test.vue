@@ -1,25 +1,31 @@
 <template>
   <div>
-    <CodingTimeTable :table_data="data"></CodingTimeTable>
-    <div>
-      {{test_num}}
-    </div>
+    <div id="main" style="width: 600px;height:400px;"></div>
   </div>
 </template>
 
 <script>
 
-import CodingTimeTable from "./user/CodingTimeTable.vue";
 export default {
   name: "test",
-  components:{CodingTimeTable},
+  components: {
+    'v-chart': VueECharts
+  },
   data() {
     return {
-      data: [],
-      option : {
-      },
-      test_num:1,
-    }
+      orgOptions: {
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'line'
+        }]
+      }}
   },
   methods:{
     getData(dataArray){
@@ -46,7 +52,7 @@ export default {
 </script>
 
 <style scoped>
-.chart {
+.v-chart {
   height: 400px;
   width: 100%;
 }

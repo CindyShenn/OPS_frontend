@@ -11,4 +11,8 @@ export default defineConfig({
   resolve: {
     extensions: ['.js', '.ts', '.vue', '.json']
   },
+  optimizeDeps: {
+    include: ["echarts"]
+  },
+
 })
