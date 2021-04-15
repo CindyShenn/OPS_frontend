@@ -46,7 +46,7 @@
 <script>
 import {getDay} from "../../utils/utils.ts"
 import {ElMessage} from "element-plus";
-import UploadRar from "../common/UploadRar.vue";
+import UploadRar from "../common/UploadAttachment.vue";
 export default {
 name: "TeacherResourceList",
   props:['resource_records'],

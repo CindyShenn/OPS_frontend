@@ -36,7 +36,6 @@
 
 <script>
 import {ElMessage} from 'element-plus';
-import store from "../../store";
 
 export default {
   name: "Login",
@@ -62,8 +61,6 @@ export default {
           if (res.data.code == 0) {
             let token = res.data.data.token
             let role = res.data.data.role
-            console.log(token);
-            console.log(role);
             this.$store.commit('$_setStorage', token);
             this.$store.commit('$_setStorageRole',role);
             ElMessage.success({
@@ -83,43 +80,6 @@ export default {
           ElMessage.error('服务器错误');
         }
       });
-
-      // let that = this
-      // this.axios({
-      //   method: "post",
-      //   url: "/web/login",
-      //   data: {
-      //     username: that.user,
-      //     password: that.pwd,
-      //   },
-      // }).then((res) => {
-      //   this.info = res;
-      //   console.log(res);
-      //   if (res.status == 200) {
-      //     if (res.data.code == 0) {
-      //       let token = res.data.data.token
-      //       let role = res.data.data.role
-      //       console.log(token);
-      //       console.log(role);
-      //       this.$store.commit('$_setStorage', token);
-      //       this.$store.commit('$_setStorageRole',role);
-      //       ElMessage.success({
-      //         message: '登录成功！',
-      //         type: 'success'
-      //       });
-      //       if (role ==1){
-      //         this.redirect('teacher_user_center')
-      //       }
-      //       else this.redirect('user_center')
-      //     } else {
-      //       let message = res.data.message;
-      //       console.log(message)
-      //       ElMessage.error(message);
-      //     }
-      //   } else {
-      //     ElMessage.error('服务器错误');
-      //   }
-      // });
     }
   },
 
