@@ -19,18 +19,18 @@ export default defineConfig({
     // }
 
   },
-  build: {
-    rollupOptions: {
-      external: ["echarts", "vue-echarts"],
-      plugins: [
-        commonjs(),
-        externalGlobals({
-          'echarts': 'echarts',
-          'vue-echarts': 'VueECharts',
-        }),
-      ],
-    },
-  },
+  // build: {
+  //   rollupOptions: {
+  //     external: ["echarts", "vue-echarts"],
+  //     plugins: [
+  //       commonjs(),
+  //       externalGlobals({
+  //         'echarts': 'echarts',
+  //         'vue-echarts': 'VueECharts',
+  //       }),
+  //     ],
+  //   },
+  // },
   // optimizeDeps: {
   //   include: ["echarts", "axios", "vue-echarts", "vite"]
   // },
