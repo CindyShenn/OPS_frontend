@@ -51,69 +51,129 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane name="second">
+        <el-tab-pane>
           <template #label>
-            <span style="font-size: 15px">课程签到</span>
+            <span style="font-size: 15px">课程管理</span>
           </template>
-          <div class="check-in">
-            <div id="new-check-in" class="flex">
-              <el-button plain icon="el-icon-plus" @click="newCheckInFormVisible = true">新建签到</el-button>
-              <el-button plain icon="el-icon-download" @click="exportCheckInTable" style="margin-left: 20px">导出签到表</el-button>
-              <el-dialog title="新建签到" v-model="newCheckInFormVisible" append-to-body="true" lock-scroll="true" modal="true">
-                <el-form :model="check_in_form">
-                  <el-form-item label="签到名称" :label-width="formLabelWidth">
-                    <el-input v-model="check_in_form.name" placeholder="请输入签到名称"></el-input>
-                  </el-form-item>
-                  <el-form-item label="签到时长(秒)" :label-width="formLabelWidth">
-                    <el-input v-model="check_in_form.duration" placeholder="请输入签到时长"></el-input>
-                  </el-form-item>
-                  <el-form-item label="签到密码" :label-width="formLabelWidth">
-                    <el-input v-model="check_in_form.secretKey"  placeholder="请输入签到密码"></el-input>
-                  </el-form-item>
-                </el-form>
-                <template #footer>
+          <el-tabs v-model="classManagementActiveName" type="card" @tab-click="handleClick">
+            <el-tab-pane label="课程签到" >
+              <div class="check-in">
+                <div id="new-check-in" class="flex">
+                  <el-button plain icon="el-icon-plus" @click="newCheckInFormVisible = true">新建签到</el-button>
+                  <el-button plain icon="el-icon-download" @click="exportCheckInTable" style="margin-left: 20px">导出签到表</el-button>
+                  <el-dialog title="新建签到" v-model="newCheckInFormVisible" append-to-body="true" lock-scroll="true" modal="true">
+                    <el-form :model="check_in_form">
+                      <el-form-item label="签到名称" :label-width="formLabelWidth">
+                        <el-input v-model="check_in_form.name" placeholder="请输入签到名称"></el-input>
+                      </el-form-item>
+                      <el-form-item label="签到时长(秒)" :label-width="formLabelWidth">
+                        <el-input v-model="check_in_form.duration" placeholder="请输入签到时长"></el-input>
+                      </el-form-item>
+                      <el-form-item label="签到密码" :label-width="formLabelWidth">
+                        <el-input v-model="check_in_form.secretKey"  placeholder="请输入签到密码"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
     <span class="dialog-footer">
       <el-button @click="newCheckInFormVisible = false">取 消</el-button>
       <el-button type="primary" @click="newCheckIn">确 定</el-button>
     </span>
-                </template>
-              </el-dialog>
-            </div>
-            <div class="check-in-record-table" style="margin-top: 30px">
-              <el-table
-                  :data="check_in_records"
-                  style="width: 100%">
-                <el-table-column
-                    prop="name"
-                    label="签到名称">
-                </el-table-column>
-                <el-table-column
-                    prop="total"
-                    label="选课人数">
-                </el-table-column>
-                <el-table-column
-                    label="签到人数"
-                    prop="actual">
-                </el-table-column>
-                <el-table-column
-                    prop="created_at"
-                    label="签到时间">
-                </el-table-column>
-                <el-table-column
-                    label="查看详情">
-                  <template #default="scope">
-                    <el-button @click="checkInDetail(scope.row.checkin_record_id)" type="text">查看</el-button>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                    label="删除签到">
-                  <template #default="scope">
-                    <el-button @click="deleteCheckIn(scope.row.checkin_record_id)" type="text" style="color: #f56c6c">删除</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-          </div>
+                    </template>
+                  </el-dialog>
+                </div>
+                <div class="check-in-record-table" style="margin-top: 30px">
+                  <el-table
+                      :data="check_in_records"
+                      style="width: 100%">
+                    <el-table-column
+                        prop="name"
+                        label="签到名称">
+                    </el-table-column>
+                    <el-table-column
+                        prop="total"
+                        label="选课人数">
+                    </el-table-column>
+                    <el-table-column
+                        label="签到人数"
+                        prop="actual">
+                    </el-table-column>
+                    <el-table-column
+                        prop="created_at"
+                        label="签到时间">
+                    </el-table-column>
+                    <el-table-column
+                        label="查看详情">
+                      <template #default="scope">
+                        <el-button @click="checkInDetail(scope.row.checkin_record_id)" type="text">查看</el-button>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="删除签到">
+                      <template #default="scope">
+                        <el-button @click="deleteCheckIn(scope.row.checkin_record_id)" type="text" style="color: #f56c6c">删除</el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="学生管理" >
+              <div class="student-management">
+                <div>
+                  <div class="flex justify-between" style="width: 100%">
+                    <div>
+                      <el-button plain icon="el-icon-plus" @click="importStudentFormVisible = true">导入学生列表</el-button>
+                      <el-dialog title="导入学生列表" v-model="importStudentFormVisible"  append-to-body="true" lock-scroll="true" modal="true">
+                        <div class="flex justify-center align-center flex-column">
+                          <el-button type="text" @click="downloadTemplate">下载学生导入表模板</el-button>
+                          <UploadCsv
+                              :courseId="course_id"
+                              v-on:reload = "getStudents">
+                          </UploadCsv>
+                        </div>
+                      </el-dialog>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin-top: 30px">
+                  <el-table
+                      :data="student_record"
+                      style="width: 100%">
+                    <el-table-column
+                        prop="user_id"
+                        label="学生编号">
+                    </el-table-column>
+                    <el-table-column
+                        prop="email"
+                        label="邮箱地址">
+                    </el-table-column>
+                    <el-table-column
+                        label="昵称"
+                        prop="nick_name">
+                    </el-table-column>
+                    <el-table-column
+                        prop="real_name"
+                        label="真实姓名">
+                    </el-table-column>
+                    <el-table-column
+                        prop="major"
+                        label="专业">
+                    </el-table-column>
+                    <el-table-column
+                        prop="organization"
+                        label="单位">
+                    </el-table-column>
+                    <el-table-column
+                        label="操作">
+                      <template #default="scope">
+                        <el-button @click="handleClick(scope.row)" type="text">删除</el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
         </el-tab-pane>
         <el-tab-pane name="third">
           <template #label>
@@ -153,65 +213,6 @@
               <teacher-project-list
                   :project_records="project_records">
               </teacher-project-list>
-            </div>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane name="fourth">
-          <template #label>
-            <span style="font-size: 15px">学生管理</span>
-          </template>
-          <div class="student-management">
-            <div>
-              <div class="flex justify-between" style="width: 100%">
-                <div>
-                  <el-button plain icon="el-icon-plus" @click="newStudentFormVisible = true">添加学生</el-button>
-                  <el-button plain icon="el-icon-plus" @click="dialogFormVisible = true">导入学生列表</el-button>
-                </div>
-                <div style="width: 200px">
-                  <el-input
-                      width="200px"
-                      placeholder="搜索学生"
-                      prefix-icon="el-icon-search"
-                      v-model="search">
-                  </el-input>
-                </div>
-              </div>
-            </div>
-            <div style="margin-top: 30px">
-              <el-table
-                  :data="student_record"
-                  style="width: 100%">
-                <el-table-column
-                    prop="user_id"
-                    label="学生编号">
-                </el-table-column>
-                <el-table-column
-                    prop="email"
-                    label="邮箱地址">
-                </el-table-column>
-                <el-table-column
-                    label="昵称"
-                    prop="nick_name">
-                </el-table-column>
-                <el-table-column
-                    prop="real_name"
-                    label="真实姓名">
-                </el-table-column>
-                <el-table-column
-                    prop="major"
-                    label="专业">
-                </el-table-column>
-                <el-table-column
-                    prop="organization"
-                    label="单位">
-                </el-table-column>
-                <el-table-column
-                    label="操作">
-                  <template #default="scope">
-                    <el-button @click="handleClick(scope.row)" type="text">删除</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
             </div>
           </div>
         </el-tab-pane>
@@ -260,49 +261,77 @@
               :total="comments_total">
           </TeacherQA>
         </el-tab-pane>
-        <el-tab-pane name="eighth">
-          <template #label>
-            <span style="font-size: 15px">学生编码活跃度</span>
-          </template>
-          <div id="student-coding-time">
-            <el-table
-                :data="coding_time_records"
-                style="width: 100%">
-              <el-table-column
-                  prop="num"
-                  label="学生学号">
-              </el-table-column>
-              <el-table-column
-                  prop="real_name"
-                  label="学生姓名">
-              </el-table-column>
-              <el-table-column
-                  label="编码活跃度">
-                <template #default="scope">
-                  <el-popover
-                      placement="bottom"
-                      :width="800"
-                      trigger="click"
-                  >
-                    <template #reference>
-                      <el-button>查看</el-button>
-                    </template>
-                    <CodingTimeTable :table_data="scope.row.coding_time"></CodingTimeTable>
-                  </el-popover>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </el-tab-pane>
         <el-tab-pane name="grade">
           <template #label>
             <span style="font-size: 15px">学生成绩</span>
           </template>
           <div class="flex justify-start">
-            <el-button plain icon="el-icon-plus" @click="exportGrade">导出成绩</el-button>
+            <el-button plain icon="el-icon-plus" @click="exportGrade" style="margin-bottom: 10px">导出学生成绩</el-button>
           </div>
+          <el-table
+              :data="coding_time_records"
+              style="width: 100%">
+            <el-table-column
+                prop="num"
+                label="学生学号">
+            </el-table-column>
+            <el-table-column
+                prop="real_name"
+                label="学生姓名">
+            </el-table-column>
+            <el-table-column
+                prop="lab_grade"
+                label="实验成绩">
+            </el-table-column>
+            <el-table-column
+                prop="check_in"
+                label="签到情况">
+            </el-table-column>
+            <el-table-column
+                label="编码活跃度">
+              <template #default="scope">
+                <el-popover
+                    placement="bottom"
+                    :width="800"
+                    trigger="click"
+                >
+                  <template #reference>
+                    <el-button>查看</el-button>
+                  </template>
+                  <CodingTimeTable :table_data="scope.row.coding_time"></CodingTimeTable>
+                </el-popover>
+              </template>
+            </el-table-column>
+            <el-table-column
+                label="课程总成绩">
+              <template #default="scope">
+                <el-tag>{{ scope.row.score }}</el-tag>
+                <el-button type="text" style="margin-left: 10px" @click="gradeDialogVisible=true">修改</el-button>
+                <el-dialog title="修改成绩" v-model="gradeDialogVisible">
+                  <el-form :model="grade_form" :rules="grade_rules">
+                    <el-form-item label="成绩：" :label-width="formLabelWidth" prop="grade">
+                      <el-input
+                          type="text"
+                          placeholder="请输入成绩"
+                          v-model="grade"
+                          maxlength="3"
+                          clearable>
+                      </el-input>
+                    </el-form-item>
+                  </el-form>
+                  <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="gradeDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="modifyGrade(scope.row.stu_id)">确 定</el-button>
+    </span>
+                  </template>
+                </el-dialog>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
       </el-tabs>
+
     </div>
   </div>
 
@@ -312,11 +341,12 @@
 import store from "../../store";
 import {ElMessage} from "element-plus";
 import TeacherProjectList from "../project/TeacherProjectList.vue";
-import UploadRar from "../common/UploadRar.vue";
+import UploadRar from "../common/UploadAttachment.vue";
 import TeacherResourceList from "../teacher_op/TeacherResourceList.vue";
 import PageHeader from "../desk/PageHeader.vue";
 import CodingTimeTable from "../common/CodingTimeTable.vue";
 import TeacherQA from "../teacher_op/TeacherQA.vue";
+import UploadCsv from "../common/UploadCsv.vue";
 
 export default {
   name: "TeacherLessonDetail",
@@ -328,6 +358,7 @@ export default {
     PageHeader,
     CodingTimeTable,
     TeacherQA,
+    UploadCsv,
   },
   data() {
     return {
@@ -375,10 +406,26 @@ export default {
       uploadData: {
         width:'256'
       },
+
+      classManagementActiveName:'',
+      StudentGradeActiveName:'',
       
       newCheckInFormVisible:false,
       newProjectFormVisible:false,
       newResourceFormVisible:false,
+      importStudentFormVisible:false,
+
+      grade: '',
+
+      grade_form:{
+        grade:''
+      },
+
+      grade_rules: {
+        grade:[
+          { required: true, message: '请输入成绩', trigger: 'blur' },
+        ],
+      },
       
       check_in_form:{
         name:'',
@@ -504,6 +551,19 @@ export default {
     });
   },
   methods:{
+
+    downloadTemplate(){
+      // 下载导入学生模板
+      this.axios({
+        method: "get",
+        url: "/web/course/student/export/template",
+        params: {
+        },
+      }).then((res) => {
+        console.log(res)
+      });
+    },
+
 
     exportGrade(){
       let that = this

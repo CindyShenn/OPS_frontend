@@ -83,7 +83,7 @@
                 <el-tab-pane label="代码查重" name="code_plagiarism">
                   <div class="flex justify-between">
                     <div style="text-align: center;color: #dd6161;font-size: 15px">* 请勿频繁刷新代码抄袭情况！</div>
-                    <el-button icon="el-icon-refresh-right" @click="getPlagiarism">刷新</el-button>
+                    <el-button icon="el-icon-refresh-right" @click="getPlagiarism" :loading="loading">刷新</el-button>
                   </div>
                   <div id="plagiarism">
                     <el-table
@@ -157,7 +157,7 @@
 
 <script>
 import ProjectContent from "./ProjectContent.vue";
-import UploadRar from "../common/UploadRar.vue";
+import UploadRar from "../common/UploadAttachment.vue";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -172,6 +172,8 @@ export default {
       created_at: '',
 
       lab_id: '',
+
+      loading:'false',
 
       logs: 'no data',
 
@@ -267,7 +269,7 @@ export default {
       // 获取ide url
       this.axios({
         method: "post",
-        url: "/web/ide/checkCode",
+        url: "/web/lab/check_code",
         data: {
           labId: that.lab_id,
           stuId: id
@@ -317,6 +319,7 @@ export default {
     },
 
     getPlagiarism(){
+      this.loading=true;
       // 代码抄袭
       this.axios({
         method: "get",
@@ -325,6 +328,7 @@ export default {
       }).then((res) => {
         console.log(res)
         this.plagiarism_records = res.data.data.records;
+        this.loading = false;
       });
     },
 
