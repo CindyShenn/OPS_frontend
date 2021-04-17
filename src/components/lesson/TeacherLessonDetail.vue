@@ -315,7 +315,7 @@ import TeacherProjectList from "../project/TeacherProjectList.vue";
 import UploadRar from "../common/UploadRar.vue";
 import TeacherResourceList from "../teacher_op/TeacherResourceList.vue";
 import PageHeader from "../desk/PageHeader.vue";
-import CodingTimeTable from "../user/CodingTimeTable.vue";
+import CodingTimeTable from "../common/CodingTimeTable.vue";
 import TeacherQA from "../teacher_op/TeacherQA.vue";
 
 export default {

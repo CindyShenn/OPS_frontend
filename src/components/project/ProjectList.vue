@@ -154,7 +154,6 @@ export default {
 
     enterIDE(){
       let that = this;
-
       // 获取ide url
       this.axios({
         method: "post",

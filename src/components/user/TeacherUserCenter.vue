@@ -27,7 +27,7 @@
                     </div>
                   </div>
                   <div class="id">
-                    用户id：{{ id }}&emsp;于&nbsp;{{ Day(create_time) }}&nbsp;加入
+                    职工号：{{ id }}&emsp;于&nbsp;{{ Day(create_time) }}&nbsp;加入
                   </div>
                 </div>
               </div>
@@ -49,8 +49,8 @@
                             <el-input v-model="form.name" autocomplete="off" placeholder="请输入课程名称"></el-input>
                           </el-form-item>
                           <el-form-item label="课程描述" :label-width="formLabelWidth" prop="description">
-                            <el-input v-model="form.description" type="textarea" autosize
-                                      placeholder="请输入课程描述" autocomplete="off" maxlength="200"
+                            <el-input v-model="form.description" type="textarea" :autosize="{ minRows: 2, maxRows: 6}"
+                                      placeholder="请输入课程描述" maxlength="200"
                                       show-word-limit></el-input>
                           </el-form-item>
                           <el-form-item label="加入密码" :label-width="formLabelWidth" prop="password">
@@ -86,14 +86,6 @@
     </span>
                         </template>
                       </el-dialog>
-                      <div style="width: 200px">
-                        <el-input
-                            width="200px"
-                            placeholder="搜索课程"
-                            prefix-icon="el-icon-search"
-                            v-model="search">
-                        </el-input>
-                      </div>
                     </div>
                     <div id="lesson-list"  style="width: 100%">
                       <div v-for="(item, index) in lessons" class="flex flex-column align-center justify-center line" style="width: 100%;margin: 0px">
@@ -122,108 +114,6 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                </el-tab-pane>
-                <el-tab-pane label="我的班级" name="third">
-                  <div id="my-class">
-                    <div class="flex justify-between" style="margin-bottom: 15px">
-                      <el-button icon="el-icon-plus" @click="newClassFormVisible = true">创建班级</el-button>
-                      <el-dialog title="创建班级" v-model="newClassFormVisible">
-                        <el-form :model="new_class_form">
-                          <el-form-item label="班级名称" :label-width="formLabelWidth" prop="name">
-                            <el-input v-model="new_class_form.name" autocomplete="off" placeholder="请输入班级名称"></el-input>
-                          </el-form-item>
-                          <el-form-item label="班级描述" :label-width="formLabelWidth" prop="description">
-                            <el-input v-model="new_class_form.description" type="textarea"
-                                      placeholder="请输入班级描述" autocomplete="off" maxlength="200"
-                                      show-word-limit></el-input>
-                          </el-form-item>
-                          <el-form-item label="加入密码" :label-width="formLabelWidth" prop="password">
-                            <el-input v-model="new_class_form.password" autocomplete="off" placeholder="请输入班级加入密码(6位)"></el-input>
-                          </el-form-item>
-                        </el-form>
-                        <template #footer>
-    <span class="dialog-footer">
-      <el-button @click="newClassFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="newClassFormVisible = false">确 定</el-button>
-    </span>
-                        </template>
-                      </el-dialog>
-                      <div style="width: 150px">
-                        <el-input
-                            placeholder="搜索班级"
-                            prefix-icon="el-icon-search"
-                            v-model="search">
-                        </el-input>
-                      </div>
-                    </div>
-                    <el-table
-                        :data="classTableData"
-                        style="width: 100%;font-size: 15px">
-                      <el-table-column
-                          prop="number"
-                          label="编号"
-                          width="150px">
-                      </el-table-column>
-                      <el-table-column
-                          prop="class"
-                          label="班级"
-                          width="150px">
-                      </el-table-column>
-                      <el-table-column
-                          prop="description"
-                          label="描述">
-                      </el-table-column>
-                      <el-table-column
-                          prop="password"
-                          label="班级密码"
-                          width="150px">
-                      </el-table-column>
-                      <el-table-column
-                          prop="createTime"
-                          label="创建时间"
-                          width="150px">
-                      </el-table-column>
-                      <el-table-column
-                          prop="studentStatus"
-                          label="学生情况"
-                          width="150px">
-                        <template #default="scope">
-                          <el-button @click="handleClick(scope.row)" type="text">查看</el-button>
-                          <el-button type="text">导入</el-button>
-                        </template>
-                      </el-table-column>
-                      <el-table-column
-                          prop="operation"
-                          label="操作"
-                          width="150px">
-                        <template #default="scope">
-                          <el-button type="primary" icon="el-icon-edit" circle @click="dialogForm1Visible = true"></el-button>
-                          <el-dialog title="编辑班级" v-model="dialogForm1Visible">
-                            <el-form :model="modify_form">
-                              <el-form-item label="班级名称" :label-width="formLabelWidth">
-                                <el-input v-model="modify_form.name" autocomplete="off" placeholder="请输入班级名称"></el-input>
-                              </el-form-item>
-                              <el-form-item label="班级描述" :label-width="formLabelWidth">
-                                <el-input v-model="modify_form.description" type="textarea"
-                                          placeholder="请输入班级描述" autocomplete="off" maxlength="30"
-                                          show-word-limit></el-input>
-                              </el-form-item>
-                              <el-form-item label="加入密码" :label-width="formLabelWidth">
-                                <el-input v-model="modify_form.password" autocomplete="off" placeholder="请输入班级加入密码"></el-input>
-                              </el-form-item>
-                            </el-form>
-                            <template #footer>
-    <span class="dialog-footer">
-      <el-button @click="dialogForm1Visible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogForm1Visible = false">确 定</el-button>
-    </span>
-                            </template>
-                          </el-dialog>
-                          <el-button type="danger" icon="el-icon-delete" circle style="margin-left: 15px" @click="confirmDelete"></el-button>
-                        </template>
-                      </el-table-column>
-                    </el-table>
                   </div>
                 </el-tab-pane>
               </el-tabs>

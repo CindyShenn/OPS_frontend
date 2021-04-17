@@ -37,7 +37,6 @@ export default {
     onUnmounted(() => {
       console.log('unmounted!')
       this.websocket.close() //离开路由之后断开websocket连接
-      localStorage.setItem("unmounted", "addEventListener.unload");
     })
   },
 

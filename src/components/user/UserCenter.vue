@@ -28,7 +28,7 @@
                     </div>
                   </div>
                   <div class="id">
-                    用户id：{{ id }}&emsp;于&nbsp;{{ Day(create_time) }}&nbsp;加入
+                    学号：{{ id }}&emsp;于&nbsp;{{ Day(create_time) }}&nbsp;加入
                   </div>
                 </div>
               </div>
@@ -97,7 +97,7 @@
 <script>
 import {getDay} from "../../utils/utils.ts"
 import ProjectList from "../project/ProjectList.vue";
-import CodingTimeTable from "./CodingTimeTable.vue";
+import CodingTimeTable from "../common/CodingTimeTable.vue";
 import LessonList from "../lesson/LessonList.vue";
 
 export default {
@@ -130,36 +130,11 @@ export default {
   },
 
   mounted() {
-    this.axios({
-      method: "get",
-      url: "/web/user",
-      params: {},
-    }).then((res) => {
-      let data = res.data.data;
-      this.id = data.num;
-      if (data.avatar_url != '') {
-        this.ava_src = data.avatar_url;
-      }
-      this.$store.commit('$_setStorageHead', this.ava_src);
-      this.create_time = data.created_at;
-      this.real_name = data.real_name;
-      console.log(res);
-      console.log(data.gender)
-    });
-
+    this.getUser();
     this.getLessons(1);
     this.getProject(1);
     this.getAllLessons(1);
-
-    this.axios({
-      method: "get",
-      url: "/web/coding_time",
-      data: {},
-    }).then((res) => {
-      //this.getData(res.data.data.coding_time)
-      this.table_data = res.data.data.coding_time
-      console.log(res);
-    });
+    this.getCodingTime()
   },
   methods: {
     Day(time) {
@@ -196,6 +171,41 @@ export default {
 
     reloadProject(){
       this.getProject(1)
+    },
+
+    // 获取用户信息
+    getUser(){
+      let that = this
+      this.axios({
+        method: "get",
+        url: "/web/user",
+        params: {},
+      }).then((res) => {
+        let data = res.data.data;
+        that.id = data.num;
+        if (data.avatar_url != '') {
+          that.ava_src = data.avatar_url;
+        }
+        that.$store.commit('$_setStorageHead', that.ava_src);
+        that.create_time = data.created_at;
+        that.real_name = data.real_name;
+        console.log(res);
+        console.log(data.gender)
+      });
+    },
+
+    // 获取编码时间
+    getCodingTime(){
+      let that = this
+      this.axios({
+        method: "get",
+        url: "/web/coding_time",
+        data: {},
+      }).then((res) => {
+        //this.getData(res.data.data.coding_time)
+        that.table_data = res.data.data.coding_time
+        console.log(res);
+      });
     },
 
     // 获取课程列表
@@ -268,6 +278,7 @@ export default {
       });
     },
 
+    // 取消搜索课程
     cancelSearch(){
       this.is_search = false;
       this.getAllLessons(1)

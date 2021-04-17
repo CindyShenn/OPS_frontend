@@ -4,13 +4,12 @@ import {createStore} from 'vuex'
 const key = 'token'
 const role = 'role'
 const head = 'head'
-const close = 'close'
+
 const store = createStore({
     state: {
         token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
         role: localStorage.getItem('role') ? localStorage.getItem('role') : '',
         head: localStorage.getItem('head') ? localStorage.getItem('head') : '',
-        close: localStorage.getItem('close') ? localStorage.getItem('close') : '',
     },
     getters: {
         getStorage: function (state) {
@@ -22,7 +21,6 @@ const store = createStore({
             }
             return state.token
         },
-        getClose: state => state.close
     },
     mutations: {
         $_setStorage(state, value) {
@@ -37,10 +35,6 @@ const store = createStore({
             state.head = value;
             localStorage.setItem(head, value)
         },
-        $_setStorageClose(state, value) {
-            state.close = value;
-            localStorage.setItem(close, value)
-        },
         $_removeStorage(state) {
             state.token = null;
             localStorage.removeItem(key)
@@ -53,10 +47,6 @@ const store = createStore({
             state.head = null;
             localStorage.removeItem(head)
         },
-        $_removeStorageClose(state) {
-            state.close = null;
-            localStorage.removeItem(close)
-        }
     },
 })
 
