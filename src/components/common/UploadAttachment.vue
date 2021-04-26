@@ -13,7 +13,7 @@
         :before-upload="beforeUpload"
         :on-success="handleSuccess"
         :auto-upload="false"
-        name="csv"
+        name="attachment"
         multiple
     >
       <template #trigger>

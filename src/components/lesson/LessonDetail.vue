@@ -31,7 +31,7 @@
                   <div class="my-title">任课教师</div>
                   <div class="flex justify-center align-center flex-column" style="height: 100%;width: 100%">
                     <div>
-                      <el-image :src="src" style="width: 80px; height: 80px; margin-top: 20px" fit="cover">
+                      <el-image :src="teacher_avatar_url" style="width: 80px; height: 80px; margin-top: 20px" fit="cover">
                         <template #placeholder>
                           <div class="image-slot">
                             加载中<span class="dot">...</span>
@@ -124,7 +124,7 @@ export default {
       teacher_email:'',
       teacher_organization:'',
       teacher_real_name:'',
-      teacher_avatar_url:'',
+      teacher_avatar_url:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
 
       enrollLessonDialogFormVisible:false,
       password:'',
@@ -165,7 +165,9 @@ export default {
         this.teacher_real_name = res.data.data.real_name;
         this.teacher_organization = res.data.data.organization;
         this.teacher_email = res.data.data.email;
-        this.teacher_avatar_url = res.data.data.avatar_url;
+        if(res.data.data.avatar_url != ''){
+          this.teacher_avatar_url = res.data.data.avatar_url;
+        }
       });
     })
 

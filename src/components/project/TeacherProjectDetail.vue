@@ -29,9 +29,9 @@
                     <el-table-column
                         label="完成情况">
                       <template #default="scope">
-                        <el-tag v-if="scope.row.finish_stat == 1" type="success">已完成</el-tag>
-                        <el-tag v-if="scope.row.finish_stat == 0" type="danger">未开始</el-tag>
-                        <el-tag v-if="scope.row.finish_stat == 2" type="warning">进行中</el-tag>
+                        <el-tag v-if="scope.row.is_finish == 1" type="success">已完成</el-tag>
+                        <el-tag v-if="scope.row.is_finish == 0" type="danger">未开始</el-tag>
+                        <el-tag v-if="scope.row.is_finish == 2" type="warning">进行中</el-tag>
                       </template>
                     </el-table-column>
                     <el-table-column
@@ -39,10 +39,21 @@
                         label="编码时长(min)">
                     </el-table-column>
                     <el-table-column
-                        label="查看代码">
+                        label="查看代码"
+                        width="180">
                       <template #default="scope">
-                        <el-button :disabled="true ? scope.row.finish_stat == 0:false" size="small" type="primary" @click="checkCode(scope.row.stu_id)">查看
-                        </el-button>
+                        <div class="flex flex-row">
+                          <el-button :disabled="true ? scope.row.finish_stat == 0:false" size="mini" type="primary" @click="checkCode(scope.row.stu_id)">查看
+                          </el-button>
+                          <el-button :disabled="true ? scope.row.finish_stat == 0:false" size="mini" type="primary" @click="checkCodeQuick(scope.row.stu_id)">快速查看
+                          </el-button>
+                          <el-dialog title="快速查看学生代码" v-model="QuickCheckCodeDialogVisible" width="90%" fullscreen=true>
+                            <QuickCheckCode
+                              :content="content"
+                              :fileNode="fileNode">
+                            </QuickCheckCode>
+                          </el-dialog>
+                        </div>
                       </template>
                     </el-table-column>
                     <el-table-column
@@ -159,10 +170,11 @@
 import ProjectContent from "./ProjectContent.vue";
 import UploadRar from "../common/UploadAttachment.vue";
 import {ElMessage} from "element-plus";
+import QuickCheckCode from "../teacher_op/QuickCheckCode.vue";
 
 export default {
   name: "TeacherProjectDetail",
-  components: {ProjectContent, UploadRar},
+  components: {ProjectContent, UploadRar, QuickCheckCode},
   data() {
     return {
       title: '',
@@ -182,6 +194,7 @@ export default {
       activeName: 'finish_situation',
 
       gradeDialogVisible: false,
+      QuickCheckCodeDialogVisible:false,
 
       formLabelWidth:'80px',
 
@@ -224,6 +237,20 @@ export default {
       ],
       plagiarism_records: [],
 
+      fileNode:{
+        Name:'name1',
+        IsDir:true,
+        Content:'content1',
+        ChildNode:[{
+          Name:'name2',
+          IsDir:false,
+          Content:'content2',
+          ChildNode: {}
+        }]
+      },
+      content:{},
+
+
     }
   },
   mounted() {
@@ -251,7 +278,7 @@ export default {
     // 作业完成情况
     this.axios({
       method: "get",
-      url: "/web/summit/" + this.lab_id,
+      url: "/web/lab/summit/" + this.lab_id,
       params: {},
     }).then((res) => {
       console.log(res)
@@ -304,11 +331,65 @@ export default {
       });
     },
 
+    checkCodeQuick(id){
+      this.QuickCheckCodeDialogVisible = true;
+      this.axios({
+        method: "get",
+        url: "/web/lab/check_code/quick",
+        params: {
+          labId:this.lab_id,
+          stuId:id
+        },
+      }).then((res) => {
+        console.log(res.data.data)
+        let temp = []
+        temp = this.dealData([],res.data.data)
+        this.fileNode = temp
+        console.log('temp',temp)
+      });
+    },
+
+
+
+    dealData(data,fileNode){
+      let treeName = fileNode.name
+      // treeName:treeContent 对应树形结构目录的 目录名：内容
+      // 将每次遍历得到的数据存入content[]数组中
+      this.content[treeName] = fileNode.content
+      // 判断当前处理的是否为目录
+      if(fileNode.is_dir === false){
+        // 不是目录，则直接生成目录名字典，放入data中
+        let tree0 = {label:treeName}
+        data.push(tree0)
+        return data
+      }
+      else{
+        // 新建一个临时变量存放子节点的目录名字典
+        let children = []
+        // 当前处理的是目录，则对每个子节点进行遍历
+        for(let num in fileNode.child_node){
+          let child = []
+          // 对每个字节点递归调用本方法
+          child = this.dealData(child,fileNode.child_node[num])
+          // 子节点生成的目录名字典放入children[]中
+          console.log('child',child[0])
+          children.push(child[0])
+        }
+        // 生成目录名字典并放入data中
+        let tree1 = {
+          label:treeName,
+          children:children
+        }
+        data.push(tree1)
+        return data
+      }
+    },
+
     getLogs() {
       // 编译失败日志收集
       this.axios({
         method: "get",
-        url: "/web/summit/compile_error_log/" + this.lab_id,
+        url: "/web/lab/summit/compile_error_log/" + this.lab_id,
         params: {},
       }).then((res) => {
         console.log(res)
@@ -323,7 +404,7 @@ export default {
       // 代码抄袭
       this.axios({
         method: "get",
-        url: "/web/summit/plagiarism/" + this.lab_id,
+        url: "/web/lab/summit/plagiarism/" + this.lab_id,
         params: {},
       }).then((res) => {
         console.log(res)
@@ -333,10 +414,10 @@ export default {
     },
 
     handleTabClick() {
-      if (this.activeName == 'compile_error_log') {
+      if (this.activeName === 'compile_error_log') {
         this.getLogs()
       }
-      if (this.activeName == 'code_plagiarism') {
+      if (this.activeName === 'code_plagiarism') {
         this.getPlagiarism()
       }
 

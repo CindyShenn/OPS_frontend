@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <div id="main" style="width: 600px;height:400px;"></div>
+  <div class="quick-check-code flex flex-row" style="width: 100%;height: 100%">
+    <div class="tree" style="width: 30%">
+      <el-tree :data="dealData([],fileNode)" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+    </div>
+    <div class="content flex" style="width: 70%;background-color: #dd6161;padding: 10px">
+      {{current_content}}
+    </div>
   </div>
 </template>
 
@@ -8,46 +13,69 @@
 
 export default {
   name: "test",
-  components: {
-    'v-chart': VueECharts
-  },
   data() {
     return {
-      orgOptions: {
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      fileNode:{
+        Name:'name1',
+        IsDir:true,
+        Content:'content1',
+        ChildNode:[{
+          Name:'name2',
+          IsDir:false,
+          Content:'content2',
+          ChildNode: {}
         },
-        yAxis: {
-          type: 'value'
-        },
-        series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: 'line'
-        }]
-      }}
+          {
+            Name:'name3',
+            IsDir:false,
+            Content:'content3',
+            ChildNode: {}
+          }
+        ]
+      },
+      content:{},
+      current_content:'暂无数据',
+      finalData:[]
+      }
   },
   methods:{
-    getData(dataArray){
-      for (let num in dataArray){
-        let eachData = dataArray[num]
-        let eachDay = [eachData.date,eachData.time]
-        this.data.push(eachDay)
+    dealData(data,fileNode){
+      let temName = fileNode.Name
+      this.content[temName] = fileNode.Content
+      if(fileNode.IsDir == false){
+        let tree0 = {label:temName}
+        data.push(tree0)
+        return data
       }
-      console.log(this.data)
+      else{
+        let children = []
+        for(let num in fileNode.ChildNode){
+          let child = []
+          child = this.dealData(child,fileNode.ChildNode[num])
+          children.push(child[0])
+        }
+        let tree1 = {
+          label:temName,
+          children:children
+        }
+        data.push(tree1)
+        return data
+      }
     },
+    handleNodeClick(data){
+      console.log(data)
+      console.log(this.content[data.label])
+      this.current_content = this.content[data.label]
+    }
   },
+
   mounted() {
-    this.axios({
-      method: "get",
-      url: "/web/coding_time",
-      data: {},
-    }).then((res) => {
-      //this.getData(res.data.data.coding_time)
-      this.data = res.data.data.coding_time
-      console.log(res);
-    });
+    this.finalData = this.dealData([],this.fileNode)
+    let temp = this.finalData
+    console.log('final',temp)
+    console.log('content',this.content)
   }
+
 }
 </script>
 

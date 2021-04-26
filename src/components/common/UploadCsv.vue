@@ -77,16 +77,16 @@ name: "UploadCsv",
       this.$emit('reload','reload')
     },
     beforeUpload(file) {
-      const isPDF = file.type === 'application/ocelet-stream';
+      const isPDF = file.type === 'application/vnd.ms-excel';
       console.log(file.type)
       const isLt2M = file.size / 1024 / 1024 < 2;
-      // if (!isPDF) {
-      //   this.$message.error('只能上传rar格式!');
-      // }
+      if (!isPDF) {
+        this.$message.error('只能上传rar格式!');
+      }
       if (!isLt2M) {
         this.$message.error('上传附件大小不能超过 2MB!');
       }
-      return isPDF && isLt2M;
+      return isPDF&&isLt2M;
     },
   },
   computed: {
@@ -102,7 +102,7 @@ name: "UploadCsv",
     // 设置上传地址
     uploadUrl() {
       // baseURL是axios的基本路径
-      return this.axios.defaults.baseURL + '/web/upload/attachments'
+      return this.axios.defaults.baseURL + '/web/course/student/import'
     }
   },
 }

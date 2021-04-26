@@ -31,11 +31,11 @@
             <el-form-item label="单位" prop="organization">
               <el-input v-model="registerForm.organization" clearable></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="registerForm.password" clearable></el-input>
+            <el-form-item label="密码" prop="password" >
+              <el-input v-model="registerForm.password" clearable show-password></el-input>
             </el-form-item>
             <el-form-item label="确认密码" prop="password1">
-              <el-input v-model="registerForm.password1" clearable></el-input>
+              <el-input v-model="registerForm.password1" clearable show-password></el-input>
             </el-form-item>
             <el-form-item label="性别" class="flex justify-start" >
               <el-radio-group v-model="radio_sex">
@@ -191,11 +191,18 @@ export default {
         this.info=res;
         console.log(res);
         if (res.status==200){
-          ElMessage.success({
-            message: '注册成功！ 请登录。',
-            type: 'success'
-          });
-          self.redirect('login');
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '注册成功！ 请登录。',
+              type: 'success'
+            });
+            self.redirect('login');
+          }
+          else{
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
         }
       });
     },

@@ -47,12 +47,13 @@ _axios.interceptors.request.use(
         return config;
     },
     function(error) {
-        // Do something with request error
+        // 当请求出错时报错
         error.data = {};
         error.data.msg = "服务器异常";
         return Promise.reject(error);
     }
 );
+
 // 响应拦截器
 _axios.interceptors.response.use(
     response =>{
@@ -61,12 +62,12 @@ _axios.interceptors.response.use(
     error=>{
         if(error.response){
             switch(error.response.status){
-                case 401:
+                case 20001:
                     localStorage.removeItem('token');
-                    router.push({path: 'login'})
+                    router.push({path: 'login'});
+                    break;
             }
         }
-
     }
 );
 

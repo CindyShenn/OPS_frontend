@@ -16,8 +16,8 @@
         <div class="each-lesson-info flex flex-column">
           <div class="lesson-title flex flex-row align-center" style="height: 30%">
             <div style="text-align: left;font-size: 30px;font-weight: 600;">{{ item.course_name }}</div>
-            <el-tag v-if="item.is_close == 1" type="danger" style="margin-left: 20px">{{ isClosed(item.is_close) }}</el-tag>
-            <el-tag v-if="item.is_close == 2" type="success" style="margin-left: 20px">{{ isClosed(item.is_close) }}</el-tag>
+            <el-tag v-if="item.is_close == 0" type="danger" style="margin-left: 20px">{{ isClosed(item.is_close) }}</el-tag>
+            <el-tag v-if="item.is_close == 1" type="success" style="margin-left: 20px">{{ isClosed(item.is_close) }}</el-tag>
           </div>
           <div class="lesson-description"
                style="text-align: left;color: #504d5f;font-size: 15px;height: 40%;margin-top: 10px">
@@ -50,7 +50,7 @@ name: "LessonList",
       this.$router.push({path: `/lesson_detail/${id}`})
     },
     isClosed(value) {
-      return value == '2' ? '未结课' : '已结课'
+      return value == '1' ? '未结课' : '已结课'
     },
   },
 }

@@ -20,8 +20,7 @@
           <el-button type="primary" style="width: 100%;margin-top: 40px;height: 50px" @click="login">立即登录</el-button>
           <div class="flex justify-between align-center" style="margin-top: 10px;font-size: 14px">
             <div>
-              <el-button type="text" style="font-size: 14px; color: #3F9EFF" @click="redirect('login_by_code')">验证码登录
-              </el-button>
+
             </div>
             <div><span>还没有账号？</span>
               <el-button type="text" style="font-size: 14px; color: #3F9EFF" @click="redirect('register')">马上注册
@@ -57,8 +56,8 @@ export default {
       };
       this.$api.LoginAPI.Login(userInfo).then((res)=>{
         console.log(res);
-        if (res.status == 200) {
-          if (res.data.code == 0) {
+        if (res.status === 200) {
+          if (res.data.code === 0) {
             let token = res.data.data.token
             let role = res.data.data.role
             this.$store.commit('$_setStorage', token);
@@ -67,7 +66,7 @@ export default {
               message: '登录成功！',
               type: 'success'
             });
-            if (role ==1){
+            if (role === 1){
               this.redirect('teacher_user_center')
             }
             else this.redirect('user_center')

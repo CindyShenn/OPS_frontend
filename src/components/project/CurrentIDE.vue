@@ -102,10 +102,9 @@ export default {
 
     let oFrm = document.getElementById('ide');
     oFrm.onload = oFrm.onreadystatechange = function () {
-      if (this.readyState && this.readyState != 'complete') return;
+      if (this.readyState && this.readyState !== 'complete') return;
       else {
         this.readyStateTime = new Date().getTime();
-        //console.log(this.readyStateTime)
         console.log('IDE加载完成')
         // 初始化websocket
         that.initWebSocket();
@@ -178,7 +177,9 @@ export default {
       this.url = this.$route.query.url;
       console.log('初始化完成')
     },
-    initWebSocket() { //初始化websocket
+
+    // 初始化websocket
+    initWebSocket() {
       const wsUri = "ws://118.178.253.239:8080/web/ide/connect";
       this.websocket = new WebSocket(wsUri);
       this.websocket.onmessage = this.websocketOnMessage;
@@ -186,25 +187,33 @@ export default {
       this.websocket.onerror = this.websocketOnError;
       this.websocket.onclose = this.websocketClose;
     },
-    websocketOnOpen() { //连接建立之后执行send方法发送数据
+    // 连接建立之后执行send方法发送数据
+    websocketOnOpen() {
       let actions = {
         UserId: Number(this.usrId),
         LabId: Number(this.labId),
       };
       this.websocketSend(JSON.stringify(actions));
     },
-    websocketOnError() {//连接建立失败重连
-      this.initWebSocket();
-    },
-    websocketOnMessage(e) { //数据接收
+
+    // 数据接收
+    websocketOnMessage(e) {
       const resData = JSON.parse(e.data);
     },
-    websocketSend(Data) {//数据发送
+    //数据发送
+    websocketSend(Data) {
       this.websocket.send(Data);
       console.log(Data)
     },
-    websocketClose(e) {  //关闭
+    // 关闭 WebSocket
+    websocketClose(e) {
       console.log('断开连接', e);
+    },
+
+
+    // 连接建立失败重连
+    websocketOnError() {
+      this.initWebSocket();
     },
 
     readyStateHandler() {

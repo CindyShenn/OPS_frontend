@@ -140,20 +140,12 @@
                       :data="student_record"
                       style="width: 100%">
                     <el-table-column
-                        prop="user_id"
-                        label="学生编号">
-                    </el-table-column>
-                    <el-table-column
-                        prop="email"
-                        label="邮箱地址">
-                    </el-table-column>
-                    <el-table-column
-                        label="昵称"
-                        prop="nick_name">
+                        prop="num"
+                        label="学生学号">
                     </el-table-column>
                     <el-table-column
                         prop="real_name"
-                        label="真实姓名">
+                        label="学生姓名">
                     </el-table-column>
                     <el-table-column
                         prop="major"
@@ -330,6 +322,93 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
+        <el-tab-pane name="finish_situation">
+          <template #label>
+            <span style="font-size: 15px">课程完成情况</span>
+          </template>
+          <el-tabs type="card" :active-name="finish_situation_active">
+            <el-tab-pane label="学生成绩" name="grade">
+              <div class="flex justify-start">
+                <el-button plain icon="el-icon-plus" @click="exportGrade" style="margin-bottom: 10px">导出学生成绩</el-button>
+              </div>
+              <el-table
+                  :data="student_grade"
+                  style="width: 100%">
+                <el-table-column
+                    prop="num"
+                    label="学生学号">
+                </el-table-column>
+                <el-table-column
+                    prop="real_name"
+                    label="学生姓名">
+                </el-table-column>
+                <el-table-column
+                    prop="shall_check_in"
+                    label="应当签到情况">
+                </el-table-column>
+                <el-table-column
+                    prop="act_check_in"
+                    label="实际签到情况">
+                </el-table-column>
+                <el-table-column
+                    label="课程成绩">
+                  <template #default="scope">
+                    <el-tag>{{ scope.row.avg_score }}</el-tag>
+                    <el-button type="text" style="margin-left: 10px" @click="gradeDialogVisible=true">修改</el-button>
+                    <el-dialog title="修改成绩" v-model="gradeDialogVisible">
+                      <el-form :model="grade_form" :rules="grade_rules">
+                        <el-form-item label="成绩：" :label-width="formLabelWidth" prop="grade">
+                          <el-input
+                              type="text"
+                              placeholder="请输入成绩"
+                              v-model="grade"
+                              maxlength="3"
+                              clearable>
+                          </el-input>
+                        </el-form-item>
+                      </el-form>
+                      <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="gradeDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="modifyGrade(scope.row.stu_id)">确 定</el-button>
+    </span>
+                      </template>
+                    </el-dialog>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
+            <el-tab-pane label="编码活跃度" name="code">
+              <el-table
+                  :data="coding_time_records"
+                  style="width: 100%">
+                <el-table-column
+                    prop="num"
+                    label="学生学号">
+                </el-table-column>
+                <el-table-column
+                    prop="real_name"
+                    label="学生姓名">
+                </el-table-column>
+                <el-table-column
+                    label="编码活跃度">
+                  <template #default="scope">
+                    <el-popover
+                        placement="bottom"
+                        :width="800"
+                        trigger="click"
+                    >
+                      <template #reference>
+                        <el-button>查看</el-button>
+                      </template>
+                      <CodingTimeTable :table_data="scope.row.coding_time"></CodingTimeTable>
+                    </el-popover>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
+          </el-tabs>
+        </el-tab-pane>
       </el-tabs>
 
     </div>
@@ -347,6 +426,7 @@ import PageHeader from "../desk/PageHeader.vue";
 import CodingTimeTable from "../common/CodingTimeTable.vue";
 import TeacherQA from "../teacher_op/TeacherQA.vue";
 import UploadCsv from "../common/UploadCsv.vue";
+import XLSX from 'xlsx';
 
 export default {
   name: "TeacherLessonDetail",
@@ -406,14 +486,42 @@ export default {
       uploadData: {
         width:'256'
       },
+      student_grade:[
+        {
+          user_id:'123',
+          num:'20172123',
+          real_name:'陈有钱',
+          avg_score:'80',
+          shall_check_in:1,
+          act_check_in:1,
+        },
+        {
+          user_id:'123',
+          num:'20172124',
+          real_name:'刘小芳',
+          avg_score:'88',
+          shall_check_in:1,
+          act_check_in:0,
+        },
+        {
+          user_id:'123',
+          num:'20172125',
+          real_name:'王二',
+          avg_score:'86',
+          shall_check_in:1,
+          act_check_in:1,
+        },
+      ],
 
       classManagementActiveName:'',
       StudentGradeActiveName:'',
+      finish_situation_active:'grade',
       
       newCheckInFormVisible:false,
       newProjectFormVisible:false,
       newResourceFormVisible:false,
       importStudentFormVisible:false,
+      gradeDialogVisible:false,
 
       grade: '',
 
@@ -492,6 +600,20 @@ export default {
       console.log(this.comments_records)
     });
 
+    //获取学生课程成绩
+    this.axios({
+      method: "get",
+      url: "/web/course/score",
+      params: {
+        pageCurrent:1,
+        pageSize:20,
+        courseId:this.course_id
+      },
+    }).then((res) => {
+      console.log(res)
+      //this.student_grade = res.data.data.records;
+    });
+
     // 查询签到记录
     this.axios({
       method: "get",
@@ -554,14 +676,11 @@ export default {
 
     downloadTemplate(){
       // 下载导入学生模板
-      this.axios({
-        method: "get",
-        url: "/web/course/student/export/template",
-        params: {
-        },
-      }).then((res) => {
-        console.log(res)
-      });
+      let tableData=[['学号', '姓名', '班级', '专业']]
+      let ws = XLSX.utils.aoa_to_sheet(tableData)
+      let wb = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(wb, ws, '导入学生模板') // 工作簿名称
+      XLSX.writeFile(wb, '导入学生模板.xlsx') // 保存的文件名
     },
 
 
@@ -575,6 +694,7 @@ export default {
         },
       }).then((res) => {
         console.log(res)
+
       });
     },
 
@@ -760,6 +880,11 @@ export default {
       });
     },
 
+    // 查看学生编码活跃度
+    getTableData(id){
+
+    },
+
     exportCheckInTable(){
       this.axios({
         method: "get",
@@ -768,6 +893,18 @@ export default {
         },
       }).then((res) => {
         console.log(res)
+        let data = res.data
+        // 创建一个新的url，此url指向新建的Blob对象
+        let url = window.URL.createObjectURL(new Blob([data],{type: 'application/vnd.ms-excel'}))
+        // 创建a标签，并隐藏改a标签
+        let link = document.createElement('a')
+        link.style.display = 'none'
+        // a标签的href属性指定下载链接
+        link.href = url
+        //setAttribute() 方法添加指定的属性，并为其赋指定的值。
+        link.setAttribute('download', '学生签到表' + '.csv')
+        document.body.appendChild(link)
+        link.click()
       });
     },
 
@@ -779,8 +916,9 @@ export default {
       }).then(() => {
         this.axios({
           method: "delete",
-          url: "/web/checkin/record/"+id,
+          url: "/web/checkin/record/",
           params: {
+            checkInRecordId:id
           },
         }).then((res) => {
           console.log(res)

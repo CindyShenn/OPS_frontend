@@ -118,7 +118,7 @@ export default {
       }).then(() => {
         this.axios({
           method: "post",
-          url: "/web/summit/code",
+          url: "/web/lab/summit/code",
           data: {
             isFinish: !finish,
             labId:id

@@ -64,7 +64,6 @@ name: "UploadPdf",
         type: 'success'
       });
       this.fileUrl = 'http://'+res.data.url;
-      console.log(this.fileUrl)
       this.$emit('getUrl',this.fileUrl)
     },
     beforeUpload(file) {

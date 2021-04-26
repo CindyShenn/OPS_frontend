@@ -8,8 +8,8 @@
         <div class="resource-content" style="text-align: left;margin-top: 20px;font-size: 15px">
           {{item.content}}
         </div>
-        <div v-if="item.attachment_url" style="text-align: left;margin-top: 20px">资源链接：
-          <el-button type="primary" @click="downloadResource(item.attachment_url)">下载</el-button></div>
+        <div v-if="item.attachment_url" style="text-align: left;margin-top: 20px;font-size: 15px">资源下载：
+          <el-button type="primary" @click="downloadResource(item.attachment_url)" size="mini">下载</el-button></div>
         <div class="date-and-op flex flex-row justify-between">
           <div class="resource-date info" style="margin-top: 20px;font-size: 15px">
             公告时间： {{item.created_at}}
@@ -134,7 +134,7 @@ name: "TeacherResourceList",
       let that = this
       that.newProjectFormVisible = false;
       this.axios({
-        method: "post",
+        method: "put",
         url: "/web/course/resource",
         data: {
           courseRecourseId: that.courseRecourseId,

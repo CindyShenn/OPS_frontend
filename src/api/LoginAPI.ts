@@ -7,12 +7,6 @@ type loginParamsType = {
 };
 
 const LoginAPI = {
-    // 登录
-    // this.$api.websiteManageAPI
-    //               .login({
-    //                 userName: this.userName,
-    //                 password: this.password
-    //               })
     Login(params: loginParamsType) {
         return services.post(`/web/login`, params);
     },

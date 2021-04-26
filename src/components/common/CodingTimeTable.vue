@@ -19,9 +19,9 @@ name: "CodingTimeTable",
     option:'',
   }
   },
+
   methods:{
     getData(dataArray){
-      console.log(dataArray)
       let final_data = []
       for (let num in dataArray){
         let eachData = dataArray[num]
@@ -61,7 +61,6 @@ name: "CodingTimeTable",
           data: final_data,
         },
       };
-      console.log(final_data)
       return option
     }
   },

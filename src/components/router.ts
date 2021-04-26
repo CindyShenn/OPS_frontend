@@ -27,6 +27,10 @@ const router = createRouter({
             component:() => import( './project/CurrentIDE.vue'),
         },
         {
+            path:'/test',
+            component:() => import( './test.vue'),
+        },
+        {
             path:'/',
             component: () => import( '../index.vue'),
             children:[
@@ -62,10 +66,7 @@ const router = createRouter({
                     path:'/lesson_detail/:id',
                     component:() => import( './lesson/LessonDetail.vue'),
                 },
-                {
-                    path:'/test',
-                    component:() => import( './test.vue'),
-                },
+
                 {
                     name:'UserCenter',
                     path:'/user_center',
@@ -106,15 +107,11 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    console.log(`router: ${from.path} => ${to.path}`)
-
+    // 从LocalStorage中获取token字段
     let token = localStorage.getItem('token')
-
-    console.log(token)
-
-    // 未登录
+    // 根据是否有token判断用户是否登录
     if (token === "" || token === undefined || token === null) {
-        // 路由不是去 /login 则强制路由到登陆界面
+        // 如果用户未登录且路由不是去 登录页面、修改密码页面、注册页面 则强制路由到登陆界面
         if ((to.path !== '/login')&& (to.path !== '/change_pwd') && (to.path !== '/register')) {
             next('/login')
             return
@@ -122,11 +119,11 @@ router.beforeEach((to, from, next) => {
         next()
         return
     }
+    // 网站默认页面为 用户主页 页面
     if (to.path === '/') {
         next('/user_center')
         return
     }
-
     next()
     return
 })

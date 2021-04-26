@@ -100,7 +100,6 @@ export default {
     handleAvatarSuccess(res) {
       console.log(res)
       this.avatar_url = 'http://'+res.data.url;
-      console.log(this.avatar_url)
       let that = this
       this.axios({
         method: "put",
