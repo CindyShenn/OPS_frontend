@@ -1,34 +1,33 @@
 <template>
-  <div style="padding: 20px">
-    <v-chart class="chart" :option="getData(table_data)" autoresize="true" />
-  </div>
+    <div class="hello">
+      <div class="map">
+        <div id="my-chart" style="width: 100%; height: 400px;">
+        </div>
+      </div>
+    </div>
 </template>
 
 
 <script>
-import VueECharts from 'vue-echarts';
+import * as echarts from 'echarts';
 
 export default {
-name: "CodingTimeTable",
-  props:['table_data'],
-  components: {
-    'v-chart': VueECharts
+  name: "CodingTimeTable",
+  props: ['table_data'],
+  data() {
+    return {
+      option: '',
+    }
   },
-  data(){
-  return {
-    option:'',
-  }
+  mounted() {
+    this.echartInit()
   },
 
-  methods:{
-    getData(dataArray){
-      let final_data = []
-      for (let num in dataArray){
-        let eachData = dataArray[num]
-        let eachDay = [eachData.date,eachData.time]
-        final_data.push(eachDay)
-      }
-      let option ={
+  methods: {
+    echartInit() {
+      let myChart = echarts.init(document.getElementById('my-chart'));
+      // 指定图表的配置项和数据
+      let option = {
         visualMap: {
           type: 'piecewise',
           min: 0,
@@ -38,7 +37,7 @@ name: "CodingTimeTable",
           inRange: {
             color: ['#8bb9d0', '#002d54']
           },
-          top:180
+          top: 180
         },
         calendar: {
           range: '2021',
@@ -58,10 +57,11 @@ name: "CodingTimeTable",
         series: {
           type: 'heatmap',
           coordinateSystem: 'calendar',
-          data: final_data,
+          data: this.table_data,
         },
       };
-      return option
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
     }
   },
 
@@ -69,8 +69,8 @@ name: "CodingTimeTable",
 </script>
 
 <style scoped>
-.chart {
-  height: 200px;
-  width: 100%;
+.hello {
+  height: 180px;
+  padding: 15px;
 }
 </style>

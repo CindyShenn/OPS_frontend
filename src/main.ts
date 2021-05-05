@@ -10,26 +10,10 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from "./store";
 
-import { use } from "echarts/core";
-import { CanvasRenderer } from "echarts/renderers";
-import { CalendarComponent,
-         VisualMapComponent,
-    TitleComponent,
-    LegendComponent,
-} from 'echarts/components';
-import { HeatmapChart } from 'echarts/charts';
 import api from "./api/index";
 import PageHeader from "./components/desk/PageHeader.vue";
 import Pagination from "./components/common/Pagination.vue"
 
-use([
-    CanvasRenderer,
-    CalendarComponent,
-    VisualMapComponent,
-    HeatmapChart,
-    TitleComponent,
-    LegendComponent,
-]);
 
 
 
