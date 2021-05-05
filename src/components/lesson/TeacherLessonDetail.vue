@@ -37,8 +37,8 @@
               <el-input placeholder="请输入选课密码" v-model="secret_key"/>
               <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">是否关闭</span>
               <el-radio-group v-model="is_close" class="flex align-left">
-                <el-radio :label=1>是</el-radio>
-                <el-radio :label=2>否</el-radio>
+                <el-radio :label=0>是</el-radio>
+                <el-radio :label=1>否</el-radio>
               </el-radio-group>
               <div class="flex justify-between" style="margin-top: 20px">
                 <el-button type="primary" style=""
@@ -120,7 +120,7 @@
             <el-tab-pane label="学生管理" >
               <div class="student-management">
                 <div>
-                  <div class="flex justify-between" style="width: 100%">
+                  <div class="flex flex-row" style="width: 100%">
                     <div>
                       <el-button plain icon="el-icon-plus" @click="importStudentFormVisible = true">导入学生列表</el-button>
                       <el-dialog title="导入学生列表" v-model="importStudentFormVisible"  append-to-body="true" lock-scroll="true" modal="true">
@@ -131,6 +131,41 @@
                               v-on:reload = "getStudents">
                           </UploadCsv>
                         </div>
+                      </el-dialog>
+                    </div>
+                    <div style="margin-left: 20px">
+                      <el-button plain icon="el-icon-s-check" @click="auditStudent()">审核待加入学生</el-button>
+                      <el-dialog title="审核待加入学生" v-model="auditStudentFormVisible"  append-to-body="true" lock-scroll="true" modal="true" width="80%" >
+                        <div class="flex flex-row" style="margin-bottom: 10px">
+                          <el-button plain icon="el-icon-plus" type="primary" @click="addStudent(true)">加入</el-button>
+                          <el-button plain type="danger" icon="el-icon-minus" @click="addStudent(false)">删除</el-button>
+                        </div>
+                        <el-table
+                            :data="new_student_record"
+                            style="width: 100%"
+                            ref="checkTable"
+                            @selection-change="handleSelectionChange">
+                          <el-table-column
+                              type="selection"
+                              width="55">
+                          </el-table-column>
+                          <el-table-column
+                              prop="num"
+                              label="学生学号">
+                          </el-table-column>
+                          <el-table-column
+                              prop="real_name"
+                              label="学生姓名">
+                          </el-table-column>
+                          <el-table-column
+                              prop="major"
+                              label="专业">
+                          </el-table-column>
+                          <el-table-column
+                              prop="organization"
+                              label="单位">
+                          </el-table-column>
+                        </el-table>
                       </el-dialog>
                     </div>
                   </div>
@@ -158,7 +193,7 @@
                     <el-table-column
                         label="操作">
                       <template #default="scope">
-                        <el-button @click="handleClick(scope.row)" type="text">删除</el-button>
+                        <el-button @click="handleClickDeleteStudent(scope.row.user_id)" type="text">删除</el-button>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -257,75 +292,6 @@
           <template #label>
             <span style="font-size: 15px">学生成绩</span>
           </template>
-          <div class="flex justify-start">
-            <el-button plain icon="el-icon-plus" @click="exportGrade" style="margin-bottom: 10px">导出学生成绩</el-button>
-          </div>
-          <el-table
-              :data="coding_time_records"
-              style="width: 100%">
-            <el-table-column
-                prop="num"
-                label="学生学号">
-            </el-table-column>
-            <el-table-column
-                prop="real_name"
-                label="学生姓名">
-            </el-table-column>
-            <el-table-column
-                prop="lab_grade"
-                label="实验成绩">
-            </el-table-column>
-            <el-table-column
-                prop="check_in"
-                label="签到情况">
-            </el-table-column>
-            <el-table-column
-                label="编码活跃度">
-              <template #default="scope">
-                <el-popover
-                    placement="bottom"
-                    :width="800"
-                    trigger="click"
-                >
-                  <template #reference>
-                    <el-button>查看</el-button>
-                  </template>
-                  <CodingTimeTable :table_data="scope.row.coding_time"></CodingTimeTable>
-                </el-popover>
-              </template>
-            </el-table-column>
-            <el-table-column
-                label="课程总成绩">
-              <template #default="scope">
-                <el-tag>{{ scope.row.score }}</el-tag>
-                <el-button type="text" style="margin-left: 10px" @click="gradeDialogVisible=true">修改</el-button>
-                <el-dialog title="修改成绩" v-model="gradeDialogVisible">
-                  <el-form :model="grade_form" :rules="grade_rules">
-                    <el-form-item label="成绩：" :label-width="formLabelWidth" prop="grade">
-                      <el-input
-                          type="text"
-                          placeholder="请输入成绩"
-                          v-model="grade"
-                          maxlength="3"
-                          clearable>
-                      </el-input>
-                    </el-form-item>
-                  </el-form>
-                  <template #footer>
-    <span class="dialog-footer">
-      <el-button @click="gradeDialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="modifyGrade(scope.row.stu_id)">确 定</el-button>
-    </span>
-                  </template>
-                </el-dialog>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-tab-pane>
-        <el-tab-pane name="finish_situation">
-          <template #label>
-            <span style="font-size: 15px">课程完成情况</span>
-          </template>
           <el-tabs type="card" :active-name="finish_situation_active">
             <el-tab-pane label="学生成绩" name="grade">
               <div class="flex justify-start">
@@ -378,7 +344,7 @@
                 </el-table-column>
               </el-table>
             </el-tab-pane>
-            <el-tab-pane label="编码活跃度" name="code">
+            <el-tab-pane label="学生编码活跃度" name="code">
               <el-table
                   :data="coding_time_records"
                   style="width: 100%">
@@ -468,7 +434,10 @@ export default {
         organization:''
       }, ],
 
+      new_stu_array:[],
+
       student_record:[],
+      new_student_record:[],
       project_records:[],
       resource_records:[],
       coding_time_records:[],
@@ -522,6 +491,7 @@ export default {
       newResourceFormVisible:false,
       importStudentFormVisible:false,
       gradeDialogVisible:false,
+      auditStudentFormVisible:false,
 
       grade: '',
 
@@ -611,7 +581,7 @@ export default {
       },
     }).then((res) => {
       console.log(res)
-      //this.student_grade = res.data.data.records;
+      this.student_grade = res.data.data.records;
     });
 
     // 查询签到记录
@@ -674,6 +644,16 @@ export default {
   },
   methods:{
 
+    handleSelectionChange (val) {
+      let student_array=[]
+      for (let num in val){
+        let temp = val[num]
+        student_array.push(temp.user_id)
+      }
+      this.new_stu_array=student_array
+      //console.log('select_change',student_array)
+    },
+
     downloadTemplate(){
       // 下载导入学生模板
       let tableData=[['学号', '姓名', '班级', '专业']]
@@ -710,6 +690,38 @@ export default {
         console.log(res)
         this.student_record = res.data.data.records;
         this.total = res.data.data.page_info.total;
+      });
+    },
+
+    // 删除学生
+    handleClickDeleteStudent(id){
+      let that = this
+      let temp = []
+      temp.push(id)
+      this.axios({
+        method: "delete",
+        url: "/web/course/quit",
+        data: {
+          studentId:temp,
+          courseId:that.course_id,
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '操作成功！',
+              type: 'success'
+            });
+            this.reload()
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
       });
     },
 
@@ -785,6 +797,54 @@ export default {
         }
       });
     },
+
+    // 审核多选的学生，加入课程
+    addStudent(is_add){
+      let that = this
+      this.axios({
+        method: "post",
+        url: "/web/course/examine",
+        data: {
+          stuIds:that.new_stu_array,
+          courseId:that.course_id,
+          isPermitted:is_add
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '操作成功！',
+              type: 'success'
+            });
+            this.reload()
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
+    },
+
+    // 审核待进入课程学生
+    auditStudent(){
+      this.auditStudentFormVisible = true;
+      let that = this
+      // 选课学生
+      this.axios({
+        method: "get",
+        url: "/web/course/student/examine/"+this.$route.params.id,
+        params: {
+        },
+      }).then((res) => {
+        console.log(res)
+        that.new_student_record = res.data.data.records;
+      });
+    },
+
     newCheckIn(){
       let that = this
       that.newCheckInFormVisible = false;
@@ -854,6 +914,38 @@ export default {
       this.axios({
         method: "post",
         url: "/web/course/resource",
+        data: {
+          courseId: that.course_id,
+          title: that.resource_form.title,
+          content:that.resource_form.content,
+          attachmentUrl:that.resource_form.attachmentUrl,
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '创建成功！',
+              type: 'success'
+            });
+            this.reload()
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
+    },
+
+    // 将学生加入课程
+    handleClickAddStudent(id){
+      let that = this
+      this.axios({
+        method: "post",
+        url: "/web/course/examine",
         data: {
           courseId: that.course_id,
           title: that.resource_form.title,

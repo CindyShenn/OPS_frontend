@@ -258,7 +258,7 @@ export default {
         if (res.status == 200) {
           if (res.data.code == 0) {
             ElMessage.success({
-              message: '加入成功！',
+              message: '加入申请提交成功，请等待老师审核！',
               type: 'success'
             });
             this.reload();

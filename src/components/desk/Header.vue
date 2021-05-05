@@ -127,7 +127,7 @@ export default {
   letter-spacing: 5px;
 }
 
-.el-badge /deep/ .el-badge__content{
+.el-badge :deep(.el-badge__content){
   border: 0px solid #FFF
 }
 
