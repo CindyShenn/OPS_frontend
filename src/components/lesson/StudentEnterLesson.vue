@@ -82,6 +82,8 @@
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="课程公告" name="third">
+                  <el-empty v-if="resource_records==null" description="该课程还没有公告哦~">
+                  </el-empty>
                   <div v-for="(item, index) in resource_records" class="flex flex-column align-center justify-center line" style="width: 100%;margin: 0px">
                       <div class="resource">
                         <div class="single-resource flex flex-column">

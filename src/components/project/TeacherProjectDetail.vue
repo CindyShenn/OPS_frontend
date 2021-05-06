@@ -40,7 +40,7 @@
                     </el-table-column>
                     <el-table-column
                         label="查看代码"
-                        width="180">
+                        width="200">
                       <template #default="scope">
                         <div class="flex flex-row">
                           <el-button :disabled="true ? scope.row.finish_stat == 0:false" size="mini" type="primary" @click="checkCode(scope.row.stu_id)">查看
@@ -59,8 +59,34 @@
                     <el-table-column
                         label="实验报告">
                       <template #default="scope">
-                        <el-button :disabled="true ? scope.row.report_url == '':false" size="small" type="primary">查看
+                        <el-button :disabled="true ? scope.row.report_url == '':false" size="small" type="primary" @click="checkReport(scope.row.report_url)">查看
                         </el-button>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="实验评语">
+                      <template #default="scope">
+                        <el-button type="text" style="margin-left: 10px" @click="projectComment(scope.row.stu_id)">评语</el-button>
+                        <el-dialog title="实验评语" v-model="commentDialogVisible">
+                          <el-form :model="comment_form" :rules="comment_rules">
+                            <el-form-item prop="comment">
+                              <el-input
+                                  type="textarea"
+                                  placeholder="请输入内容"
+                                  v-model="project_comment"
+                                  maxlength="200"
+                                  show-word-limit
+                              >
+                              </el-input>
+                            </el-form-item>
+                          </el-form>
+                          <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="commentDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="modifyComment(scope.row.stu_id)">确 定</el-button>
+    </span>
+                          </template>
+                        </el-dialog>
                       </template>
                     </el-table-column>
                     <el-table-column
@@ -193,8 +219,11 @@ export default {
 
       activeName: 'finish_situation',
 
+      project_comment:'',
+
       gradeDialogVisible: false,
       QuickCheckCodeDialogVisible:false,
+      commentDialogVisible:false,
 
       formLabelWidth:'80px',
 
@@ -204,9 +233,19 @@ export default {
         grade:''
       },
 
+      comment_form:{
+        comment:''
+      },
+
       grade_rules: {
         grade:[
           { required: true, message: '请输入成绩', trigger: 'blur' },
+        ],
+      },
+
+      comment_rules:{
+        comment:[
+          { required: true, message: '请输入评语', trigger: 'blur' },
         ],
       },
 
@@ -291,6 +330,10 @@ export default {
       this.project_form.attachmentUrl = url;
     },
 
+    checkReport(url){
+      window.open(url);
+    },
+
     checkCode(id){
       let that = this
       // 获取ide url
@@ -328,6 +371,21 @@ export default {
         } else {
           ElMessage.error('服务器错误');
         }
+      });
+    },
+
+    projectComment(id){
+      this.commentDialogVisible=true;
+      this.axios({
+        method: "get",
+        url: "/web/lab/summit/comment",
+        params: {
+          labId:this.lab_id,
+          stuId:id
+        },
+      }).then((res) => {
+        console.log(res.data.data)
+        this.project_comment = res.data.data.comment
       });
     },
 
@@ -455,13 +513,14 @@ export default {
     },
 
     modifyGrade(userId){
+      this.gradeDialogVisible=false
       let that = this
       this.axios({
         method: "put",
-        url: "/web/summit/score",
+        url: "/web/lab/summit/score",
         data: {
-          userId:id,
-          score:that.score,
+          userId:userId,
+          score:that.grade,
           labId:that.lab_id
         },
       }).then((res) => {
@@ -470,6 +529,36 @@ export default {
           if (res.data.code == 0) {
             ElMessage.success({
               message: '成绩修改成功！',
+              type: 'success'
+            });
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
+    },
+
+    modifyComment(id){
+      this.commentDialogVisible = false
+      let that = this
+      this.axios({
+        method: "put",
+        url: "/web/lab/summit/comment",
+        data: {
+          userId:id,
+          comment:that.project_comment,
+          labId:that.lab_id
+        },
+      }).then((res) => {
+        console.log(res)
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            ElMessage.success({
+              message: '评语修改成功！',
               type: 'success'
             });
           } else {

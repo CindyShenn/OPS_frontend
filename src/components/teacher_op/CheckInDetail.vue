@@ -22,21 +22,16 @@
               <el-table-column
                   label="是否签到">
                 <template #default="scope">
-                  <el-tag v-if="scope.row.is_check_in == true" type="success">已签到</el-tag>
-                  <el-tag v-if="scope.row.is_check_in == false" type="danger">未签到</el-tag>
-                  <el-button @click="modifyCheckInDialog(scope.row.stu_id,scope.row.is_check_in)" type="text" style="margin-left: 20px">修改</el-button>
-                  <el-dialog title="修改该学生签到情况" v-model="modifyCheckInDialogFormVisible">
-                    <el-radio-group v-model="temp_isCheckIn" class="flex align-left">
-                      <el-radio :label=true>已签到</el-radio>
-                      <el-radio :label=false>未签到</el-radio>
-                    </el-radio-group>
-                    <template #footer>
-    <span class="dialog-footer">
-      <el-button @click="modifyCheckInDialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="changeCheckIn()">确 定</el-button>
-    </span>
-                    </template>
-                  </el-dialog>
+                  <el-switch
+                      style="display: block; margin-left: 20px"
+                      :value="scope.row.is_check_in"
+                      active-color="#13ce66"
+                      inactive-color="#ff4949"
+                      active-text="是"
+                      inactive-text="否"
+                      @change="changeCheckIn(scope.row.user_id,scope.row.is_check_in)"
+                  >
+                  </el-switch>
                 </template>
               </el-table-column>
             </el-table>
@@ -55,36 +50,42 @@ export default {
   data(){
     return{
       check_in_radio:1,
-      check_in_detail:[
-        {
-          num:'001',
-          real_name:'王小明',
-          stu_id:'001',
-          organization:'计科1班',
-          is_check_in:false,
-        }
-      ],
+      check_in_detail:[],
       modifyCheckInDialogFormVisible:false,
       temp_stuId :'',
       temp_isCheckIn:'',
     }
   },
+  mounted() {
+    this.axios({
+      method: "get",
+      url: "/web/checkin/details",
+      params: {
+        pageCurrent: 1,
+        pageSize: 50,
+        checkInRecordId: this.$route.params.id
+      },
+    }).then((res) => {
+      console.log(res)
+      this.check_in_detail = res.data.data.records;
+    });
+  },
   methods:{
     modifyCheckInDialog(stuId,isCheckIn){
       this.modifyCheckInDialogFormVisible=true;
       this.temp_stuId=stuId;
-      this.temp_isCheckIn=isCheckIn;
     },
-    changeCheckIn(){
-      this.modifyCheckInDialogFormVisible=true;
+    changeCheckIn(id,is_check){
+      //this.modifyCheckInDialogFormVisible=false;
       let that = this
+      //let is_check = true ? this.temp_isCheckIn==1 : false
       this.axios({
         method: "put",
         url: "/web/checkin/detail",
         data: {
-          stuId: that.temp_stuId,
+          stuId: id,
           checkinRecordId: that.$route.params.id,
-          isCheckIn:that.temp_isCheckIn,
+          isCheckIn:!is_check,
         },
       }).then((res) => {
         console.log(res);

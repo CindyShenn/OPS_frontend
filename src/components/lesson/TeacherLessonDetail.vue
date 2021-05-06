@@ -32,7 +32,9 @@
               <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程名</span>
               <el-input placeholder="请输入课程名" v-model="course_name"/>
               <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">课程描述</span>
-              <el-input placeholder="请输入课程描述" v-model="course_des" autosize/>
+              <el-input v-model="course_des" type="textarea" :autosize="{ minRows: 2, maxRows: 6}"
+                        placeholder="请输入课程描述" maxlength="200"
+                        show-word-limit></el-input>
               <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">选课密码</span>
               <el-input placeholder="请输入选课密码" v-model="secret_key"/>
               <span style="font-size: 14px;margin-bottom: 7px" class="flex user-input">是否关闭</span>
@@ -124,12 +126,12 @@
                     <div>
                       <el-button plain icon="el-icon-plus" @click="importStudentFormVisible = true">导入学生列表</el-button>
                       <el-dialog title="导入学生列表" v-model="importStudentFormVisible"  append-to-body="true" lock-scroll="true" modal="true">
-                        <div class="flex justify-center align-center flex-column">
-                          <el-button type="text" @click="downloadTemplate">下载学生导入表模板</el-button>
+                        <div class="flex justify-left align-center flex-column">
                           <UploadCsv
                               :courseId="course_id"
                               v-on:reload = "getStudents">
                           </UploadCsv>
+                          <el-button type="text" @click="downloadTemplate">下载学生导入表模板</el-button>
                         </div>
                       </el-dialog>
                     </div>
@@ -1137,4 +1139,5 @@ export default {
 #lesson-comment{
   padding: 0px 20px;
 }
+
 </style>

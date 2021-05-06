@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-left align-center justify-center" style="height: 100%;width: 100%;margin-top: 10px">
+  <div class="flex justify-center align-center" style="height: 100%;width: 100%">
 
     <el-upload
         class="upload-demo"
@@ -13,15 +13,11 @@
         :file-list="fileList"
         :before-upload="beforeUpload"
         :on-success="handleSuccess"
-        :auto-upload="false"
         name="csv"
         :data="uploadData(courseId)"
         multiple
     >
-      <template #trigger>
-        <el-button type="primary">选择文件</el-button>
-      </template>
-      <el-button style="margin-left: 20px;" type="success" @click="submitUpload">确认上传</el-button>
+      <el-button type="primary">选择文件</el-button>
       <template #tip>
         <div class="el-upload__tip">请按照学生导入模板上传文件，且不超过 2M</div>
       </template>
@@ -109,5 +105,8 @@ name: "UploadCsv",
 </script>
 
 <style scoped>
-
+.upload-demo{
+  display: flex;
+  flex-direction: column;
+}
 </style>

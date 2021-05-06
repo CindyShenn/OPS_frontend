@@ -12,7 +12,7 @@
           <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
             <div class="project-detail flex align-center justify-center ">
               <div>
-                创建时间：{{Day(item.created_at)}} &emsp;截止日期：{{item.updated_at}}
+                创建时间：{{Day(item.created_at)}} &emsp;截止时间：{{item.dead_line}}
               </div>
             </div>
             <el-button type="primary" style="margin-bottom: 10px" @click="redirectProject(item.lab_id)">查看详情</el-button>

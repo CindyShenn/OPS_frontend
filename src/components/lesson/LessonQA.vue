@@ -27,6 +27,8 @@
 
       </div>
     </div>
+    <el-empty v-if="records==null" description="该课程还没有问答哦，赶紧提问吧~">
+    </el-empty>
     <div v-for="(item, index) in records" class="flex flex-column align-center justify-center" style="width: 100%;margin-top: 10px">
       <div class="each-comment ">
         <div class="flex flex-row line">

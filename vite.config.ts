@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [vue()],
   server:{
     host:'0.0.0.0',
-    port:80,
+    port:81,
   },
   resolve: {
     extensions: ['.js', '.ts', '.vue', '.json'],

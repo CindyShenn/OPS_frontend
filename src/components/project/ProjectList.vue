@@ -50,6 +50,12 @@
                         <UploadPdf v-on:getUrl = "getReportUploadUrl"></UploadPdf>
                       </div>
                     </div>
+                    <div id="project-comment" class="flex flex-column">
+                      <div class="my-title">教师评语</div>
+                      <div class="flex comment-detail" style="margin-top: 15px">
+                        {{comment}}
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
@@ -91,6 +97,8 @@ export default {
       current_dead_line:'',
       current_created_at:'',
 
+      comment:'暂无评语',
+
       url:'',
       usrId:'',
 
@@ -107,6 +115,27 @@ export default {
     getReportUploadUrl(url){
       console.log(url)
       this.uploadUrl = url;
+      this.axios({
+        method: "post",
+        url: "/web/lab/summit/report",
+        data: {
+          reportUrl:this.uploadUrl,
+          labId:this.current_lab_id
+        },
+      }).then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (res.data.code == 0) {
+            console.log('报告提交成功')
+          } else {
+            let message = res.data.message;
+            console.log(message)
+            ElMessage.error(message);
+          }
+        } else {
+          ElMessage.error('服务器错误');
+        }
+      });
     },
     switchChange(id,finish){
       console.log(id)
@@ -147,9 +176,32 @@ export default {
       this.current_lab_id = item.lab_id;
       this.current_title = "实验："+item.title;
       this.current_content = item.content;
-      this.current_is_finished = item.is_finished;
+      this.current_is_finished = item.is_finish;
       this.current_dead_line = item.dead_line;
       this.current_created_at = item.created_at;
+      let that = this
+      this.axios({
+        method: "get",
+        url: "/web/user",
+        params: {
+        },
+      }).then((res) => {
+        console.log(res)
+        this.usrId = res.data.data.user_id
+        this.axios({
+          method: "get",
+          url: "/web/lab/summit/comment",
+          params: {
+            labId:this.current_lab_id,
+            stuId:this.usrId
+          },
+        }).then((res) => {
+          console.log(res)
+          if (that.comment != ''){
+            that.comment = res.data.data.comment;
+          }
+        });
+      });
     },
 
     enterIDE(){
@@ -223,6 +275,11 @@ export default {
   height: 150px;
 }
 
+#project-comment{
+  margin-top: 50px;
+  height: 150px;
+}
+
 .project-detail {
   color: #606266;
   font-size: 15px;
@@ -247,5 +304,11 @@ export default {
 .drawer-content{
   height: 100%;
   padding: 20px;
+}
+
+.comment-detail {
+  color: #606266;
+  font-size: 15px;
+  margin-top: 10px;
 }
 </style>

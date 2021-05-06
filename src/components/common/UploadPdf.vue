@@ -11,22 +11,17 @@
           :limit="1"
           :on-exceed="handleExceed"
           :file-list="fileList"
-          :before-upload="beforeUpload"
           :on-success="handleSuccess"
-          :auto-upload="false"
           name="pdf"
           multiple
       >
-        <template #trigger>
-          <el-button type="primary">选择文件</el-button>
-        </template>
-        <el-button style="margin-left: 20px;" type="success" @click="submitUpload">确认上传</el-button>
+        <el-button type="primary">选择文件</el-button>
         <template #tip>
           <div class="el-upload__tip">只能上传 pdf 文件，且不超过 2M</div>
         </template>
       </el-upload>
     </div>
-    <el-button v-if="fileUrl != ''" type="primary" style="margin-top: 20px" @click="checkUploaded">查看已上传文件</el-button>
+    <el-button v-if="fileUrl != ''" type="success" style="margin-top: 20px" @click="checkUploaded">查看已上传文件</el-button>
   </div>
 </template>
 

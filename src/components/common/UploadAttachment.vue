@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-left align-center" style="height: 100%;width: 100%">
+  <div class="flex justify-center align-center" style="height: 100%;width: 100%">
     <el-upload
         class="upload-demo"
         ref="upload"
@@ -16,10 +16,7 @@
         name="attachment"
         multiple
     >
-      <template #trigger>
-        <el-button type="primary">选择文件</el-button>
-      </template>
-      <el-button style="margin-left: 20px;" type="success" @click="submitUpload">确认上传</el-button>
+      <el-button type="primary">选择文件</el-button>
       <template #tip>
         <div class="el-upload__tip">只能上传docx/pdf/txt/rar文件，且不超过 2M</div>
       </template>
@@ -99,5 +96,8 @@ name: "UploadRar",
 </script>
 
 <style scoped>
-
+.upload-demo{
+  display: flex;
+  flex-direction: column;
+}
 </style>
