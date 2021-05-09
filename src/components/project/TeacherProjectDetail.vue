@@ -390,7 +390,6 @@ export default {
     },
 
     checkCodeQuick(id){
-      this.QuickCheckCodeDialogVisible = true;
       this.axios({
         method: "get",
         url: "/web/lab/check_code/quick",
@@ -404,6 +403,7 @@ export default {
         temp = this.dealData([],res.data.data)
         this.fileNode = temp
         console.log('temp',temp)
+        this.QuickCheckCodeDialogVisible = true;
       });
     },
 
