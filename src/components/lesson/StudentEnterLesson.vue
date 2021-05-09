@@ -45,8 +45,8 @@
                 </el-tab-pane>
                 <el-tab-pane label="课程签到" name="second">
                   <div id="check-in">
-                    <div id="check-in-button">
-                      <el-button type="primary" @click="dialogFormVisible = true">签到</el-button>
+                    <div id="check-in-button" class="flex justify-start">
+                      <el-button @click="dialogFormVisible = true" plain>签到</el-button>
                       <el-dialog title="请输入签到密码" v-model="dialogFormVisible">
                           <el-input v-model="pwd" autocomplete="off" placeholder="请输入签到密码"></el-input>
                         <template #footer>
