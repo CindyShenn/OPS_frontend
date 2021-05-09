@@ -4,9 +4,7 @@
       <el-tree :data="fileNode" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
     </div>
     <div class="content flex">
-      <pre>
-        {{current_content}}
-      </pre>
+      <pre>{{current_content}}</pre>
     </div>
   </div>
 </template>
@@ -38,6 +36,8 @@ name: "QuickCheckCode",
 }
 .content{
   width: 70%;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 10px
+
 }
 </style>
