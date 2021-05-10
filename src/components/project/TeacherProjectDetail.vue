@@ -161,7 +161,7 @@
                       <el-button icon="el-icon-refresh-right" @click="getLogs">刷新</el-button>
                     </div>
                     <div class="logs flex">
-                      {{ logs }}
+                      <pre>{{ logs }}</pre>
                     </div>
                   </div>
                 </el-tab-pane>
@@ -452,7 +452,7 @@ export default {
       }).then((res) => {
         console.log(res)
         if (res.data.data.compiler_error_log != '') {
-          this.logs = res.data.data.records;
+          this.logs = res.data.data.compiler_error_log;
         }
       });
     },

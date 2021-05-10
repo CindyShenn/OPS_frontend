@@ -53,7 +53,7 @@
                     <div id="project-comment" class="flex flex-column">
                       <div class="my-title">教师评语</div>
                       <div class="flex comment-detail" style="margin-top: 15px">
-                        {{comment ? comment != '' : '暂无评语'}}
+                        {{comment}}
                       </div>
                     </div>
                   </div>
