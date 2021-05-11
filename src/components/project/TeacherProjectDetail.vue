@@ -305,7 +305,7 @@ export default {
       console.log(res)
       this.title = res.data.data.title;
       this.created_at = res.data.data.created_at;
-      this.dead_line = res.data.data.dead_line == null ? '无' : res.data.dead_line;
+      this.dead_line = res.data.data.dead_line ;
       this.description = res.data.data.content;
       this.attachmentUrl = res.data.data.attachmentUrl;
       this.project_form.title = this.title;

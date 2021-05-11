@@ -17,7 +17,7 @@
                             show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="加入密码" :label-width="formLabelWidth">
-                  <el-input v-model="form.password" autocomplete="off" placeholder="请输入班级加入密码"></el-input>
+                  <el-input v-model="form.password" autocomplete="off" placeholder="请输入课程加入密码"></el-input>
                 </el-form-item>
                 <el-form-item label="课程封面" :label-width="formLabelWidth">
                   <el-upload

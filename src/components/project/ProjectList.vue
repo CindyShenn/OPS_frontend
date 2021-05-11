@@ -197,7 +197,7 @@ export default {
           },
         }).then((res) => {
           console.log(res)
-          if (that.comment != ''){
+          if (res.data.data.comment !== ''){
             that.comment = res.data.data.comment;
           }
         });

@@ -132,7 +132,7 @@ name: "TeacherResourceList",
 
     modifyResource(){
       let that = this
-      that.newProjectFormVisible = false;
+      that.newResourceFormVisible = false;
       this.axios({
         method: "put",
         url: "/web/course/resource",

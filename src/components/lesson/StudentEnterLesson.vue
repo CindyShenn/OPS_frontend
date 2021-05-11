@@ -93,7 +93,9 @@
                           <div class="resource-content" style="text-align: left;margin-top: 20px">
                             {{item.content}}
                           </div>
-                          <div v-if="item.attachmentUrl" style="text-align: left;margin-top: 20px">资源链接：<el-link href="https://element.eleme.io" target="_blank">{{item.attachmentUrl}}</el-link></div>
+                          <div v-if="item.attachment_url" style="text-align: left;margin-top: 20px">资源链接：
+                            <el-button type="primary" @click="downloadResource(item.attachment_url)">下载</el-button>
+                          </div>
                           <div class="resource-date info" style="margin-top: 20px">
                             公告时间： {{item.created_at}}
                           </div>
@@ -152,16 +154,21 @@ name: "StudentEnterLesson",
       let that = this
       this.axios({
         method: "get",
-        url: "/web/lab/student",
+        url: "/web/lab",
         params: {
           pageCurrent: pageCurrent,
           pageSize: 20,
+          courseId: that.$route.params.id
         },
       }).then((res) => {
         console.log(res)
         that.project_records = res.data.data.records;
         that.total_project = res.data.data.page_info.total
       });
+    },
+
+    downloadResource(url){
+      window.open(url, '_blank')
     },
 
     reloadProject(){

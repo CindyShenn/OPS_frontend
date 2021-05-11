@@ -12,7 +12,6 @@
         :file-list="fileList"
         :before-upload="beforeUpload"
         :on-success="handleSuccess"
-        :auto-upload="false"
         name="attachment"
         multiple
     >
