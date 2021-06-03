@@ -5,7 +5,7 @@
         {{title}}
       </div>
       <div class="info flex align-center">
-        创建时间：{{Day(created_at)}} &emsp;截止日期：{{dead_line}}
+        创建时间：{{Day(created_at)}} &emsp;截止日期：{{dead_line == null}}
       </div>
       <div class="description">
         {{description}}

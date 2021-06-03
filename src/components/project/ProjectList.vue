@@ -11,7 +11,7 @@
           <div class="flex justify-between" style="width: 100% ;margin-bottom: 10px;margin-top: 10px">
             <div class="project-detail flex align-center justify-center ">
               <div >
-                创建时间：{{ Day(item.created_at) }} &emsp;截止日期：{{ item.dead_line == null? "无": item.dead_line }}  &emsp;所属课程：{{item.course_name}}
+                创建时间：{{ Day(item.created_at) }} &emsp;截止日期：{{ item.dead_line == null? "无": Day(item.dead_line) }}  &emsp;所属课程：{{item.course_name}}
               </div>
               <el-switch
                   style="display: block; margin-left: 20px"

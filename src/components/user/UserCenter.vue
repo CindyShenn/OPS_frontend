@@ -97,7 +97,7 @@
 <script>
 import {getDay} from "../../utils/utils.ts"
 import ProjectList from "../project/ProjectList.vue";
-import CodingTimeTable from "../common/CodingTimeTable.vue";
+import CodingTimeTable from "../common/UserCenterCodingTime.vue";
 import LessonList from "../lesson/LessonList.vue";
 
 export default {
@@ -206,6 +206,7 @@ export default {
         that.table_data = res.data.data.coding_time
         console.log(res);
       });
+      return this.table_data
     },
 
     // 获取课程列表

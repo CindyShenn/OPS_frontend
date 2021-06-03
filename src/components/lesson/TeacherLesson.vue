@@ -128,7 +128,7 @@ export default {
         url: "/web/course",
         data: {
           courseDes: that.form.description,
-          secretkey: that.form.secretkey,
+          secretkey: that.form.password,
           courseName:that.form.name,
           picUrl:that.imageUrl,
         },

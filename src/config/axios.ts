@@ -11,7 +11,7 @@ import router from "../components/router";
 
 const defaultConfig = {
     // baseURL在此处省略配置,此处通过对api的抽离，域名单独配置在base.js中
-    baseURL: 'http://118.178.253.239:8080',//后端开发环境地址
+    baseURL: 'http://93.179.125.223:8080',//后端开发环境地址
     // 请求超时时间
     timeout: 60 * 1000,
 

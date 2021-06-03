@@ -20,11 +20,20 @@ export default {
     }
   },
   mounted() {
-    this.echartInit()
+    console.log('table',this.table_data)
+    this.echartInit(this.table_data)
   },
 
   methods: {
-    echartInit() {
+    echartInit(dataArray) {
+      //console.log('dataarray',dataArray)
+      let final_data = []
+      for (let num in dataArray){
+        let eachData = dataArray[num]
+        let eachDay = [eachData.date,eachData.time]
+        final_data.push(eachDay)
+      }
+      console.log('final',final_data)
       let myChart = echarts.init(document.getElementById('my-chart'));
       // 指定图表的配置项和数据
       let option = {
@@ -57,9 +66,10 @@ export default {
         series: {
           type: 'heatmap',
           coordinateSystem: 'calendar',
-          data: this.table_data,
+          data: final_data,
         },
       };
+      console.log('option',option)
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
     }
